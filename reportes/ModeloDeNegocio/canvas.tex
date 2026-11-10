@@ -1,0 +1,88 @@
+% Business Model Canvas. Una página horizontal dentro de modelo_negocio.tex, que
+% lo inserta con \input{canvas}. Este archivo no se compila solo.
+% Llenar los nueve bloques. Cada afirmación termina con el identificador de la
+% hipótesis que la respalda en hipotesis.csv, por ejemplo (H1).
+% Marcar las hipótesis validadas con \val{H1} y las invalidadas con \inval{H2}.
+\definecolor{navy}{HTML}{1F3467}
+\providecommand{\val}[1]{\textcolor{green!50!black}{\textbf{(#1 \checkmark)}}}
+\providecommand{\inval}[1]{\textcolor{red!70!black}{\textbf{(#1 $\times$)}}}
+\providecommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+
+% ---------- Contenido de los bloques ----------
+\newcommand{\Socios}{\begin{itemize}
+  \item \pendiente{Proveedores y aliados sin los que el negocio no opera.} (H?)
+\end{itemize}}
+\newcommand{\Actividades}{\begin{itemize}
+  \item \pendiente{Lo que el equipo hace todos los días para entregar valor.} (H?)
+\end{itemize}}
+\newcommand{\Recursos}{\begin{itemize}
+  \item \pendiente{Datos, modelos, personas e infraestructura.} (H?)
+\end{itemize}}
+\newcommand{\Propuesta}{\begin{itemize}
+  \item \pendiente{Qué dolor elimina o qué ganancia crea, para quién.} (H?)
+\end{itemize}}
+\newcommand{\Relacion}{\begin{itemize}
+  \item \pendiente{Autoservicio, asistencia personal, comunidad.} (H?)
+\end{itemize}}
+\newcommand{\Canales}{\begin{itemize}
+  \item \pendiente{Cómo se entera, compra y recibe el producto el cliente.} (H?)
+\end{itemize}}
+\newcommand{\Segmentos}{\begin{itemize}
+  \item \pendiente{Perfil del cliente que paga y del usuario, si son distintos.} (H?)
+\end{itemize}}
+\newcommand{\Costos}{\begin{itemize}
+  \item \pendiente{Costos fijos y variables principales (ver modelo financiero).} (H?)
+\end{itemize}}
+\newcommand{\Ingresos}{\begin{itemize}
+  \item \pendiente{Qué se cobra, cuánto y con qué frecuencia.} (H?)
+\end{itemize}}
+
+% ---------- Dibujo. No editar debajo de esta línea ----------
+\begingroup
+\fontsize{9}{11}\selectfont
+\setlist{nosep,leftmargin=1em}
+\noindent{\Large\bfseries\color{navy} Business Model Canvas}\hfill
+{\large \pendiente{Nombre de la empresa}}\hfill \pendiente{Versión y fecha}
+
+\vspace{4pt}
+\noindent
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \def\W{25.8}\def\H{16.8}\def\h{5.0}
+  \tikzset{caja/.style={draw=navy,line width=0.8pt},
+           tit/.style={anchor=north west,font=\bfseries\color{navy}},
+           cue/.style={anchor=north west,text width=#1cm,align=left}}
+  % Retícula: 5 columnas arriba, 2 abajo
+  \def\c{5.16}
+  \draw[caja] (0,0) rectangle (\W,\H);
+  \draw[caja] (0,\h) -- (\W,\h);
+  \foreach \i in {1,2,3,4} \draw[caja] (\i*\c,\h) -- (\i*\c,\H);
+  \draw[caja] (\W/2,0) -- (\W/2,\h);
+  \pgfmathsetmacro\m{(\h+\H)/2}
+  \draw[caja] (\c,\m) -- (2*\c,\m);
+  \draw[caja] (3*\c,\m) -- (4*\c,\m);
+  % Títulos y contenido
+  \node[tit] at (0.1,\H-0.1) {Socios clave};
+  \node[cue=4.9] at (0.1,\H-0.7) {\Socios};
+  \node[tit] at (\c+0.1,\H-0.1) {Actividades clave};
+  \node[cue=4.9] at (\c+0.1,\H-0.7) {\Actividades};
+  \node[tit] at (\c+0.1,\m-0.1) {Recursos clave};
+  \node[cue=4.9] at (\c+0.1,\m-0.7) {\Recursos};
+  \node[tit] at (2*\c+0.1,\H-0.1) {Propuesta de valor};
+  \node[cue=4.9] at (2*\c+0.1,\H-0.7) {\Propuesta};
+  \node[tit] at (3*\c+0.1,\H-0.1) {Relación con clientes};
+  \node[cue=4.9] at (3*\c+0.1,\H-0.7) {\Relacion};
+  \node[tit] at (3*\c+0.1,\m-0.1) {Canales};
+  \node[cue=4.9] at (3*\c+0.1,\m-0.7) {\Canales};
+  \node[tit] at (4*\c+0.1,\H-0.1) {Segmentos de clientes};
+  \node[cue=4.9] at (4*\c+0.1,\H-0.7) {\Segmentos};
+  \node[tit] at (0.1,\h-0.1) {Estructura de costos};
+  \node[cue=12.6] at (0.1,\h-0.7) {\Costos};
+  \node[tit] at (\W/2+0.1,\h-0.1) {Fuentes de ingresos};
+  \node[cue=12.6] at (\W/2+0.1,\h-0.7) {\Ingresos};
+\end{tikzpicture}}
+
+\vspace{2pt}
+\noindent\scriptsize Basado en Osterwalder y Pigneur, \emph{Business Model Generation} (2010), CC BY-SA 3.0.
+\val{H1} validada,\ \inval{H2} invalidada, (H3) pendiente. Evidencia en \texttt{hipotesis.csv} y \texttt{entrevistas.csv}.
+\par\endgroup

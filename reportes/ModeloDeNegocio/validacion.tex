@@ -1,0 +1,223 @@
+% Validación del modelo de negocio, entrega final. Máximo 3 páginas, sin contar
+% el anexo.
+% Sustituir cada texto gris (\pendiente{...}) por el contenido del equipo.
+% No cambiar los títulos ni el orden de las secciones.
+% Las cifras, las tablas y el anexo se generan solos a partir de hipotesis.csv,
+% entrevistas.csv y metricas_landing.csv. No escribir números a mano: actualizar
+% los CSV y volver a compilar.
+% Compilar dos veces con: pdflatex validacion.tex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noindentfirst,es-nodecimaldot,es-tabla]{babel}
+\usepackage[letterpaper,margin=2.2cm,top=1.6cm]{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs,array,titling,enumitem,float,longtable,datatool}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{unamAzul}{HTML}{003D79}
+\definecolor{unamOro}{HTML}{D59F0F}
+\newcommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% ---------- Datos ----------
+% csv-content=literal permite %, &, $ y _ en los textos de los CSV. Las claves
+% siguen el orden de columnas de la plantilla, que no se cambia.
+\DTLread[name=hip,format=csv,csv-content=literal,
+  keys={id,bloque,hipotesis,prueba,criterio,estado,evidencia,cambio}]{hipotesis.csv}
+\DTLread[name=ent,format=csv,csv-content=literal,
+  keys={id,fecha,perfil,sector,canal,duracion,hipotesis,dolor,pagahoy,pagaria,referidos,
+        hallazgo,cita}]{entrevistas.csv}
+\DTLread[name=lan,format=csv,csv-content=literal,
+  keys={semana,visitas,registros,fuente,cambio}]{metricas_landing.csv}
+
+% Indicadores de las entrevistas
+\newcounter{nent}\newcounter{ndolor}\newcounter{npaga}\newcounter{npagaria}
+\newcounter{nval}\newcounter{ninval}\newcounter{npend}
+% Indicadores de la landing page
+\newcounter{nsem}\def\totVis{0}\def\totReg{0}
+
+% ---------- Encabezado institucional ----------
+\pretitle{%
+  \begin{center}\small
+    Universidad Nacional Autónoma de México\\
+    Posgrado en \pendiente{nombre del programa}\\[2pt]
+    \pendiente{Nombre del curso}, semestre \pendiente{2027-1}
+  \end{center}
+  \vspace{-4pt}{\color{unamOro}\rule{\textwidth}{1.2pt}}\par\vspace{14pt}
+  \begin{center}{\small\scshape Validación del modelo de negocio}\\[6pt]\LARGE\bfseries\color{unamAzul}}
+\posttitle{\par\end{center}\vspace{-4pt}}
+\preauthor{\begin{center}\large\begin{tabular}[t]{c}}
+\newcommand{\otrorenglon}{\end{tabular}\par\vspace{8pt}\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\end{center}}
+\predate{\begin{center}\small}
+\postdate{\par\end{center}}
+
+\title{\pendiente{Nombre de la empresa: el proyecto en una frase}}
+% Los mismos integrantes de la propuesta. Borrar los que sobren, junto con su \and.
+\author{%
+  \pendiente{Integrante 1}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 2}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 3}\\ {\small\texttt{\pendiente{correo}}}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\DTLforeach*{ent}{\eDolor=dolor,\ePaga=pagahoy,\ePagaria=pagaria}{%
+  \stepcounter{nent}%
+  \DTLifnumgt{\eDolor}{3}{\stepcounter{ndolor}}{}%
+  \DTLifstringeq{\ePaga}{si}{\stepcounter{npaga}}{}%
+  \DTLifstringeq{\ePagaria}{si}{\stepcounter{npagaria}}{}}
+\DTLforeach*{hip}{\hEstado=estado}{%
+  \DTLifstringeq{\hEstado}{validada}{\stepcounter{nval}}{}%
+  \DTLifstringeq{\hEstado}{invalidada}{\stepcounter{ninval}}{}%
+  \DTLifstringeq{\hEstado}{pendiente}{\stepcounter{npend}}{}}
+\DTLforeach*{lan}{\lVis=visitas,\lReg=registros}{%
+  \stepcounter{nsem}%
+  \xdef\totVis{\fpeval{\totVis+\lVis}}\xdef\totReg{\fpeval{\totReg+\lReg}}}
+
+% ---------------------------------------------------------------------------
+% RESUMEN. Las cifras del primer párrafo se calculan solas. El segundo párrafo
+% las interpreta.
+% ---------------------------------------------------------------------------
+\section{Resumen de la evidencia}
+\label{sec:resumen}
+
+El equipo hizo \thenent{} entrevistas con clientes potenciales. En \thendolor{} de ellas la
+persona describió un dolor de 4 o 5 en una escala de 1 a 5, en \thenpaga{} ya gasta tiempo o
+dinero en resolverlo y en \thenpagaria{} dio una señal concreta de compra. El
+Anexo~\ref{sec:anexo} registra cada entrevista. La landing page, publicada en
+% Sustituir por \url{https://...}
+\pendiente{dirección de la landing page}, recibió \totVis{} visitas y \totReg{} registros en
+\thensem{} semanas, una conversión de
+\ifnum\totVis>0 \fpeval{round(100*\totReg/\totVis,1)}\else 0\fi\%. De las hipótesis del canvas,
+\thenval{} quedaron validadas, \theninval{} invalidadas y \thenpend{} siguen pendientes.
+
+\pendiente{Un párrafo que interpreta estos números: qué hipótesis quedaron validadas, cuál fue
+la sorpresa más importante y qué falta probar.}
+
+% ---------------------------------------------------------------------------
+% HIPÓTESIS. Estado y evidencia de cada hipótesis de modelo_negocio.tex. E indica
+% una entrevista y L una semana de la landing page.
+% ---------------------------------------------------------------------------
+\section{Resultado de las hipótesis}
+\label{sec:hipotesis}
+
+La Tabla~\ref{tab:hipotesis} muestra el resultado de cada hipótesis frente al criterio de
+éxito fijado antes de probarla.
+
+\begin{table}[H]
+  \caption{Hipótesis del canvas, con su criterio de éxito, su estado y la evidencia que la
+    respalda. E indica una entrevista y L una semana de la landing page.}
+  \label{tab:hipotesis}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{@{}lL{0.38\textwidth}L{0.26\textwidth}L{0.09\textwidth}L{0.1\textwidth}@{}}
+    \toprule
+    id & Hipótesis (bloque) & Criterio de éxito & Estado & Evidencia \\
+    \midrule
+    \DTLforeach*{hip}{\hId=id,\hBloque=bloque,\hTexto=hipotesis,\hCrit=criterio,%
+                      \hEstado=estado,\hEvid=evidencia}{%
+      \DTLiffirstrow{}{\\}%
+      \hId & \hTexto{} {\color{gray}(\hBloque)} & \hCrit & \hEstado &
+      \DTLsubstituteall{\hEvid}{;}{; }\hEvid}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% LANDING PAGE. La tabla se genera a partir de metricas_landing.csv.
+% ---------------------------------------------------------------------------
+\section{Landing page}
+\label{sec:landing}
+
+\pendiente{Una o dos oraciones que dicen qué cambio en la página produjo el mayor aumento en la
+conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
+
+\begin{table}[H]
+  \caption{Métricas semanales de la landing page. La conversión es registros entre visitas.}
+  \label{tab:landing}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}lL{0.1\textwidth}rrrL{0.25\textwidth}L{0.25\textwidth}@{}}
+    \toprule
+    & Semana & Visitas & Registros & Conversión & Fuente de tráfico & Cambio en la página \\
+    \midrule
+    \DTLforeach*{lan}{\lSem=semana,\lVis=visitas,\lReg=registros,\lFuente=fuente,%
+                      \lCambio=cambio}{%
+      \DTLiffirstrow{}{\\}%
+      L\DTLcurrentindex & \lSem & \lVis & \lReg &
+      \ifnum\lVis>0 \fpeval{round(100*\lReg/\lVis,1)}\%\else --\fi & \lFuente & \lCambio}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% CAMBIOS EN EL CANVAS. La tabla muestra las hipótesis con algo en la columna
+% "cambio" de hipotesis.csv. El párrafo cuenta cómo cambió el modelo desde la
+% primera entrega. Una hipótesis invalidada que cambió el canvas es un buen
+% resultado.
+% ---------------------------------------------------------------------------
+\section{Cambios en el canvas}
+\label{sec:cambios}
+
+\pendiente{Un párrafo que cuenta cómo cambió el modelo desde la primera entrega y qué evidencia
+provocó cada cambio. Si nada cambió, explicar por qué.} La Tabla~\ref{tab:cambios} lista los
+cambios, y el canvas actualizado está en \texttt{modelo\_negocio.pdf}.
+
+\begin{table}[H]
+  \caption{Cambios en el canvas y la hipótesis que los provocó.}
+  \label{tab:cambios}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{@{}lL{0.12\textwidth}L{0.78\textwidth}@{}}
+    \toprule
+    id & Estado & Cambio en el canvas \\
+    \midrule
+    \DTLforeach*[\not\equal{\hCambio}{}]{hip}{\hId=id,\hEstado=estado,\hCambio=cambio}{%
+      \DTLiffirstrow{}{\\}%
+      \hId & \hEstado & \hCambio}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% ANEXO. Se genera a partir de entrevistas.csv y no cuenta para el límite de
+% páginas.
+% ---------------------------------------------------------------------------
+\clearpage
+\appendix
+\section{Registro de entrevistas}
+\label{sec:anexo}
+
+\begin{footnotesize}
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}lL{0.1\textwidth}L{0.22\textwidth}cccL{0.39\textwidth}@{}}
+  \caption{Entrevistas con clientes potenciales. Dolor de 1 (ninguno) a 5 (urgente). ``Paga''
+    indica si ya gasta tiempo o dinero en el problema, y ``pagaría'' si dio una señal concreta
+    de compra.}\label{tab:entrevistas}\\
+  \toprule
+  id & Fecha & Perfil & Dolor & Paga & Pagaría & Hallazgo y cita \\
+  \midrule
+  \endhead
+  \DTLforeach*{ent}{\eId=id,\eFecha=fecha,\ePerfil=perfil,\eDolor=dolor,\ePaga=pagahoy,%
+                    \ePagaria=pagaria,\eHallazgo=hallazgo,\eCita=cita}{%
+    \DTLiffirstrow{}{\\}%
+    \eId & \eFecha & \ePerfil & \eDolor & \ePaga & \ePagaria &
+    \eHallazgo\newline{\color{gray}``\eCita''}}\\
+  \bottomrule
+\end{longtable}
+\end{footnotesize}
+
+\end{document}

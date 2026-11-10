@@ -1,0 +1,273 @@
+% Modelo de negocio, primera entrega. Máximo 5 páginas, contando el canvas.
+% Sustituir cada texto gris (\pendiente{...}) por el contenido del equipo.
+% No cambiar los títulos ni el orden de las secciones.
+% El canvas se edita en canvas.tex y se inserta aquí con \input. La tabla de
+% hipótesis se genera sola a partir de hipotesis.csv: se actualiza el CSV, no
+% este archivo. Los resultados de las pruebas van en validacion.tex.
+% Compilar dos veces con: pdflatex modelo_negocio.tex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noindentfirst,es-nodecimaldot,es-tabla]{babel}
+\usepackage[letterpaper,margin=2.2cm,top=1.6cm]{geometry}
+\usepackage{xcolor,graphicx,tikz,amssymb}
+\usepackage{booktabs,tabularx,array,titling,enumitem,float,pdflscape,afterpage,datatool}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{unamAzul}{HTML}{003D79}
+\definecolor{unamOro}{HTML}{D59F0F}
+\newcommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% ---------- Hipótesis ----------
+% csv-content=literal permite %, &, $ y _ en los textos del CSV. Las claves
+% siguen el orden de columnas de la plantilla, que no se cambia.
+\DTLread[name=hip,format=csv,csv-content=literal,
+  keys={id,bloque,hipotesis,prueba,criterio,estado,evidencia,cambio}]{hipotesis.csv}
+
+% ---------- Encabezado institucional ----------
+\pretitle{%
+  \begin{center}\small
+    Universidad Nacional Autónoma de México\\
+    Posgrado en \pendiente{nombre del programa}\\[2pt]
+    \pendiente{Nombre del curso}, semestre \pendiente{2027-1}
+  \end{center}
+  \vspace{-4pt}{\color{unamOro}\rule{\textwidth}{1.2pt}}\par\vspace{14pt}
+  \begin{center}{\small\scshape Modelo de negocio}\\[6pt]\LARGE\bfseries\color{unamAzul}}
+\posttitle{\par\end{center}\vspace{-4pt}}
+\preauthor{\begin{center}\large\begin{tabular}[t]{c}}
+\newcommand{\otrorenglon}{\end{tabular}\par\vspace{8pt}\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\end{center}}
+\predate{\begin{center}\small}
+\postdate{\par\end{center}}
+
+\title{\pendiente{Nombre de la empresa: el proyecto en una frase}}
+% Los mismos integrantes de la propuesta. Borrar los que sobren, junto con su \and.
+\author{%
+  \pendiente{Integrante 1}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 2}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 3}\\ {\small\texttt{\pendiente{correo}}}
+}
+\date{Versión \pendiente{1}, \today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+% ---------------------------------------------------------------------------
+% EL MODELO EN UN PÁRRAFO. Qué se vende, a quién, qué dolor elimina, cómo llega
+% al cliente y cómo se cobra. Quien lea solo este párrafo entiende el negocio.
+% ---------------------------------------------------------------------------
+\section{El modelo en un párrafo}
+\label{sec:resumen}
+
+\pendiente{Un párrafo de cuatro a seis oraciones. Qué vende la empresa, a quién, qué dolor
+elimina, por qué canal llega al cliente y cuánto cobra. Cerrar con la hipótesis más riesgosa,
+la que el equipo prueba primero.}
+
+La página siguiente muestra el canvas. Cada afirmación del canvas cita la hipótesis que la
+respalda, y la Sección~\ref{sec:hipotesis} dice cómo se probará cada hipótesis.
+
+% ---------------------------------------------------------------------------
+% CANVAS. Se inserta canvas.tex en una página horizontal, la que sigue a esta.
+% El canvas se edita en canvas.tex, no aquí.
+% ---------------------------------------------------------------------------
+\afterpage{%
+  \newgeometry{margin=1cm}%
+  \begin{landscape}\thispagestyle{empty}\input{canvas}\end{landscape}%
+  \restoregeometry}
+
+% ---------------------------------------------------------------------------
+% CLIENTE Y PROPUESTA DE VALOR. La persona es un personaje ficticio construido
+% con hechos de clientes reales, no con suposiciones. Cada celda cita las
+% entrevistas (E01) o las hipótesis (H1) que la respaldan. Si quien paga y quien
+% usa son la misma persona, borrar la columna Usuario.
+% ---------------------------------------------------------------------------
+\section{Cliente y propuesta de valor}
+\label{sec:cliente}
+
+\pendiente{Una o dos oraciones que presentan el segmento principal y por qué se eligió sobre
+otros segmentos posibles.} La Tabla~\ref{tab:persona} describe a la persona que paga y a la que
+usa el producto.
+
+\begin{table}[H]
+  \caption{Perfil de la persona que paga y de la que usa el producto. Cada celda cita la
+    entrevista o la hipótesis que la respalda.}
+  \label{tab:persona}
+  \small
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries\raggedright}p{0.17\textwidth}
+                                  >{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    & Cliente que paga & Usuario \\
+    \midrule
+    Nombre y cargo & \pendiente{Nombre ficticio y cargo, por ejemplo ``Laura, dueña de la
+                     paquetería''.} & \pendiente{Por ejemplo, ``Jorge, jefe de despacho''.} \\
+    Organización & \pendiente{Tipo, tamaño y ciudad.} & \\
+    Un día típico & \pendiente{Qué hace y en qué momento aparece el problema.} & \\
+    Objetivos & \pendiente{Qué intenta lograr en su trabajo.} & \\
+    Dolores & \pendiente{Qué le pasa, con qué frecuencia y cuánto le cuesta en tiempo o
+              dinero.} (E?) & \\
+    Ganancias & \pendiente{Qué resultado lo haría quedar bien o ahorrar.} & \\
+    Solución actual & \pendiente{Qué hace hoy para resolverlo y cuánto gasta.} & \\
+    Cómo compra & \pendiente{Quién decide, quién aprueba y con qué presupuesto.} & \\
+    Dónde se informa & \pendiente{Personas, grupos, eventos y medios en que confía. Estos
+                       lugares son candidatos a canal.} & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+La propuesta de valor es \pendiente{una oración con la forma: para [cliente], que sufre
+[dolor], [producto] logra [resultado medible], a diferencia de [solución actual].} (H?)
+
+% ---------------------------------------------------------------------------
+% RELACIÓN CON CLIENTES Y CANALES. Los canales cubren las cinco fases del
+% recorrido del cliente. Un canal concreto dice a quién llega y con qué mensaje:
+% "redes sociales" no basta, "anuncios en LinkedIn a jefes de despacho" sí. La
+% relación dice cómo se consigue, se conserva y se hace crecer a cada cliente.
+% El costo de cada canal y de cada relación alimenta el CAC del modelo financiero.
+% ---------------------------------------------------------------------------
+\section{Relación con clientes y canales}
+\label{sec:canales}
+
+\pendiente{Una o dos oraciones que dicen cuál es el canal principal para conseguir clientes y
+por qué llega adonde el segmento ya está.} La Tabla~\ref{tab:canales} describe los canales en
+cada fase, y la Tabla~\ref{tab:relacion} describe la relación con el cliente.
+
+\begin{table}[H]
+  \caption{Canales en las cinco fases del recorrido del cliente. Directo significa que el
+    equipo opera el canal, e indirecto que lo opera un socio.}
+  \label{tab:canales}
+  \small
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}Xp{0.11\textwidth}p{0.16\textwidth}c@{}}
+    \toprule
+    Fase & Canal & Tipo & Costo estimado & Hipótesis \\
+    \midrule
+    Conocimiento & \pendiente{Cómo se entera el cliente de que existe el producto.} & & & \\
+    Evaluación & \pendiente{Cómo compara y prueba antes de comprar.} & & & \\
+    Compra & \pendiente{Dónde y cómo paga.} & & & \\
+    Entrega & \pendiente{Cómo recibe el producto.} & & & \\
+    Posventa & \pendiente{Cómo recibe soporte.} & & & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \caption{Relación con el cliente en tres etapas. Los tipos son asistencia personal,
+    asistencia dedicada, autoservicio, servicio automatizado, comunidad y cocreación.}
+  \label{tab:relacion}
+  \small
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.13\textwidth}p{0.2\textwidth}Xc@{}}
+    \toprule
+    Etapa & Tipo & Cómo se hace y cuánto cuesta & Hipótesis \\
+    \midrule
+    Conseguir & & \pendiente{Por ejemplo, demostración en persona y piloto de tres días.} & \\
+    Conservar & & \pendiente{Por ejemplo, soporte por WhatsApp en horario laboral.} & \\
+    Crecer & & \pendiente{Por ejemplo, más usuarios por cliente o un segundo producto.} & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% COMPETENCIA. Todo problema real tiene una solución actual, aunque sea una hoja
+% de cálculo. Incluir esa solución y al menos dos competidores directos. Los dos
+% atributos son los que más le importan al cliente según las entrevistas.
+% ---------------------------------------------------------------------------
+\section{Competencia}
+\label{sec:competencia}
+
+La Tabla~\ref{tab:competencia} compara las opciones del cliente en
+\pendiente{atributo 1} y \pendiente{atributo 2}, los dos atributos que más mencionaron las
+personas entrevistadas.
+
+\begin{table}[H]
+  \caption{Opciones actuales del cliente. Calificación de 1 (bajo) a 5 (alto) en los dos
+    atributos que más le importan, y precio con su fuente.}
+  \label{tab:competencia}
+  \small
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{}Xp{0.17\textwidth}ccp{0.2\textwidth}@{}}
+    \toprule
+    Opción & Tipo & \pendiente{Atributo 1} & \pendiente{Atributo 2} & Precio y fuente \\
+    \midrule
+    \pendiente{Solución actual del cliente} & Solución actual & & & \\
+    \pendiente{Competidor 1} & Directo & & & \\
+    \pendiente{Competidor 2} & Indirecto & & & \\
+    \textbf{\pendiente{Nuestra empresa}} & & & & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\pendiente{Un párrafo que dice qué sostiene la ventaja frente a la mejor alternativa: datos
+propios, un resultado medido o un canal que la competencia no tiene. Una ventaja sin evidencia
+es una hipótesis y se registra como tal.}
+
+% ---------------------------------------------------------------------------
+% TAMAÑO DE MERCADO. De abajo hacia arriba: número de clientes por precio anual.
+% Cada número lleva su fuente. Las cifras son las mismas de la hoja Supuestos del
+% modelo financiero.
+% ---------------------------------------------------------------------------
+\section{Tamaño de mercado}
+\label{sec:mercado}
+
+La Tabla~\ref{tab:mercado} estima el mercado de abajo hacia arriba, con el número de clientes
+por el precio anual. \pendiente{Una oración que justifica el porcentaje que lleva del TAM al
+SAM y del SAM al SOM.}
+
+\begin{table}[H]
+  \caption{Tamaño de mercado. TAM es todo el mercado si cada cliente posible comprara, SAM es la
+    parte que alcanzan los canales del equipo y SOM es la parte que el equipo espera ganar en 24
+    meses. Montos en pesos por año.}
+  \label{tab:mercado}
+  \small
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabularx}{\textwidth}{@{}lrrrX@{}}
+    \toprule
+    Nivel & Clientes & Precio anual & Mercado & Fuente o supuesto \\
+    \midrule
+    TAM & & & & \pendiente{Por ejemplo, número de consultorios según el DENUE de INEGI.} \\
+    SAM & & & & \pendiente{Por ejemplo, el porcentaje en la CDMX.} \\
+    SOM & & & & \pendiente{Por ejemplo, la tasa de conversión medida en la landing page.} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% HIPÓTESIS Y PRUEBAS. La tabla se genera a partir de hipotesis.csv. Cada
+% afirmación del canvas tiene una hipótesis, y cada hipótesis tiene una prueba y
+% un criterio de éxito fijado antes de probarla. Los resultados van en
+% validacion.tex, en la entrega final.
+% ---------------------------------------------------------------------------
+\section{Hipótesis y pruebas}
+\label{sec:hipotesis}
+
+\pendiente{Un párrafo que dice cuáles son las dos o tres hipótesis más riesgosas, las que
+harían fracasar el negocio si fueran falsas, y en qué orden se probarán.} La
+Tabla~\ref{tab:hipotesis} lista las hipótesis del canvas.
+
+\begin{table}[H]
+  \caption{Hipótesis del canvas, con la prueba que la pondrá a prueba y el criterio de éxito
+    fijado antes de probarla.}
+  \label{tab:hipotesis}
+  \footnotesize
+  \renewcommand{\arraystretch}{1.2}
+  \begin{tabular}{@{}lL{0.38\textwidth}L{0.22\textwidth}L{0.28\textwidth}@{}}
+    \toprule
+    id & Hipótesis (bloque) & Prueba & Criterio de éxito \\
+    \midrule
+    \DTLforeach*{hip}{\hId=id,\hBloque=bloque,\hTexto=hipotesis,\hPrueba=prueba,\hCrit=criterio}{%
+      \DTLiffirstrow{}{\\}%
+      \hId & \hTexto{} {\color{gray}(\hBloque)} & \hPrueba & \hCrit}\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{document}

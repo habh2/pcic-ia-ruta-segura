@@ -1,0 +1,2 @@
+id,fecha,perfil,sector,canal,duracion_min,hipotesis,dolor_1a5,paga_hoy,pagaria,referidos,hallazgo,cita
+E01,2026-10-20,"Dentista, consultorio propio con un sillón",salud,videollamada,22,H1;H3,4,si,si,2,"Confirma citas por WhatsApp a mano cada noche y aun así pierde 5 citas por semana","Me paso media hora diaria mandando recordatorios"

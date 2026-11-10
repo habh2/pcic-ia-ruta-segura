@@ -1,0 +1,2 @@
+id,bloque,hipotesis,prueba,criterio_exito,estado,evidencia,cambio
+H1,segmentos_clientes,"Los consultorios dentales con uno o dos sillones pierden al menos 4 citas por semana por inasistencias","Entrevistas con dentistas","7 de 10 entrevistados reportan 4 o más inasistencias por semana",validada,E01;E02;E04;E05;E07;E08;E09,"Se acotó el segmento a consultorios sin recepcionista de tiempo completo"
