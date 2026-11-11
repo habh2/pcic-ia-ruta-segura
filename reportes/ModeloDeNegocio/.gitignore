@@ -1,6 +1,6 @@
 *.log
 *.aux
-*synctex.gz
+*synctex**
 *.out
 *.pdf
 *.fdb_*
