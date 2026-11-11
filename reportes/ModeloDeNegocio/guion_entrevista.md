@@ -1,10 +1,5 @@
 # Guion de entrevista
 
-Las preguntas buscan hechos del pasado y evitan opiniones sobre la idea. La pregunta "¿Usaría
-esta aplicación?" produce respuestas amables y poco confiables. La pregunta "¿Cuándo fue la última
-vez que le pasó esto?" produce un hecho. El guion se prueba primero entre el equipo, o con un
-modelo de lenguaje que actúe como cliente, y después con personas reales.
-
 El modelo tiene dos segmentos, y cada uno tiene su propio guion. El guion A es para las personas
 que usan la aplicación para desplazarse. El guion B es para los dueños de negocios, que son quienes
 pagan. La apertura, el cierre y el registro son comunes a los dos.
@@ -23,8 +18,7 @@ pagan. La apertura, el cierre y el registro son comunes a los dos.
 
 **Guion A.** Personas de 18 a 60 años que se desplazan en la CDMX a pie o en transporte público
 al menos tres días por semana, por trabajo o escuela. Se encuentran entre compañeros de la
-universidad, en grupos de vecinos y en grupos de la CDMX en redes sociales. Se busca variedad de
-alcaldías y de horarios, en particular personas que regresan de noche.
+universidad, en grupos de vecinos y en grupos de la CDMX en redes sociales. 
 
 **Guion B.** Dueños o encargados de negocios de comercio y servicios con local a pie de calle en
 la CDMX (cafeterías, restaurantes, tiendas, farmacias, papelerías), de 1 a 20 empleados, que
@@ -33,10 +27,8 @@ en asociaciones de comerciantes y por referencia de otros dueños entrevistados.
 
 ## 3. Apertura (2 minutos)
 
-Presentación del equipo en una oración: "Somos estudiantes de posgrado de la UNAM y estudiamos
-cómo se mueven las personas por la ciudad." Explicar que se trata de una investigación de un
-proyecto universitario, que no hay nada que vender y que las respuestas se registran sin nombre.
-Pedir permiso para tomar notas.
+"Somos estudiantes de posgrado de la UNAM y estudiamos
+cómo se mueven las personas por la ciudad."
 
 ## 4. Preguntas
 
@@ -81,27 +73,9 @@ Pedir permiso para tomar notas.
 ## 5. Cierre (2 minutos)
 
 - ¿Hay algo que debí preguntar y no pregunté?
-- ¿Conoce a dos personas con este mismo problema que pudieran platicar conmigo?
+- ¿Conoce a dos personas con este mismo problema que pudieran platicar con nosotros?
 - **Guion A.** ¿Le puedo avisar cuando haya una versión de prueba? Si acepta, se le pide su
   correo en la landing page, no en las notas de la entrevista.
 - **Guion B.** Ofrecer la prueba gratuita: 2,000 impresiones como ubicación destacada y un
   reporte de visitas, sin costo. Registrar si acepta y con qué condiciones. (H7)
 
-## 6. Después de la entrevista
-
-Registrar la entrevista en `entrevistas.csv` el mismo día y actualizar el estado de las hipótesis
-en `hipotesis.csv` cuando se cumpla o se descarte su criterio de éxito.
-
-- En la columna `hipotesis` van las hipótesis de la tabla de la sección 1 que se exploraron.
-- En `paga_hoy`, guion A: `si` cuando la persona gasta hoy tiempo o dinero en evitar zonas
-  inseguras (pregunta 3). Guion B: `si` cuando el negocio gasta hoy en publicidad.
-- En `pagaria`, guion A: `si` cuando la persona pide que le avisen de la versión de prueba.
-  Guion B: `si` solo con una señal concreta de compra o cuando acepta la prueba gratuita.
-
-| Pregunta que se evita | Pregunta que la sustituye |
-|---|---|
-| ¿Usaría una app de rutas seguras? | ¿Cuándo fue la última vez que cambió de ruta por seguridad? |
-| ¿Le parece buena idea? | ¿Qué hizo la última vez que una zona le pareció insegura? |
-| ¿Pagaría 100 pesos por 1,000 impresiones? | ¿Cuánto gasta hoy en publicidad al mes? |
-| ¿Le gustaría salir en nuestra aplicación? | ¿Cómo sabe hoy si una publicidad le trajo clientes? |
-| ¿Reportaría incidentes en la aplicación? | ¿Cuándo fue la última vez que avisó a alguien de un incidente? |
