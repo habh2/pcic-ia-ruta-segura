@@ -215,8 +215,17 @@ La principal ventaja de GoIA es incorporar información de seguridad dentro del 
 \label{sec:mercado}
 
 La Tabla~\ref{tab:mercado} estima el mercado de abajo hacia arriba, con el número de clientes
-por el precio anual. \pendiente{Una oración que justifica el porcentaje que lleva del TAM al
-SAM y del SAM al SOM.}
+por el precio anual. 
+%\pendiente{Una oración que justifica el porcentaje que lleva del TAM al
+%SAM y del SAM al SOM.}
+
+Para una primera versión se lanzaría un MVP en la alcaldía Cuauhtémoc ya que tiene aproximadamente 63,215 unidades económicas, la mayor concentración por habitante de CDMX según datos de 2024. 
+\url{https://cdmx.site/datos/rankings/}
+
+Además, un análisis de robo a transeúnte la coloca en primer lugar entre las alcaldías de CDMX, con una tasa de 390.8 por cada 100 mil habitantes en el periodo analizado
+
+\url{https://enfemex.com/datos/seguridad/robo-transeunte}
+
 
 \begin{table}[H]
   \caption{Tamaño de mercado. TAM es todo el mercado si cada cliente posible comprara, SAM es la
@@ -229,9 +238,14 @@ SAM y del SAM al SOM.}
     \toprule
     Nivel & Clientes & Precio anual & Mercado & Fuente o supuesto \\
     \midrule
-    TAM & & & & \pendiente{Por ejemplo, número de consultorios según el DENUE de INEGI.} \\
-    SAM & & & & \pendiente{Por ejemplo, el porcentaje en la CDMX.} \\
-    SOM & & & & \pendiente{Por ejemplo, la tasa de conversión medida en la landing page.} \\
+    TAM & $ \$ 100,000$ & $ \$18$ & $ \$1,800,000$& En Alcaldía Cuauhtémoc existe una población de 545,884 personas, de las cuales hacemos el supuesto de que alrededor de 100,000 usan aplicaciones de movilidad como mapas en su día a día. No existen estadísticas sobre esta información en específico \url{https://www.economia.gob.mx/datamexico/es/profile/geo/cuauhtemoc-9015}.
+     
+    Para el mercado consideramos un CPM de $\$$100, un supuesto de 15 impresiones mensuales por usuario. 180 impresiones anuales, lo que da un ingreso por usuario anual de $\$$18.
+     \url{https://chatgpt.com/c/6af3c2b6-8bc4-83e8-a3d3-b54b74fd30f5}
+    
+     \\
+    SAM & $ \$20,000$ &  $ \$18$ & $\$360,000$ & Tomamos el supuesto de tener a nuestro alcance el 20$\%$ del TAM por lo que nos da un total de 20,000 usuarios. \\
+    SOM & $ \$2,000$ & $ \$18$ & $\$ 36,000$ & Pretendemos alcanzar en el primer año el 10$\%$ del SOM por lo que tendríamos 2000 usuarios activos. \\
     \bottomrule
   \end{tabularx}
 \end{table}
