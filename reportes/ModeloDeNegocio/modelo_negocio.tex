@@ -184,9 +184,7 @@ cada fase, y la Tabla~\ref{tab:relacion} describe la relación con el cliente.
 \section{Competencia}
 \label{sec:competencia}
 
-La Tabla~\ref{tab:competencia} compara las opciones del cliente en
-\pendiente{atributo 1} y \pendiente{atributo 2}, los dos atributos que más mencionaron las
-personas entrevistadas.
+La Tabla~\ref{tab:competencia} compara las opciones del cliente en precio, facilidad y seguridad, los tres atributos que más mencionaron las personas entrevistadas.
 
 \begin{table}[H]
   \caption{Opciones actuales del cliente. Calificación de 1 (bajo) a 5 (alto) en los dos
@@ -194,21 +192,19 @@ personas entrevistadas.
   \label{tab:competencia}
   \small
   \renewcommand{\arraystretch}{1.2}
-  \begin{tabularx}{\textwidth}{@{}Xp{0.17\textwidth}ccp{0.2\textwidth}@{}}
+  \begin{tabularx}{\textwidth}{@{}Xp{0.1\textwidth}cccp{0.2\textwidth}@{}}
     \toprule
-    Opción & Tipo & \pendiente{Atributo 1} & \pendiente{Atributo 2} & Precio y fuente \\
+    Opción & Tipo & Precio Accesible & Facilidad de Uso & Seguridad & Precio y fuente \\
     \midrule
-    \pendiente{Solución actual del cliente} & Solución actual & & & \\
-    \pendiente{Competidor 1} & Directo & & & \\
-    \pendiente{Competidor 2} & Indirecto & & & \\
-    \textbf{\pendiente{Nuestra empresa}} & & & & \\
+    Google Maps & Indirecto & 5 &  5& 2 & Gratuito Versión Básica\\
+    Waze  & Indirecto & 5 &  4& 3 & Gratuito Versión Básica \\
+    Conocimiento Propio & Solución actual & 5 &  3& 3 & Sin costo directo, basado en experiencia y recomendaciones.\\
+    \textbf{GoIA}  & Propuesta propia & 5 & 4 & 5 & Gratuito en etapa de validación.\\
     \bottomrule
   \end{tabularx}
 \end{table}
 
-\pendiente{Un párrafo que dice qué sostiene la ventaja frente a la mejor alternativa: datos
-propios, un resultado medido o un canal que la competencia no tiene. Una ventaja sin evidencia
-es una hipótesis y se registra como tal.}
+La principal ventaja de GoIA es incorporar información de seguridad dentro del resultado de la búsqueda de rutas mediante el algoritmo A*. Mientras que aplicaciones como Google Maps y Waze priorizan el tiempo de recorrido y las condiciones del tránsito, GoIA considera además el nivel de riesgo asociado a cada zona de una ruta. La aplicación contempla la retroalimentación de los usuarios para reportar incidentes y zonas inseguras (H8), permitiendo mantener actualizada la evaluación de riesgo de las ruta.
 
 % ---------------------------------------------------------------------------
 % TAMAÑO DE MERCADO. De abajo hacia arriba: número de clientes por precio anual.
