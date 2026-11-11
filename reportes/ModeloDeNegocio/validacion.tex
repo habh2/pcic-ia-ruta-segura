@@ -83,8 +83,9 @@
   \DTLifstringeq{\hEstado}{invalidada}{\stepcounter{ninval}}{}%
   \DTLifstringeq{\hEstado}{pendiente}{\stepcounter{npend}}{}}
 \DTLforeach*{lan}{\lVis=visitas,\lReg=registros}{%
-  \stepcounter{nsem}%
-  \xdef\totVis{\fpeval{\totVis+\lVis}}\xdef\totReg{\fpeval{\totReg+\lReg}}}
+  \DTLifint{\lVis}{%
+    \stepcounter{nsem}%
+    \xdef\totVis{\fpeval{\totVis+\lVis}}\xdef\totReg{\fpeval{\totReg+\lReg}}}{}}
 
 % ---------------------------------------------------------------------------
 % RESUMEN. Las cifras del primer párrafo se calculan solas. El segundo párrafo
@@ -92,6 +93,8 @@
 % ---------------------------------------------------------------------------
 \section{Resumen de la evidencia}
 \label{sec:resumen}
+
+Pendiente:
 
 El equipo hizo \thenent{} entrevistas con clientes potenciales. En \thendolor{} de ellas la
 persona describió un dolor de 4 o 5 en una escala de 1 a 5, en \thenpaga{} ya gasta tiempo o
@@ -140,6 +143,7 @@ La Tabla~\ref{tab:hipotesis} muestra el resultado de cada hipótesis frente al c
 % ---------------------------------------------------------------------------
 \section{Landing page}
 \label{sec:landing}
+Landing page pendiente
 
 \pendiente{Una o dos oraciones que dicen qué cambio en la página produjo el mayor aumento en la
 conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
@@ -158,7 +162,8 @@ conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
                       \lCambio=cambio}{%
       \DTLiffirstrow{}{\\}%
       L\DTLcurrentindex & \lSem & \lVis & \lReg &
-      \ifnum\lVis>0 \fpeval{round(100*\lReg/\lVis,1)}\%\else --\fi & \lFuente & \lCambio}\\
+      \DTLifint{\lVis}{\ifnum\lVis>0 \fpeval{round(100*\lReg/\lVis,1)}\%\else --\fi}{--}
+      & \lFuente & \lCambio}\\
     \bottomrule
   \end{tabular}
 \end{table}
