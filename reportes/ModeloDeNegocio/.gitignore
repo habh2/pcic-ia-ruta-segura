@@ -2,5 +2,6 @@
 *.aux
 *synctex.gz
 *.out
+*.pdf
 *.fdb_*
 *.fls
