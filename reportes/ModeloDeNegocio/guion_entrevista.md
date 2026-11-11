@@ -5,48 +5,103 @@ esta aplicación?" produce respuestas amables y poco confiables. La pregunta "¿
 vez que le pasó esto?" produce un hecho. El guion se prueba primero entre el equipo, o con un
 modelo de lenguaje que actúe como cliente, y después con personas reales.
 
+El modelo tiene dos segmentos, y cada uno tiene su propio guion. El guion A es para las personas
+que usan la aplicación para desplazarse. El guion B es para los dueños de negocios, que son quienes
+pagan. La apertura, el cierre y el registro son comunes a los dos.
+
 ## 1. Hipótesis que explora esta entrevista
 
-| id | Hipótesis | Criterio de éxito |
-|---|---|---|
-| H? | | |
+| id | Guion | Hipótesis | Criterio de éxito |
+|---|---|---|---|
+| H1 | A | Las personas que se desplazan a pie o en transporte público en la CDMX cambian su ruta por seguridad aunque su planificador habitual les sugiera otra más corta | 6 de 10 entrevistados cambiaron su ruta por seguridad en el último mes |
+| H2 | B | Los negocios de comercio y servicios ubicados en zonas seguras de la CDMX buscan más visitas de personas que pasan a pie | 5 de 10 dueños gastan hoy dinero en publicidad local o en anuncios en internet |
+| H5 | B | Los dueños de negocios conocen nuevas herramientas de publicidad mediante publicidad masiva en redes sociales, radio o anuncios en vía pública | 4 de 10 dueños mencionan redes sociales, radio o anuncios en vía pública |
+| H7 | B | Los dueños de negocios aceptan una prueba gratuita de 2,000 impresiones con reporte de visitas antes de pagar | 3 de 10 dueños aceptan la prueba |
+| H11 | B | Los negocios pagarían 100 pesos por cada 1,000 impresiones como ubicación destacada | 4 de 10 dueños dan una señal concreta de compra a ese precio |
 
 ## 2. Perfil de la persona entrevistada
 
-Describir el perfil que se busca (cargo, tipo de organización, tamaño) y dónde se encuentra.
+**Guion A.** Personas de 18 a 60 años que se desplazan en la CDMX a pie o en transporte público
+al menos tres días por semana, por trabajo o escuela. Se encuentran entre compañeros de la
+universidad, en grupos de vecinos y en grupos de la CDMX en redes sociales. Se busca variedad de
+alcaldías y de horarios, en particular personas que regresan de noche.
+
+**Guion B.** Dueños o encargados de negocios de comercio y servicios con local a pie de calle en
+la CDMX (cafeterías, restaurantes, tiendas, farmacias, papelerías), de 1 a 20 empleados, que
+deciden el gasto en publicidad. Se encuentran visitando los negocios en horas de poca clientela,
+en asociaciones de comerciantes y por referencia de otros dueños entrevistados.
 
 ## 3. Apertura (2 minutos)
 
-Presentación del equipo en una oración. Explicar que se trata de una investigación de un
+Presentación del equipo en una oración: "Somos estudiantes de posgrado de la UNAM y estudiamos
+cómo se mueven las personas por la ciudad." Explicar que se trata de una investigación de un
 proyecto universitario, que no hay nada que vender y que las respuestas se registran sin nombre.
 Pedir permiso para tomar notas.
 
 ## 4. Preguntas
 
-Sustituir los ejemplos por preguntas propias. Mantener el orden.
+### Guion A. Personas que se desplazan (15 minutos)
 
-1. **Contexto.** ¿Cómo es un día normal en su trabajo con relación a *[tema]*?
-2. **Último episodio.** ¿Cuándo fue la última vez que *[problema]*? ¿Qué pasó?
-3. **Costo.** ¿Cuánto tiempo o dinero le costó esa vez?
-4. **Frecuencia.** ¿Con qué frecuencia ocurre?
-5. **Solución actual.** ¿Qué hace hoy para resolverlo? ¿Cuánto paga por eso?
-6. **Intentos previos.** ¿Ha probado otras soluciones? ¿Por qué las dejó?
-7. **Decisión.** ¿Quién decide la compra de una herramienta así? ¿Con qué presupuesto?
-8. *(Solo al final)* Descripción de la idea en una oración. ¿Qué le preocuparía?
+1. **Contexto.** ¿Cómo es un día normal para ir y regresar de su trabajo o escuela? ¿Camina,
+   usa transporte público, a qué horas?
+2. **Último episodio.** ¿Cuándo fue la última vez que cambió de ruta o de horario porque una
+   calle o una zona le pareció insegura? ¿Qué pasó? (H1)
+3. **Costo.** ¿Cuánto tiempo de más le tomó esa vez? ¿Pagó un taxi o una aplicación de
+   transporte para no caminar? (H1)
+4. **Frecuencia.** ¿Cuántas veces le pasó en el último mes? (H1)
+5. **Solución actual.** ¿Qué aplicación usaba ese día para planear la ruta? ¿Cómo decidió que la
+   otra ruta era más segura? (H1)
+6. **Intentos previos.** ¿Ha usado alguna aplicación, página o grupo para saber qué zonas son
+   inseguras? ¿Por qué la sigue usando o por qué la dejó?
+7. **Reportes.** ¿Cuándo fue la última vez que avisó a alguien de un incidente o de una zona
+   insegura, en un grupo, en redes o a la policía? ¿Qué lo llevó a hacerlo, o qué lo detuvo?
+8. *(Solo al final)* Descripción de la idea en una oración: "Una aplicación que sugiere rutas
+   según la seguridad de las calles, con reportes de otros usuarios." ¿Qué le preocuparía?
+
+### Guion B. Dueños de negocios (15 minutos)
+
+1. **Contexto.** ¿Cómo llegan hoy los clientes a su negocio? ¿Qué parte llega caminando o porque
+   pasaba por la calle? (H2)
+2. **Último episodio.** ¿Cuándo fue la última vez que pagó por publicidad? ¿Qué contrató y qué
+   resultado tuvo? (H2)
+3. **Costo.** ¿Cuánto pagó esa vez? ¿Cuánto gasta en publicidad en un mes normal? (H2, H11)
+4. **Frecuencia.** ¿Con qué frecuencia contrata publicidad o promociones?
+5. **Solución actual.** ¿Cómo sabe si una publicidad le trajo clientes? ¿Qué hace hoy para que
+   lo encuentren las personas que pasan cerca?
+6. **Intentos previos.** ¿Dónde se enteró de la última herramienta de publicidad que contrató?
+   ¿Qué ha probado y dejado de usar, y por qué? (H5)
+7. **Decisión.** ¿Quién decide ese gasto? ¿Con qué presupuesto al mes?
+8. *(Solo al final)* Descripción de la idea en una oración: "Una aplicación de rutas seguras que
+   muestra su negocio como lugar destacado a las personas que pasan cerca, y le reporta cuántas
+   lo vieron y cuántas llegaron." ¿Qué le preocuparía? Si la respuesta lo permite, mencionar el
+   precio de 100 pesos por cada 1,000 impresiones y preguntar qué tendría que pasar para
+   contratarlo. Una señal concreta es pedir una cotización, dar un dato de contacto para el
+   piloto o comprometer un monto. Un "suena bien" no cuenta. (H11)
 
 ## 5. Cierre (2 minutos)
 
 - ¿Hay algo que debí preguntar y no pregunté?
 - ¿Conoce a dos personas con este mismo problema que pudieran platicar conmigo?
-- ¿Le puedo avisar cuando haya una versión de prueba?
+- **Guion A.** ¿Le puedo avisar cuando haya una versión de prueba? Si acepta, se le pide su
+  correo en la landing page, no en las notas de la entrevista.
+- **Guion B.** Ofrecer la prueba gratuita: 2,000 impresiones como ubicación destacada y un
+  reporte de visitas, sin costo. Registrar si acepta y con qué condiciones. (H7)
 
 ## 6. Después de la entrevista
 
 Registrar la entrevista en `entrevistas.csv` el mismo día y actualizar el estado de las hipótesis
 en `hipotesis.csv` cuando se cumpla o se descarte su criterio de éxito.
 
+- En la columna `hipotesis` van las hipótesis de la tabla de la sección 1 que se exploraron.
+- En `paga_hoy`, guion A: `si` cuando la persona gasta hoy tiempo o dinero en evitar zonas
+  inseguras (pregunta 3). Guion B: `si` cuando el negocio gasta hoy en publicidad.
+- En `pagaria`, guion A: `si` cuando la persona pide que le avisen de la versión de prueba.
+  Guion B: `si` solo con una señal concreta de compra o cuando acepta la prueba gratuita.
+
 | Pregunta que se evita | Pregunta que la sustituye |
 |---|---|
-| ¿Le parece buena idea? | ¿Cómo resolvió esto la última vez? |
-| ¿Pagaría 500 pesos al mes? | ¿Cuánto gasta hoy en resolverlo? |
-| ¿Usaría una app que haga X? | ¿Qué ha intentado para resolverlo? |
+| ¿Usaría una app de rutas seguras? | ¿Cuándo fue la última vez que cambió de ruta por seguridad? |
+| ¿Le parece buena idea? | ¿Qué hizo la última vez que una zona le pareció insegura? |
+| ¿Pagaría 100 pesos por 1,000 impresiones? | ¿Cuánto gasta hoy en publicidad al mes? |
+| ¿Le gustaría salir en nuestra aplicación? | ¿Cómo sabe hoy si una publicidad le trajo clientes? |
+| ¿Reportaría incidentes en la aplicación? | ¿Cuándo fue la última vez que avisó a alguien de un incidente? |
