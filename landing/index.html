@@ -1,0 +1,911 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GoIA · Camina por la banqueta que elegiría alguien de aquí</title>
+<meta name="description" content="GoIA te sugiere la ruta a pie que evita las calles de riesgo en la Ciudad de México y te dice cuántos minutos más te cuesta. Pre-regístrate gratis.">
+<style>
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/noticia-text-400-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/noticia-text-400-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/noticia-text-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/noticia-text-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/vend-sans-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/vend-sans-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+
+:root {
+  --ground: #f3f4ef;
+  --ground-deep: #e9ebe3;
+  --ink: #144134;
+  --ink-soft: #1b3525;
+  --ink-muted: #4d6357;
+  --button: #0f4535;
+  --button-hover: #0a3327;
+  --route: #f2c94c;
+  --route-deep: #d9a92a;
+  --white: #fbfbf7;
+  --serif: "Noticia Text", Georgia, serif;
+  --sans: "Vend Sans", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { background: var(--ground); color: var(--ink); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: var(--sans); font-weight: 400; line-height: 1.5; }
+::selection { background: var(--route); color: var(--ink); }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--route); outline-offset: 3px; border-radius: 4px; }
+
+.hero-shell { position: relative; width: 100%; height: min(calc(100vw * 816 / 1312), 100svh); overflow: hidden; background: var(--ground); }
+.hero { position: relative; height: 100%; width: min(100%, calc(100svh * 1312 / 816)); margin-inline: auto; container-type: inline-size; }
+.hero-photo { position: absolute; left: 0; top: 9.56%; width: 100%; height: 90.44%; object-fit: cover; object-position: center; display: block; }
+
+.site-header { position: absolute; inset: 0 0 auto 0; height: 9.56%; display: block; }
+.nav-link, .nav-cta, .signup button, .pill { will-change: transform; }
+.brand { position: absolute; left: 4.42%; top: 19.6%; font-family: var(--serif); font-weight: 700; font-size: 3.66cqw; line-height: 1; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.nav-link { position: absolute; top: 37.5%; font-size: 1.24cqw; line-height: 1.2; color: #1c3a2f; text-decoration: none; font-weight: 500; letter-spacing: 0.012em; }
+.nav-link:hover { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 2px; text-decoration-color: var(--route-deep); }
+.nav-como { left: 67.9%; }
+.nav-mapa { left: 79.45%; }
+.nav-cta { position: absolute; left: 86.51%; top: 25.6%; width: 8.77%; height: 43.6%; border: 1px solid #2d5e50; display: flex; align-items: center; justify-content: center; border-radius: 0.45cqw; background: var(--button); color: var(--white); font-size: 1.22cqw; font-weight: 400; text-decoration: none; transition: background-color 160ms ease-out, transform 120ms ease-out; }
+.nav-cta:hover { background: var(--button-hover); }
+.nav-cta:active { transform: translateY(1px); }
+
+.hero-copy { position: absolute; left: 8.99%; top: 17.4%; width: 42.38%; }
+.hero h1 { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 3.735cqw; line-height: 1.12; letter-spacing: -0.012em; color: var(--ink); text-wrap: balance; }
+.hero-sub { position: absolute; left: 8.99%; top: 31.86%; width: 34.76%; margin: 0; font-size: 1.448cqw; line-height: 1.36; font-weight: 300; color: var(--ink-soft); }
+
+.signup { position: absolute; left: 9.15%; top: 40.56%; width: 33.91%; height: 5.39%; display: flex; gap: 1.22%; }
+.signup input { flex: 0 0 57.8%; height: 100%; min-width: 0; padding: 0 0.9cqw; border: 1.5px solid #4f6b5f; border-radius: 0.45cqw; background: var(--white); font: inherit; font-size: 1.22cqw; color: var(--ink); caret-color: var(--ink); }
+.signup input::placeholder { color: #5c6e64; }
+.signup input:hover { border-color: var(--ink); }
+.signup button { flex: 1 1 auto; height: auto; margin: 0.15cqw 0.15cqw 0.3cqw; border: 1px solid #2d5e50; border-radius: 0.45cqw; background: var(--button); color: var(--white); font: inherit; font-size: 1.22cqw; font-weight: 400; cursor: pointer; transition: background-color 160ms ease-out, transform 120ms ease-out; }
+.signup button:hover { background: var(--button-hover); }
+.signup button:active { transform: translateY(1px); }
+.signup button[disabled] { opacity: 0.7; cursor: progress; }
+.signup-status { position: absolute; left: 9.15%; top: 46.8%; width: 34%; margin: 0; font-size: 1.07cqw; color: var(--ink); min-height: 1.4em; }
+.signup-status[data-state="error"] { color: #8a2c1f; }
+
+.route-canvas { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+.photo-wrap { display: contents; }
+.mobile-route { display: none; }
+.hero-map { position: absolute; left: 25.15%; top: 74.51%; width: calc(74.85% + (100vw - 100%) / 2); height: 25.49%; clip-path: polygon(32.6% 0, 100% 0, 100% 100%, 0 100%); background: var(--ground); }
+.hero-map canvas { display: block; width: 100%; height: 100%; }
+.pill { position: absolute; display: flex; align-items: center; justify-content: center; border-radius: 999px; font-size: 1.22cqw; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pill-goia { left: 58.0%; top: 82.0%; width: 10.9%; height: 3.31%; background: #f7d75c; color: #2a2a22; font-weight: 400; font-size: 1.2cqw; }
+.pill-fast { left: 58.23%; top: 88.48%; width: 11.28%; height: 3.68%; background: #e6e5df; color: #282727; font-weight: 500; font-size: 1.18cqw; }
+.map-colonia { position: absolute; left: 81.86%; top: 80.88%; width: 6.1%; margin: 0; font-size: 1.0cqw; line-height: 1.25; letter-spacing: 0.08em; text-transform: uppercase; color: #6a675d; font-weight: 600; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.wrap { width: min(1180px, 100% - 2 * clamp(16px, 5vw, 64px)); margin-inline: auto; }
+.section { padding-block: clamp(80px, 11vw, 152px); }
+.section h2, .closing h2 { margin: 0 0 0.55em; font-family: var(--serif); font-weight: 700; font-size: clamp(1.9rem, 1.2rem + 2.4vw, 3.25rem); line-height: 1.1; letter-spacing: -0.015em; color: var(--ink); text-wrap: balance; }
+.lead { margin: 0; max-width: 34em; font-size: clamp(1.06rem, 0.98rem + 0.35vw, 1.28rem); line-height: 1.55; font-weight: 300; color: var(--ink-soft); }
+
+.needs { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.photo { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 6px; }
+.photo-frame { overflow: hidden; border-radius: 6px; aspect-ratio: 4 / 5; background: var(--ground-deep); }
+.photo-frame .photo { transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1); }
+.photo-frame:hover .photo { transform: scale(1.025); }
+.needs-list { list-style: none; margin: 2.2em 0 0; padding: 0; display: grid; gap: 1.6em; }
+.needs-list li { display: grid; grid-template-columns: 22px 1fr; gap: 16px; font-size: 1.08rem; line-height: 1.55; color: var(--ink-soft); max-width: 34em; }
+.needs-list strong { display: block; font-weight: 600; color: var(--ink); margin-bottom: 0.15em; }
+.mark { width: 14px; height: 14px; margin-top: 0.38em; border-radius: 50%; background: var(--route); border: 2px solid var(--route-deep); }
+
+.how { background: var(--ink); color: var(--white); }
+.how h2 { color: var(--white); max-width: 16em; }
+.how .lead { color: #d5ded7; }
+.steps-wrap { position: relative; margin-top: clamp(56px, 7vw, 96px); }
+.steps { position: relative; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); }
+.steps-wrap .steps-line { position: absolute; left: 0; right: 0; top: 11px; width: 100%; height: 4px; overflow: visible; }
+.steps-line path { stroke: var(--route); stroke-width: 4; fill: none; stroke-linecap: round; }
+.steps li { position: relative; padding-top: 52px; }
+.stop { position: absolute; top: 0; left: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--ink); border: 4px solid var(--route); }
+.steps li:last-child .stop { background: var(--route); }
+.steps h3 { margin: 0 0 0.45em; font-family: var(--serif); font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.7rem); line-height: 1.2; font-weight: 700; color: var(--white); }
+.steps p { margin: 0; color: #d5ded7; font-size: 1.04rem; line-height: 1.6; font-weight: 300; max-width: 28em; }
+
+.map-section { padding-bottom: clamp(56px, 7vw, 96px); }
+.map-head { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: end; margin-bottom: clamp(28px, 4vw, 48px); }
+.map-head h2 { margin: 0 0 0.45em; }
+.map-legend { display: grid; gap: 12px; justify-items: start; }
+.legend-row { display: flex; align-items: center; gap: 12px; font-size: 1.04rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.legend-swatch { width: 34px; height: 6px; border-radius: 3px; background: var(--route); }
+.legend-swatch.is-fast { background: #8f908b; height: 4px; }
+.legend-swatch.is-zone { height: 14px; width: 14px; border-radius: 50%; background: rgba(176, 110, 84, 0.22); border: 1.5px dashed #a26650; }
+.legend-row b { font-weight: 600; color: var(--ink); }
+.map-stage { position: relative; width: 100%; aspect-ratio: 16 / 7; min-height: 380px; border-radius: 8px; overflow: hidden; background: #ebeae3; cursor: none; touch-action: pan-y; }
+.map-stage canvas { display: block; width: 100%; height: 100%; }
+.map-note { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 14px; font-size: 0.95rem; color: var(--ink-muted); }
+.map-tag { position: absolute; left: 16px; top: 16px; padding: 6px 12px; border-radius: 999px; background: rgba(251, 251, 247, 0.92); color: var(--ink); font-size: 0.86rem; font-weight: 500; pointer-events: none; }
+
+.features { display: grid; gap: clamp(72px, 10vw, 136px); }
+.feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.feature:nth-child(even) .feature-media { order: 2; }
+.feature .photo-frame { aspect-ratio: 3 / 2; }
+.feature h3 { margin: 0 0 0.5em; font-family: var(--serif); font-size: clamp(1.6rem, 1.2rem + 1.5vw, 2.5rem); line-height: 1.12; font-weight: 700; color: var(--ink); text-wrap: balance; }
+.feature p { margin: 0; max-width: 30em; font-size: 1.1rem; line-height: 1.6; font-weight: 300; color: var(--ink-soft); }
+
+.closing { position: relative; min-height: min(92vh, 860px); display: grid; align-items: center; overflow: hidden; }
+.closing-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 60%; }
+.closing::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(243, 244, 239, 0.94) 0%, rgba(243, 244, 239, 0.86) 38%, rgba(243, 244, 239, 0) 72%); z-index: 1; }
+.closing-inner { position: relative; z-index: 2; padding-block: clamp(80px, 10vw, 140px); }
+.closing h2 { max-width: 11em; }
+.closing .lead { max-width: 26em; }
+.closing-form { margin-top: 2em; max-width: 520px; }
+.cta-form { display: flex; gap: 10px; }
+.cta-form input { flex: 1 1 auto; min-width: 0; height: 54px; padding: 0 18px; border: 1.5px solid #4f6b5f; border-radius: 6px; background: var(--white); font: inherit; font-size: 1.05rem; color: var(--ink); }
+.cta-form input::placeholder { color: #5c6e64; }
+.cta-form input:hover { border-color: var(--ink); }
+.cta-form button { flex: 0 0 auto; height: 54px; padding: 0 24px; border: 1px solid #2d5e50; border-radius: 6px; background: var(--button); color: var(--white); font: inherit; font-size: 1.05rem; font-weight: 500; cursor: pointer; transition: background-color 160ms ease-out, transform 120ms ease-out; }
+.cta-form button:hover { background: var(--button-hover); }
+.cta-form button:active { transform: translateY(1px); }
+.cta-form button[disabled] { opacity: 0.7; cursor: progress; }
+.cta-status { margin: 12px 0 0; min-height: 1.5em; font-size: 1rem; color: var(--ink); }
+.cta-status[data-state="error"] { color: #8a2c1f; }
+.fine-print { margin: 10px 0 0; font-size: 0.9rem; color: var(--ink-muted); }
+
+.site-footer { background: var(--ink); color: #d5ded7; padding-block: 56px 40px; font-size: 0.95rem; }
+.footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; align-items: flex-start; }
+.footer-brand { font-family: var(--serif); font-weight: 700; font-size: 1.9rem; color: var(--white); text-decoration: none; line-height: 1; }
+.footer-tag { margin: 10px 0 0; max-width: 22em; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 12px 28px; list-style: none; margin: 0; padding: 0; }
+.footer-links a { text-decoration: none; color: var(--white); }
+.footer-links a:hover { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-color: var(--route); }
+.footer-base { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(213, 222, 215, 0.2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; color: #aebdb3; }
+@media (max-width: 1024px) {
+  .needs, .feature, .map-head { grid-template-columns: minmax(0, 1fr); }
+  .feature:nth-child(even) .feature-media { order: 0; }
+  .needs .photo-frame { aspect-ratio: 3 / 2; }
+  .steps { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .steps-wrap .steps-line { display: none; }
+  .steps li { padding-top: 0; padding-left: 48px; }
+}
+@media (max-width: 900px) {
+  .hero-shell { height: auto; display: flex; flex-direction: column; }
+  .hero { display: contents; }
+  .site-header, .hero-copy, .hero-sub, .signup, .signup-status { margin-inline: clamp(16px, 5vw, 40px); }
+  .site-header { order: 1; }
+  .hero-copy { order: 2; }
+  .hero-sub { order: 3; }
+  .signup { order: 4; }
+  .signup-status { order: 5; }
+  .photo-wrap { order: 6; display: block; position: relative; }
+  .hero-map { order: 7; }
+  .hero-photo { position: static; width: 100%; height: auto; aspect-ratio: 5 / 4; object-position: 100% center; }
+  .mobile-route { display: block; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .site-header { position: static; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .brand { position: static; font-size: 2rem; }
+  .nav-link { display: none; }
+  .nav-cta { position: static; width: auto; height: auto; padding: 10px 16px; border-radius: 6px; font-size: 0.98rem; }
+  .hero-copy, .hero-sub, .signup, .signup-status { position: static; width: auto; }
+  .hero-copy { margin-top: 20px; }
+  .hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 2.9rem); line-height: 1.1; }
+  .hero-sub { margin-top: 14px; font-size: 1.1rem; max-width: 30em; }
+  .signup { height: auto; margin-top: 24px; gap: 10px; flex-wrap: wrap; max-width: 520px; }
+  .signup input { flex: 1 1 220px; height: 52px; padding: 0 16px; border-radius: 6px; font-size: 1.05rem; }
+  .signup button { flex: 1 1 auto; height: 52px; margin: 0; padding: 0 20px; border-radius: 6px; font-size: 1.05rem; }
+  .signup-status { margin: 10px 0 20px; font-size: 1rem; }
+  .route-canvas, .pill, .map-colonia { display: none; }
+  .hero-map { position: relative; left: auto; top: auto; width: 100%; height: 300px; clip-path: none; }
+  .map-stage { aspect-ratio: 4 / 3; min-height: 0; }
+  .map-note { flex-direction: column; }
+  .closing::before { background: linear-gradient(180deg, rgba(243, 244, 239, 0.95) 0%, rgba(243, 244, 239, 0.9) 55%, rgba(243, 244, 239, 0.35) 100%); }
+  .closing { min-height: 0; align-items: start; }
+  .cta-form { flex-direction: column; }
+  .cta-form button { width: 100%; }
+}
+</style>
+</head>
+<body>
+<main>
+  <section class="hero-shell" aria-labelledby="hero-title">
+    <div class="photo-wrap">
+      <picture>
+        <source srcset="assets/plates/hero-photo.jpg" type="image/jpeg">
+        <img class="hero-photo" src="assets/plates/hero-photo.png" alt="Banqueta arbolada de la Ciudad de México por la mañana, con gente caminando tranquila." fetchpriority="high">
+      </picture>
+      <canvas class="mobile-route" data-mobile-route aria-hidden="true"></canvas>
+    </div>
+    <div class="hero">
+    <header class="site-header">
+      <a class="brand" href="#inicio" id="inicio">GoIA</a>
+      <nav aria-label="Principal">
+        <a class="nav-link nav-como" href="#como-funciona">Cómo funciona</a>
+        <a class="nav-link nav-mapa" href="#mapa">El mapa</a>
+        <a class="nav-cta" href="#pre-registro">Pre-registro</a>
+      </nav>
+    </header>
+    <div class="hero-copy">
+      <h1 id="hero-title">Por la banqueta que elegiría alguien de aquí.</h1>
+    </div>
+    <p class="hero-sub">GoIA te sugiere la ruta a pie que evita las calles de riesgo y te dice cuántos minutos más te cuesta.</p>
+    <form class="signup" data-signup novalidate>
+      <label class="visually-hidden" for="hero-email">Correo electrónico</label>
+      <input id="hero-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Tu correo electrónico" required>
+      <button type="submit">Pre-regístrate gratis</button>
+    </form>
+    <p class="signup-status" data-signup-status role="status" aria-live="polite"></p>
+    <div class="hero-map" aria-hidden="true"><canvas data-hero-map></canvas></div>
+    <canvas class="route-canvas" data-hero-route aria-hidden="true"></canvas>
+    <span class="pill pill-goia">Ruta GoIA · 14 min</span>
+    <span class="pill pill-fast">Más rápida · 11 min</span>
+    <p class="map-colonia" aria-hidden="true">Colonia Cuauhtémoc</p>
+    </div>
+  </section>
+
+  <section class="section" id="por-que" aria-labelledby="needs-title">
+    <div class="wrap needs">
+      <div class="photo-frame">
+        <img class="photo" src="assets/img/needs.jpg" alt="Una persona en una esquina arbolada mira la calle antes de decidir por dónde caminar." loading="lazy">
+      </div>
+      <div>
+        <h2 id="needs-title">Cuando no conoces la calle, el mapa no te lo dice.</h2>
+        <p class="lead">Acabas de mudarte, estás de visita o vas a una colonia que nunca caminas. Llegar es fácil. Saber por dónde conviene ir, no tanto.</p>
+        <ul class="needs-list">
+          <li><span class="mark" aria-hidden="true"></span><span><strong>Tu app de mapas busca lo más corto.</strong>Te manda por la calle que ahorra un minuto, aunque cualquier vecino te diría que mejor no.</span></li>
+          <li><span class="mark" aria-hidden="true"></span><span><strong>Lo que sabe la gente de la zona no está en internet.</strong>Qué cuadra está sola, cuál tiene poca luz. Te enteras cuando ya estás ahí.</span></li>
+          <li><span class="mark" aria-hidden="true"></span><span><strong>Preguntar en cada esquina no siempre se puede.</strong>Y no deberías tener que hacerlo para caminar tranquilo.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section how" id="como-funciona" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">Tres pasos, y caminas como alguien de aquí.</h2>
+      <p class="lead">Sin configurar nada. Abres GoIA desde el navegador de tu celular y listo.</p>
+      <div class="steps-wrap">
+      <svg class="steps-line" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true"><path d="M 13 2 L 1000 2" data-draw></path></svg>
+      <ol class="steps">
+        <li><span class="stop" aria-hidden="true"></span><h3>Dinos a dónde vas.</h3><p>Escribe tu destino o márcalo en el mapa. GoIA parte de donde estás.</p></li>
+        <li><span class="stop" aria-hidden="true"></span><h3>Compara dos caminos.</h3><p>Ves la ruta más rápida y la que evita calles de riesgo, con los minutos de diferencia. Tú eliges.</p></li>
+        <li><span class="stop" aria-hidden="true"></span><h3>Camina, y avisa si ves algo.</h3><p>Si notas una calle sin luz o algo raro, lo reportas en dos toques y ayudas a quien camina detrás de ti.</p></li>
+      </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section map-section" id="mapa" aria-labelledby="map-title">
+    <div class="wrap">
+      <div class="map-head">
+        <div>
+          <h2 id="map-title">Mira la diferencia en calles reales.</h2>
+          <p class="lead">Un ejemplo en la colonia Cuauhtémoc, de Río Amazonas y Río Rhin a Río Pánuco y Río Neva. <span data-map-hint>Pasa el cursor por el mapa para verlo de cerca.</span></p>
+        </div>
+        <div class="map-legend" aria-label="Leyenda del mapa">
+          <div class="legend-row"><span class="legend-swatch" aria-hidden="true"></span><span><b>Ruta GoIA</b> · 14 min · 1,051 m</span></div>
+          <div class="legend-row"><span class="legend-swatch is-fast" aria-hidden="true"></span><span><b>Más rápida</b> · 11 min · 802 m</span></div>
+          <div class="legend-row"><span class="legend-swatch is-zone" aria-hidden="true"></span><span>Zona con reportes</span></div>
+        </div>
+      </div>
+      <div class="map-stage" data-map-stage role="img" aria-label="Mapa de ejemplo de la colonia Cuauhtémoc. La ruta GoIA rodea dos zonas con reportes por Río Rhin y Calzada Manuel Villalongín y tarda 14 minutos. La ruta más rápida cruza esas zonas por Río Lerma y tarda 11 minutos.">
+        <canvas data-map-canvas></canvas>
+        <span class="map-tag">Datos de ejemplo</span>
+      </div>
+      <div class="map-note"><span>Tres minutos más, y rodeas las dos zonas con reportes.</span><span>Los reportes y zonas de este mapa son ilustrativos.</span></div>
+    </div>
+  </section>
+
+  <section class="section" id="funciones" aria-label="Qué hace GoIA">
+    <div class="wrap features">
+      <article class="feature">
+        <div class="feature-media photo-frame"><img class="photo" src="assets/img/compare.jpg" alt="Una persona revisa su celular mientras camina por una banqueta con sombra de árboles." loading="lazy"></div>
+        <div>
+          <h3>Antes de salir, sabes cuánto te cuesta.</h3>
+          <p>GoIA pone lado a lado la ruta más rápida y la que evita calles de riesgo, con los minutos exactos de diferencia. A veces son tres. A veces ninguno. Siempre decides tú.</p>
+        </div>
+      </article>
+      <article class="feature">
+        <div class="feature-media photo-frame"><img class="photo" src="assets/img/reports.jpg" alt="Una joven junto a un poste de luz verde escribe en su celular mientras un vecino pasea a su perro." loading="lazy"></div>
+        <div>
+          <h3>Lo que ve la gente que camina la zona.</h3>
+          <p>Cuando alguien nota una calle sin luz o algo fuera de lugar, lo reporta. Así el mapa refleja lo que ve la gente que camina la zona.</p>
+        </div>
+      </article>
+      <article class="feature">
+        <div class="feature-media photo-frame"><img class="photo" src="assets/img/walk.jpg" alt="Dos amigos caminan conversando por una banqueta arbolada por la mañana." loading="lazy"></div>
+        <div>
+          <h3>Gratis para quien camina.</h3>
+          <p>Sin suscripciones y sin funciones bloqueadas. Empezamos en la alcaldía Cuauhtémoc y vamos a crecer calle por calle con quienes la caminan.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="closing" id="pre-registro" aria-labelledby="cta-title">
+    <img class="closing-photo" src="assets/img/close.jpg" alt="" loading="lazy">
+    <div class="wrap closing-inner">
+      <h2 id="cta-title">Sé de los primeros en caminar con GoIA.</h2>
+      <p class="lead">La versión de prueba abre primero en la alcaldía Cuauhtémoc. Déjanos tu correo y te avisamos.</p>
+      <div class="closing-form">
+        <form class="cta-form" data-signup novalidate>
+          <label class="visually-hidden" for="cta-email">Correo electrónico</label>
+          <input id="cta-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Tu correo electrónico" required>
+          <button type="submit">Pre-regístrate gratis</button>
+        </form>
+        <p class="cta-status" data-signup-status role="status" aria-live="polite"></p>
+        <p class="fine-print">Solo usamos tu correo para avisarte cuando abra la prueba.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="footer-brand" href="#inicio">GoIA</a>
+        <p class="footer-tag">Rutas a pie más tranquilas en la Ciudad de México.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#como-funciona">Cómo funciona</a></li>
+        <li><a href="#mapa">El mapa</a></li>
+        <li><a href="#pre-registro">Pre-registro</a></li>
+        <li><a href="mailto:hola@goia.example">hola@goia.example</a></li>
+      </ul>
+    </div>
+    <div class="footer-base"><span>© 2026 GoIA</span><span>Fotografías generadas para este sitio. Mapa de ejemplo con calles de la colonia Cuauhtémoc.</span></div>
+  </div>
+</footer>
+<script src="assets/js/mapa-ejemplo.js"></script>
+<script>
+var MAPA = window.MAPA_EJEMPLO;
+
+function setupCanvas(canvas) {
+  var rect = canvas.getBoundingClientRect();
+  var ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.round(rect.width * ratio));
+  canvas.height = Math.max(1, Math.round(rect.height * ratio));
+  var ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  return { ctx: ctx, w: rect.width, h: rect.height };
+}
+
+function projector(bounds, w, h, pad) {
+  var midLat = (bounds.minLat + bounds.maxLat) / 2;
+  var kx = Math.cos(midLat * Math.PI / 180);
+  var spanX = (bounds.maxLng - bounds.minLng) * kx;
+  var spanY = bounds.maxLat - bounds.minLat;
+  var scale = Math.min((w - pad * 2) / spanX, (h - pad * 2) / spanY);
+  var offX = (w - spanX * scale) / 2;
+  var offY = (h - spanY * scale) / 2;
+  return function (p) {
+    return [offX + (p.lng - bounds.minLng) * kx * scale, offY + (bounds.maxLat - p.lat) * scale];
+  };
+}
+
+function routeBounds() {
+  var ids = MAPA.safe.nodes.concat(MAPA.fast.nodes);
+  var b = { minLat: 90, maxLat: -90, minLng: 180, maxLng: -180 };
+  for (var i = 0; i < ids.length; i++) {
+    var n = MAPA.nodes[ids[i]];
+    b.minLat = Math.min(b.minLat, n.lat);
+    b.maxLat = Math.max(b.maxLat, n.lat);
+    b.minLng = Math.min(b.minLng, n.lng);
+    b.maxLng = Math.max(b.maxLng, n.lng);
+  }
+  return b;
+}
+
+function drawStreets(ctx, project, widthMain, widthSide, color, colorMain) {
+  ctx.lineCap = "round";
+  for (var i = 0; i < MAPA.edges.length; i++) {
+    var e = MAPA.edges[i];
+    var a = project(MAPA.nodes[e[0]]);
+    var b = project(MAPA.nodes[e[1]]);
+    ctx.strokeStyle = e[3] ? colorMain : color;
+    ctx.lineWidth = e[3] ? widthMain : widthSide;
+    ctx.beginPath();
+    ctx.moveTo(a[0], a[1]);
+    ctx.lineTo(b[0], b[1]);
+    ctx.stroke();
+  }
+}
+
+function drawPath(ctx, project, ids, color, width, dash, progress) {
+  if (progress === undefined) { progress = 1; }
+  if (progress <= 0) { return; }
+  var points = [];
+  var total = 0;
+  for (var i = 0; i < ids.length; i++) {
+    points.push(project(MAPA.nodes[ids[i]]));
+    if (i > 0) { total += Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]); }
+  }
+  var remaining = total * progress;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.lineJoin = "round";
+  ctx.lineCap = "round";
+  ctx.setLineDash(dash || []);
+  ctx.beginPath();
+  ctx.moveTo(points[0][0], points[0][1]);
+  for (var j = 1; j < points.length; j++) {
+    var seg = Math.hypot(points[j][0] - points[j - 1][0], points[j][1] - points[j - 1][1]);
+    if (remaining >= seg) {
+      ctx.lineTo(points[j][0], points[j][1]);
+      remaining -= seg;
+    } else {
+      var f = seg === 0 ? 0 : remaining / seg;
+      ctx.lineTo(points[j - 1][0] + (points[j][0] - points[j - 1][0]) * f, points[j - 1][1] + (points[j][1] - points[j - 1][1]) * f);
+      break;
+    }
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function alignedProjector(fromId, toId, box) {
+  var from = MAPA.nodes[fromId];
+  var to = MAPA.nodes[toId];
+  var kx = Math.cos(from.lat * Math.PI / 180);
+  var dx = (to.lng - from.lng) * kx;
+  var dy = to.lat - from.lat;
+  var angle = Math.atan2(dy, dx);
+  var cos = Math.cos(-angle);
+  var sin = Math.sin(-angle);
+  var length = Math.sqrt(dx * dx + dy * dy);
+  var scale = (box.x2 - box.x1) / length;
+  return function (p) {
+    var x = (p.lng - from.lng) * kx;
+    var y = p.lat - from.lat;
+    var rx = x * cos - y * sin;
+    var ry = x * sin + y * cos;
+    return [box.x1 + rx * scale, box.y - ry * scale];
+  };
+}
+
+var heroJoin = null;
+var labelAvoid = null;
+
+function drawPill(ctx, x, y, text, fill, ink) {
+  ctx.font = "500 13px 'Vend Sans', sans-serif";
+  var w = ctx.measureText(text).width + 22;
+  ctx.fillStyle = fill;
+  ctx.beginPath();
+  ctx.roundRect(x, y - 13, w, 26, 13);
+  ctx.fill();
+  ctx.fillStyle = ink;
+  ctx.textBaseline = "middle";
+  ctx.fillText(text, x + 11, y + 1);
+}
+
+function verticalProjector(fromId, toId, box) {
+  var from = MAPA.nodes[fromId];
+  var to = MAPA.nodes[toId];
+  var kx = Math.cos(from.lat * Math.PI / 180);
+  var dx = (to.lng - from.lng) * kx;
+  var dy = to.lat - from.lat;
+  var angle = Math.atan2(dy, dx);
+  var cos = Math.cos(-angle);
+  var sin = Math.sin(-angle);
+  var scale = (box.y2 - box.y1) / Math.sqrt(dx * dx + dy * dy);
+  return function (p) {
+    var x = (p.lng - from.lng) * kx;
+    var y = p.lat - from.lat;
+    var rx = x * cos - y * sin;
+    var ry = x * sin + y * cos;
+    return [box.x + ry * scale, box.y1 + rx * scale];
+  };
+}
+
+function drawHeroMap() {
+  var canvas = document.querySelector("[data-hero-map]");
+  var c = setupCanvas(canvas);
+  var mobile = window.matchMedia("(max-width: 900px)").matches;
+  var project;
+  if (mobile) {
+    heroJoin = null;
+    labelAvoid = null;
+    project = verticalProjector(MAPA.origin, MAPA.dest, { x: c.w * 0.12, y1: c.h * 0.08, y2: c.h * 0.8 });
+  } else {
+    var frame = canvas.closest(".hero").getBoundingClientRect();
+    var box = canvas.getBoundingClientRect();
+    var joinX = frame.width * 0.47;
+    var joinY = frame.height * 0.82;
+    var ox = frame.left + joinX - box.left;
+    var dx = frame.left + frame.width * 0.75 - box.left;
+    var oy = frame.top + joinY - box.top;
+    project = alignedProjector(MAPA.dest, MAPA.origin, { x1: ox, x2: dx, y: oy });
+    heroJoin = { x: joinX, y: joinY };
+    var tag = document.querySelector(".map-colonia").getBoundingClientRect();
+    labelAvoid = { x1: tag.left - box.left - 70, y1: tag.top - box.top - 18, x2: tag.right - box.left + 70, y2: tag.bottom - box.top + 18 };
+    var placePill = function (selector, ids, t) {
+      var pill = document.querySelector(selector);
+      var pt = pointAlong(ids, t, project);
+      var px = box.left - frame.left + pt[0];
+      var py = box.top - frame.top + pt[1];
+      pill.style.left = ((px - pill.offsetWidth / 2) / frame.width * 100) + "%";
+      pill.style.top = ((py - pill.offsetHeight / 2) / frame.height * 100) + "%";
+    };
+    window.requestAnimationFrame(function () {
+      placePill(".pill-goia", MAPA.safe.nodes, 0.5);
+      placePill(".pill-fast", MAPA.fast.nodes, 0.55);
+    });
+  }
+  c.ctx.fillStyle = "#f5f6f0";
+  c.ctx.fillRect(0, 0, c.w, c.h);
+  drawStreets(c.ctx, project, c.h * 0.03, c.h * 0.02, "#dedfd6", "#dedfd6");
+  drawStreets(c.ctx, project, c.h * 0.022, c.h * 0.013, "#ffffff", "#ffffff");
+  drawStreetNames(c.ctx, { project: project }, mobile ? c.w * 0.55 : c.w * 0.86, c.h * 0.5, mobile ? c.w : c.w * 0.26, 4, mobile ? 0 : 0.326);
+  drawPath(c.ctx, project, MAPA.fast.nodes, "#a4a4a3", Math.max(3, c.h * 0.018));
+  drawPath(c.ctx, project, MAPA.safe.nodes, "#f2c94c", Math.max(4, c.h * 0.028));
+  if (mobile) {
+    var o = project(MAPA.nodes[MAPA.origin]);
+    c.ctx.strokeStyle = "#f2c94c";
+    c.ctx.lineWidth = Math.max(4, c.h * 0.028);
+    c.ctx.lineCap = "round";
+    c.ctx.beginPath();
+    c.ctx.moveTo(c.w * 0.12, 0);
+    c.ctx.lineTo(o[0], o[1]);
+    c.ctx.stroke();
+    c.ctx.fillStyle = "#f5f6f0";
+    c.ctx.fillRect(0, c.h - 34, c.w, 34);
+    var legendY = c.h - 17;
+    c.ctx.font = "500 13px 'Vend Sans', sans-serif";
+    c.ctx.textBaseline = "middle";
+    c.ctx.fillStyle = "#f2c94c";
+    c.ctx.fillRect(c.w * 0.05, legendY - 3, 24, 6);
+    c.ctx.fillStyle = "#1b3525";
+    c.ctx.fillText("Ruta GoIA · 14 min", c.w * 0.05 + 32, legendY + 1);
+    c.ctx.fillStyle = "#a4a4a3";
+    c.ctx.fillRect(c.w * 0.55, legendY - 2, 24, 4);
+    c.ctx.fillStyle = "#1b3525";
+    c.ctx.fillText("Más rápida · 11 min", c.w * 0.55 + 32, legendY + 1);
+  }
+}
+
+function drawMobileRoute() {
+  var canvas = document.querySelector("[data-mobile-route]");
+  if (!window.matchMedia("(max-width: 900px)").matches) { return; }
+  var c = setupCanvas(canvas);
+  c.ctx.clearRect(0, 0, c.w, c.h);
+  c.ctx.fillStyle = "rgba(242, 201, 76, 0.92)";
+  c.ctx.beginPath();
+  c.ctx.moveTo(c.w * 0.09, c.h);
+  c.ctx.lineTo(c.w * 0.15, c.h);
+  c.ctx.lineTo(c.w * 0.3, c.h * 0.72);
+  c.ctx.lineTo(c.w * 0.29, c.h * 0.72);
+  c.ctx.closePath();
+  c.ctx.fill();
+}
+
+function drawHeroRoute() {
+  var canvas = document.querySelector("[data-hero-route]");
+  var c = setupCanvas(canvas);
+  var ctx = c.ctx;
+  var w = c.w;
+  var h = c.h;
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = "rgba(242, 201, 76, 0.92)";
+  ctx.beginPath();
+  ctx.moveTo(w * 0.085, h * 1.0);
+  ctx.lineTo(w * 0.125, h * 1.0);
+  ctx.lineTo(w * 0.668, h * 0.565);
+  ctx.lineTo(w * 0.662, h * 0.565);
+  ctx.closePath();
+  ctx.fill();
+  if (heroJoin) {
+    var t = (h - heroJoin.y) / (h * 0.435);
+    var sx = w * (0.105 + 0.56 * t);
+    ctx.strokeStyle = "rgba(242, 201, 76, 0.95)";
+    ctx.lineWidth = Math.max(4, h * 0.0085);
+    ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(sx, heroJoin.y);
+    ctx.lineTo(heroJoin.x, heroJoin.y);
+    ctx.stroke();
+  }
+}
+
+var mapStage = document.querySelector("[data-map-stage]");
+var mapCanvas = document.querySelector("[data-map-canvas]");
+var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var lens = { x: 0, y: 0, tx: 0, ty: 0, active: false, ready: false };
+var leaves = [];
+for (var li = 0; li < 46; li++) {
+  leaves.push({ a: Math.random() * Math.PI * 2, d: Math.sqrt(Math.random()), r: 0.08 + Math.random() * 0.14, s: 0.6 + Math.random() * 0.8, k: Math.random() * Math.PI * 2 });
+}
+var mapView = null;
+var mapDraw = { progress: 1 };
+
+function allBounds() {
+  var b = { minLat: 90, maxLat: -90, minLng: 180, maxLng: -180 };
+  for (var id in MAPA.nodes) {
+    var n = MAPA.nodes[id];
+    b.minLat = Math.min(b.minLat, n.lat);
+    b.maxLat = Math.max(b.maxLat, n.lat);
+    b.minLng = Math.min(b.minLng, n.lng);
+    b.maxLng = Math.max(b.maxLng, n.lng);
+  }
+  return b;
+}
+
+function pointAlong(ids, t, project) {
+  var points = [];
+  var total = 0;
+  for (var i = 0; i < ids.length; i++) {
+    points.push(project(MAPA.nodes[ids[i]]));
+    if (i > 0) { total += Math.hypot(points[i][0] - points[i - 1][0], points[i][1] - points[i - 1][1]); }
+  }
+  var goal = total * t;
+  for (var j = 1; j < points.length; j++) {
+    var seg = Math.hypot(points[j][0] - points[j - 1][0], points[j][1] - points[j - 1][1]);
+    if (goal <= seg) {
+      var f = seg === 0 ? 0 : goal / seg;
+      return [points[j - 1][0] + (points[j][0] - points[j - 1][0]) * f, points[j - 1][1] + (points[j][1] - points[j - 1][1]) * f];
+    }
+    goal -= seg;
+  }
+  return points[points.length - 1];
+}
+
+function layoutMap() {
+  var c = setupCanvas(mapCanvas);
+  var span = c.w < 700 ? 0.66 : 0.46;
+  var project = alignedProjector(MAPA.origin, MAPA.dest, { x1: c.w * (0.5 - span / 2), x2: c.w * (0.5 + span / 2), y: c.h * 0.66 });
+  var a = project({ lat: 19.43, lng: -99.165 });
+  var b = project({ lat: 19.431, lng: -99.165 });
+  var pxPerMeter = Math.hypot(b[0] - a[0], b[1] - a[1]) / 110.54;
+  mapView = { ctx: c.ctx, w: c.w, h: c.h, project: project, pxPerMeter: pxPerMeter };
+  if (!lens.ready) {
+    var start = pointAlong(MAPA.safe.nodes, 0.5, project);
+    lens.x = lens.tx = start[0];
+    lens.y = lens.ty = start[1];
+    lens.ready = true;
+  }
+}
+
+function drawZones(ctx, v, fill, stroke) {
+  for (var i = 0; i < MAPA.risks.length; i++) {
+    var r = MAPA.risks[i];
+    var p = v.project(r);
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], r.radius * v.pxPerMeter, 0, Math.PI * 2);
+    ctx.fillStyle = fill;
+    ctx.fill();
+    ctx.setLineDash([5, 5]);
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+function drawEndpoints(ctx, v) {
+  var o = v.project(MAPA.nodes[MAPA.origin]);
+  var d = v.project(MAPA.nodes[MAPA.dest]);
+  ctx.fillStyle = "#fbfbf7";
+  ctx.strokeStyle = "#144134";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.arc(o[0], o[1], 8, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = "#144134";
+  ctx.beginPath();
+  ctx.arc(d[0], d[1], 9, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.font = "600 13px 'Vend Sans', sans-serif";
+  ctx.fillStyle = "#144134";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Inicio", o[0] + 14, o[1] + 1);
+  if (d[0] + 80 > v.w) {
+    ctx.textAlign = "end";
+    ctx.fillText("Destino", d[0] - 15, d[1] + 1);
+    ctx.textAlign = "start";
+  } else {
+    ctx.fillText("Destino", d[0] + 15, d[1] + 1);
+  }
+}
+
+function drawStreetNames(ctx, v, cx, cy, radius, limit, diagonal) {
+  var seen = {};
+  var placed = [];
+  var count = 0;
+  ctx.font = "500 12px 'Vend Sans', sans-serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  for (var i = 0; i < MAPA.edges.length; i++) {
+    var e = MAPA.edges[i];
+    if (seen[e[2]]) { continue; }
+    var a = v.project(MAPA.nodes[e[0]]);
+    var b = v.project(MAPA.nodes[e[1]]);
+    var mx = (a[0] + b[0]) / 2;
+    var my = (a[1] + b[1]) / 2;
+    if (Math.hypot(mx - cx, my - cy) > radius * 0.78) { continue; }
+    if (Math.hypot(b[0] - a[0], b[1] - a[1]) < 70) { continue; }
+    var edgeW = ctx.canvas.clientWidth;
+    var edgeH = ctx.canvas.clientHeight;
+    if (mx < 90 || mx > edgeW - 90 || my < 30 || my > edgeH - 30) { continue; }
+    if (diagonal && mx < diagonal * edgeW * (1 - my / edgeH) + 90) { continue; }
+    if (diagonal && labelAvoid && mx > labelAvoid.x1 && mx < labelAvoid.x2 && my > labelAvoid.y1 && my < labelAvoid.y2) { continue; }
+    var clash = false;
+    for (var k = 0; k < placed.length; k++) {
+      if (Math.hypot(placed[k][0] - mx, placed[k][1] - my) < 64) { clash = true; }
+    }
+    if (clash) { continue; }
+    if (limit && count >= limit) { break; }
+    placed.push([mx, my]);
+    count += 1;
+    seen[e[2]] = true;
+    var angle = Math.atan2(b[1] - a[1], b[0] - a[0]);
+    if (angle > Math.PI / 2) { angle -= Math.PI; }
+    if (angle < -Math.PI / 2) { angle += Math.PI; }
+    ctx.save();
+    ctx.translate(mx, my);
+    ctx.rotate(angle);
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "rgba(251, 251, 247, 0.95)";
+    ctx.strokeText(e[2], 0, -10);
+    ctx.fillStyle = "#3d5248";
+    ctx.fillText(e[2], 0, -10);
+    ctx.restore();
+  }
+  ctx.textAlign = "start";
+}
+
+var leafImage = new Image();
+var leafPattern = null;
+leafImage.src = "assets/img/leaf-light.jpg";
+
+function drawLeafLight(ctx, cx, cy, radius, time) {
+  if (leafImage.complete && leafImage.naturalWidth > 0) {
+    if (!leafPattern) { leafPattern = ctx.createPattern(leafImage, "repeat"); }
+    var drift = reduceMotion ? 0 : time * 0.006;
+    ctx.save();
+    ctx.globalCompositeOperation = "multiply";
+    ctx.globalAlpha = 0.9;
+    ctx.translate(drift, drift * 0.4);
+    ctx.fillStyle = leafPattern;
+    ctx.fillRect(cx - radius - drift, cy - radius - drift * 0.4, radius * 2, radius * 2);
+    ctx.restore();
+    return;
+  }
+  for (var i = 0; i < leaves.length; i++) {
+    var l = leaves[i];
+    var sway = reduceMotion ? 0 : Math.sin(time * 0.0006 * l.s + l.k) * 0.06;
+    var x = cx + Math.cos(l.a + sway) * l.d * radius;
+    var y = cy + Math.sin(l.a + sway) * l.d * radius;
+    var rr = l.r * radius;
+    ctx.beginPath();
+    ctx.ellipse(x, y, rr, rr * 0.62, l.a + sway * 3, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(36, 72, 47, 0.075)";
+    ctx.fill();
+  }
+}
+
+function drawMap(time) {
+  if (!mapView) { return; }
+  var v = mapView;
+  var ctx = v.ctx;
+  ctx.clearRect(0, 0, v.w, v.h);
+  ctx.fillStyle = "#e4e3dc";
+  ctx.fillRect(0, 0, v.w, v.h);
+  drawStreets(ctx, v.project, 7, 4.5, "#f1f0ea", "#f1f0ea");
+  drawZones(ctx, v, "rgba(176, 110, 84, 0.10)", "rgba(162, 102, 80, 0.55)");
+  var pFast = Math.min(1, mapDraw.progress * 1.25);
+  var pSafe = Math.max(0, Math.min(1, mapDraw.progress * 1.25 - 0.25));
+  drawPath(ctx, v.project, MAPA.fast.nodes, "#9c9d97", 4, [2, 8], pFast);
+  drawPath(ctx, v.project, MAPA.safe.nodes, "rgba(242, 201, 76, 0.75)", 6, null, pSafe);
+  drawEndpoints(ctx, v);
+
+  var radius = v.w < 600 ? Math.max(64, Math.min(v.w, v.h) * 0.24) : Math.max(110, Math.min(v.w, v.h) * 0.3);
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(lens.x, lens.y, radius, 0, Math.PI * 2);
+  ctx.clip();
+  ctx.fillStyle = "#fbfbf3";
+  ctx.fillRect(lens.x - radius, lens.y - radius, radius * 2, radius * 2);
+  drawLeafLight(ctx, lens.x, lens.y, radius, time);
+  drawStreets(ctx, v.project, 12, 8, "#ffffff", "#ffffff");
+  drawZones(ctx, v, "rgba(176, 110, 84, 0.16)", "rgba(162, 102, 80, 0.8)");
+  drawPath(ctx, v.project, MAPA.fast.nodes, "#7c7d78", 4, [2, 8], pFast);
+  drawPath(ctx, v.project, MAPA.safe.nodes, "#d9a92a", 11, null, pSafe);
+  drawPath(ctx, v.project, MAPA.safe.nodes, "#f2c94c", 7, null, pSafe);
+  drawEndpoints(ctx, v);
+  drawStreetNames(ctx, v, lens.x, lens.y, radius);
+  ctx.restore();
+
+  if (!reduceMotion) {
+    var walker = pointAlong(MAPA.safe.nodes, (time % 9000) / 9000, v.project);
+    ctx.beginPath();
+    ctx.arc(walker[0], walker[1], 7, 0, Math.PI * 2);
+    ctx.fillStyle = "#fbfbf7";
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#144134";
+    ctx.stroke();
+  }
+
+  ctx.beginPath();
+  ctx.arc(lens.x, lens.y, radius, 0, Math.PI * 2);
+  ctx.strokeStyle = "rgba(20, 65, 52, 0.55)";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+function tick(time) {
+  if (!lens.active && mapView) {
+    var t = reduceMotion ? 0.5 : 0.5 + Math.sin(time * 0.00018) * 0.42;
+    var p = pointAlong(MAPA.safe.nodes, t, mapView.project);
+    lens.tx = p[0];
+    lens.ty = p[1];
+  }
+  lens.x += (lens.tx - lens.x) * 0.14;
+  lens.y += (lens.ty - lens.y) * 0.14;
+  drawMap(time);
+  window.requestAnimationFrame(tick);
+}
+
+function moveLens(event) {
+  var rect = mapCanvas.getBoundingClientRect();
+  lens.tx = event.clientX - rect.left;
+  lens.ty = event.clientY - rect.top;
+  lens.active = true;
+}
+
+mapStage.addEventListener("pointermove", moveLens);
+mapStage.addEventListener("pointerdown", moveLens);
+mapStage.addEventListener("pointerleave", function () { lens.active = false; });
+
+function drawAll() {
+  drawHeroMap();
+  drawHeroRoute();
+  drawMobileRoute();
+  layoutMap();
+  drawMap(0);
+}
+
+if (window.matchMedia("(pointer: coarse), (max-width: 900px)").matches) {
+  document.querySelector("[data-map-hint]").textContent = "Toca o arrastra el dedo sobre el mapa para verlo de cerca.";
+}
+
+drawAll();
+window.addEventListener("resize", drawAll);
+if (document.fonts) { document.fonts.ready.then(drawAll); }
+window.requestAnimationFrame(tick);
+
+var forms = document.querySelectorAll("[data-signup]");
+for (var f = 0; f < forms.length; f++) {
+  forms[f].addEventListener("submit", function (event) {
+    event.preventDefault();
+    var form = event.currentTarget;
+    var input = form.querySelector("input[type=email]");
+    var button = form.querySelector("button");
+    var status = form.parentNode.querySelector("[data-signup-status]");
+    var email = input.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      status.dataset.state = "error";
+      status.textContent = "Escribe un correo válido, por ejemplo nombre@correo.com.";
+      input.focus();
+      return;
+    }
+    button.disabled = true;
+    status.dataset.state = "";
+    status.textContent = "Guardando tu lugar…";
+    fetch("/api/preregistro", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email }) })
+      .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
+      .then(function (result) {
+        if (!result.ok || !result.data.ok) {
+          status.dataset.state = "error";
+          status.textContent = "Ese correo no parece válido. Revísalo e inténtalo de nuevo.";
+          return;
+        }
+        form.reset();
+        status.dataset.state = "ok";
+        if (result.data.duplicate) {
+          status.textContent = "Ese correo ya estaba registrado. Te escribiremos cuando abra la prueba.";
+        } else {
+          status.textContent = "Listo. Te escribiremos cuando abra la versión de prueba.";
+        }
+      })
+      .catch(function () {
+        status.dataset.state = "error";
+        status.textContent = "No pudimos guardar tu correo. Revisa tu conexión e inténtalo otra vez.";
+      })
+      .then(function () { button.disabled = false; });
+  });
+}
+</script>
+</body>
+</html>

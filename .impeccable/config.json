@@ -1,0 +1,18 @@
+{
+  "buildPath": "comp",
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "landing/index.html"
+        ],
+        "createdAt": "2026-11-23T14:56:04.729Z",
+        "reason": "finish reviewer confirmed false positive: every section keeps content inside the .wrap gutter (16-64px) in desktop and mobile captures"
+      }
+    ]
+  }
+}

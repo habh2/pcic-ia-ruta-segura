@@ -1,0 +1,525 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T14:59:21+00:00",
+  "title": "Design System: GoIA",
+  "extensions": {
+    "colorMeta": {
+      "route": {
+        "role": "primary",
+        "displayName": "Sun Route Yellow",
+        "canonical": "#f2c94c",
+        "tonalRamp": [
+          "#3b3112",
+          "#715b18",
+          "#af8a18",
+          "#edb817",
+          "#e7c45b",
+          "#e7d397",
+          "#eee5c9",
+          "#f8f5ed"
+        ]
+      },
+      "route-deep": {
+        "role": "primary",
+        "displayName": "Late-Sun Ochre",
+        "canonical": "#d9a92a",
+        "tonalRamp": [
+          "#372e16",
+          "#695521",
+          "#a07f27",
+          "#d8a92c",
+          "#d9ba68",
+          "#dfce9f",
+          "#eae2cc",
+          "#f7f4ee"
+        ]
+      },
+      "route-pill": {
+        "role": "primary",
+        "displayName": "Pale Route Yellow",
+        "canonical": "#f7d75c",
+        "tonalRamp": [
+          "#3c3311",
+          "#736016",
+          "#b39214",
+          "#f2c412",
+          "#eacc57",
+          "#e9d895",
+          "#efe7c8",
+          "#f8f6ec"
+        ]
+      },
+      "forest-ink": {
+        "role": "secondary",
+        "displayName": "Forest Ink",
+        "canonical": "#144134",
+        "tonalRamp": [
+          "#1a332c",
+          "#2a6050",
+          "#359277",
+          "#41c39e",
+          "#76cbb3",
+          "#a7d8ca",
+          "#d0e7e0",
+          "#eff6f4"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#1b3525",
+        "tonalRamp": [
+          "#1f2e24",
+          "#345641",
+          "#47805d",
+          "#5aaa79",
+          "#86bb9b",
+          "#b0cebc",
+          "#d4e2da",
+          "#f0f4f2"
+        ]
+      },
+      "ink-muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#4d6357",
+        "tonalRamp": [
+          "#232926",
+          "#3e4b44",
+          "#596e62",
+          "#739181",
+          "#97aba0",
+          "#b9c5bf",
+          "#d9dedb",
+          "#f1f3f2"
+        ]
+      },
+      "button-green": {
+        "role": "secondary",
+        "displayName": "Button Green",
+        "canonical": "#0f4535",
+        "tonalRamp": [
+          "#17352c",
+          "#246652",
+          "#2b9c7a",
+          "#33d1a2",
+          "#6dd5b6",
+          "#a2ddcb",
+          "#cde9e1",
+          "#eef6f4"
+        ]
+      },
+      "button-green-deep": {
+        "role": "secondary",
+        "displayName": "Deep Button Green",
+        "canonical": "#0a3327",
+        "tonalRamp": [
+          "#16362d",
+          "#226753",
+          "#299e7c",
+          "#2fd5a4",
+          "#6ad7b7",
+          "#a0decc",
+          "#cdeae1",
+          "#eef7f4"
+        ]
+      },
+      "button-edge": {
+        "role": "secondary",
+        "displayName": "Button Edge",
+        "canonical": "#2d5e50",
+        "tonalRamp": [
+          "#1e2f2a",
+          "#33574d",
+          "#458271",
+          "#56ae95",
+          "#84bdad",
+          "#afd0c6",
+          "#d4e3df",
+          "#f0f5f3"
+        ]
+      },
+      "field-edge": {
+        "role": "neutral",
+        "displayName": "Field Edge",
+        "canonical": "#4f6b5f",
+        "tonalRamp": [
+          "#232a27",
+          "#3d4d46",
+          "#567165",
+          "#6f9585",
+          "#94ada2",
+          "#b8c6c0",
+          "#d8dfdc",
+          "#f1f3f2"
+        ]
+      },
+      "ink-mist": {
+        "role": "neutral",
+        "displayName": "Ink Mist",
+        "canonical": "#d5ded7",
+        "tonalRamp": [
+          "#232925",
+          "#3f4b41",
+          "#596e5e",
+          "#73917a",
+          "#97aa9b",
+          "#bac5bc",
+          "#d9deda",
+          "#f1f3f2"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Daylight Ground",
+        "canonical": "#f3f4ef",
+        "tonalRamp": [
+          "#292b22",
+          "#4b4e3b",
+          "#6d7453",
+          "#90996b",
+          "#aab092",
+          "#c4c8b7",
+          "#dedfd7",
+          "#f3f3f1"
+        ]
+      },
+      "ground-deep": {
+        "role": "neutral",
+        "displayName": "Shade Ground",
+        "canonical": "#e9ebe3",
+        "tonalRamp": [
+          "#282a22",
+          "#494d3c",
+          "#6b7255",
+          "#8c976d",
+          "#a7ae93",
+          "#c3c7b8",
+          "#dddfd8",
+          "#f3f3f1"
+        ]
+      },
+      "paper-white": {
+        "role": "neutral",
+        "displayName": "Paper White",
+        "canonical": "#fbfbf7",
+        "tonalRamp": [
+          "#2e2e1e",
+          "#565634",
+          "#818146",
+          "#abab59",
+          "#bcbc86",
+          "#cfcfb0",
+          "#e2e2d4",
+          "#f4f4f0"
+        ]
+      },
+      "map-ground": {
+        "role": "neutral",
+        "displayName": "Map Ground",
+        "canonical": "#e4e3dc",
+        "tonalRamp": [
+          "#292923",
+          "#4b4a3e",
+          "#6f6c58",
+          "#928e72",
+          "#aba896",
+          "#c5c4b9",
+          "#deddd9",
+          "#f3f3f1"
+        ]
+      },
+      "map-street": {
+        "role": "neutral",
+        "displayName": "Map Street",
+        "canonical": "#f1f0ea",
+        "tonalRamp": [
+          "#2b2a22",
+          "#4f4c3b",
+          "#757052",
+          "#9b9469",
+          "#b1ac90",
+          "#c8c6b6",
+          "#e0ded7",
+          "#f4f3f1"
+        ]
+      },
+      "fast-gray": {
+        "role": "neutral",
+        "displayName": "Fast Gray",
+        "canonical": "#9c9d97",
+        "tonalRamp": [
+          "#272726",
+          "#464643",
+          "#656661",
+          "#84867e",
+          "#a2a39e",
+          "#c0c1be",
+          "#dcdcdb",
+          "#f2f2f2"
+        ]
+      },
+      "fast-pill": {
+        "role": "neutral",
+        "displayName": "Fast Pill",
+        "canonical": "#e6e5df",
+        "tonalRamp": [
+          "#292823",
+          "#4b493f",
+          "#6e6b59",
+          "#918d73",
+          "#aba897",
+          "#c5c3ba",
+          "#deddd9",
+          "#f3f3f1"
+        ]
+      },
+      "zone-clay": {
+        "role": "neutral",
+        "displayName": "Zone Clay",
+        "canonical": "#a26650",
+        "tonalRamp": [
+          "#2e231e",
+          "#563d33",
+          "#815646",
+          "#ac6f58",
+          "#bc9485",
+          "#cfb8b0",
+          "#e3d8d4",
+          "#f4f1f0"
+        ]
+      },
+      "error-brick": {
+        "role": "neutral",
+        "displayName": "Error Brick",
+        "canonical": "#8a2c1f",
+        "tonalRamp": [
+          "#351b17",
+          "#652c24",
+          "#9b3a2c",
+          "#d04734",
+          "#d47a6d",
+          "#dda9a2",
+          "#e9d1ce",
+          "#f6efee"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline only. Shipped at 3.735cqw of the hero frame on desktop and clamp(2rem, 1.2rem + 4vw, 2.9rem) below 900px."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings, a plain sentence ending in a period."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Feature row headings."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Step headings on the Forest Ink band."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "One intro paragraph under a heading, max 34em."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Feature and step copy, max 28 to 34em."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Time pills, map tag, legend rows, map notes, with tabular numerals."
+      }
+    },
+    "shadows": [],
+    "washes": [
+      {
+        "name": "photo-wash-side",
+        "value": "linear-gradient(90deg, rgba(243,244,239,0.94) 0%, rgba(243,244,239,0.86) 38%, rgba(243,244,239,0) 72%)",
+        "purpose": "Lets copy sit on a full-bleed photo on desktop. Replaces shadows as the depth device."
+      },
+      {
+        "name": "photo-wash-top",
+        "value": "linear-gradient(180deg, rgba(243,244,239,0.95) 0%, rgba(243,244,239,0.9) 55%, rgba(243,244,239,0.35) 100%)",
+        "purpose": "The same wash on mobile, top to bottom."
+      },
+      {
+        "name": "leaf-light",
+        "value": "assets/img/leaf-light.jpg multiplied at 0.9 alpha",
+        "purpose": "Dappled-shade texture inside the map lens only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "control-color",
+        "value": "background-color 160ms ease-out",
+        "purpose": "Button hover."
+      },
+      {
+        "name": "control-press",
+        "value": "transform 120ms ease-out, translateY(1px)",
+        "purpose": "Button press."
+      },
+      {
+        "name": "photo-settle",
+        "value": "transform 900ms cubic-bezier(0.16, 1, 0.3, 1), scale(1.025)",
+        "purpose": "Photo hover inside its frame."
+      },
+      {
+        "name": "lens-follow",
+        "value": "per-frame ease of 0.14 toward the pointer",
+        "purpose": "Map lens follows cursor or finger."
+      },
+      {
+        "name": "lens-drift",
+        "value": "sin(t * 0.00018) along the route, amplitude 0.42 around the midpoint",
+        "purpose": "Lens wanders along the route with no pointer. Held at mid-route under reduced motion."
+      },
+      {
+        "name": "walker-loop",
+        "value": "9000ms linear loop along the route",
+        "purpose": "Walker dot on the sample map. Removed under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack",
+        "value": "1024px"
+      },
+      {
+        "name": "mobile-hero",
+        "value": "900px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Square-shouldered green submit button, always paired with the email field.",
+      "html": "<button class=\"ds-btn-primary\">Pre-regístrate gratis</button>",
+      "css": ".ds-btn-primary{height:54px;padding:0 24px;border:1px solid #2d5e50;border-radius:6px;background:#0f4535;color:#fbfbf7;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif;font-size:1.05rem;font-weight:500;cursor:pointer;transition:background-color 160ms ease-out,transform 120ms ease-out}.ds-btn-primary:hover{background:#0a3327}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:3px solid #f2c94c;outline-offset:3px}"
+    },
+    {
+      "name": "Email Pre-registration",
+      "kind": "input",
+      "refersTo": "input-email",
+      "description": "Email field plus primary button, the page's one action.",
+      "html": "<form class=\"ds-cta-form\" onsubmit=\"return false\"><input class=\"ds-input\" type=\"email\" placeholder=\"Tu correo electrónico\"><button class=\"ds-cta-btn\">Pre-regístrate gratis</button></form>",
+      "css": ".ds-cta-form{display:flex;gap:10px;max-width:520px;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-input{flex:1 1 auto;min-width:0;height:54px;padding:0 18px;border:1.5px solid #4f6b5f;border-radius:6px;background:#fbfbf7;font:inherit;font-size:1.05rem;color:#144134}.ds-input::placeholder{color:#5c6e64}.ds-input:hover{border-color:#144134}.ds-input:focus-visible{outline:3px solid #f2c94c;outline-offset:3px}.ds-cta-btn{height:54px;padding:0 24px;border:1px solid #2d5e50;border-radius:6px;background:#0f4535;color:#fbfbf7;font:inherit;font-size:1.05rem;font-weight:500;cursor:pointer;transition:background-color 160ms ease-out}.ds-cta-btn:hover{background:#0a3327}.ds-cta-btn:focus-visible{outline:3px solid #f2c94c;outline-offset:3px}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "nav-cta",
+      "description": "Serif wordmark, plain links with ochre hover underline, compact green CTA.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-brand\" href=\"#\">GoIA</a><span class=\"ds-links\"><a class=\"ds-link\" href=\"#\">Cómo funciona</a><a class=\"ds-link\" href=\"#\">El mapa</a><a class=\"ds-nav-cta\" href=\"#\">Pre-registro</a></span></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:#f3f4ef;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-brand{font-family:'Noticia Text',Georgia,serif;font-weight:700;font-size:2rem;line-height:1;color:#144134;text-decoration:none}.ds-links{display:flex;align-items:center;gap:28px}.ds-link{color:#144134;text-decoration:none;font-weight:500}.ds-link:hover{text-decoration:underline;text-underline-offset:0.3em;text-decoration-thickness:2px;text-decoration-color:#d9a92a}.ds-nav-cta{padding:10px 16px;border:1px solid #2d5e50;border-radius:6px;background:#0f4535;color:#fbfbf7;text-decoration:none;transition:background-color 160ms ease-out}.ds-nav-cta:hover{background:#0a3327}.ds-link:focus-visible,.ds-nav-cta:focus-visible{outline:3px solid #f2c94c;outline-offset:3px;border-radius:4px}"
+    },
+    {
+      "name": "Time Pills",
+      "kind": "chip",
+      "refersTo": "pill-route",
+      "description": "Paired route-time pills: yellow for the GoIA route, gray for the fastest.",
+      "html": "<div class=\"ds-pills\"><span class=\"ds-pill ds-pill-route\">Ruta GoIA · 14 min</span><span class=\"ds-pill ds-pill-fast\">Más rápida · 11 min</span></div>",
+      "css": ".ds-pills{display:flex;gap:10px;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-pill{display:inline-flex;align-items:center;padding:6px 12px;border-radius:999px;font-size:0.86rem;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}.ds-pill-route{background:#f7d75c;color:#2a2a22}.ds-pill-fast{background:#e6e5df;color:#282727}"
+    },
+    {
+      "name": "Feature Row",
+      "kind": "card",
+      "refersTo": "photo-frame",
+      "description": "Daylight photo in a 6px frame beside a serif title and a light paragraph.",
+      "html": "<article class=\"ds-feature\"><div class=\"ds-frame\"><div class=\"ds-photo\"></div></div><div><h3>Antes de salir, sabes cuánto te cuesta.</h3><p>GoIA pone lado a lado la ruta más rápida y la que evita calles de riesgo, con los minutos exactos de diferencia.</p></div></article>",
+      "css": ".ds-feature{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:24px;background:#f3f4ef;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-frame{overflow:hidden;border-radius:6px;aspect-ratio:3/2;background:#e9ebe3}.ds-photo{width:100%;height:100%;background:linear-gradient(160deg,#c9d6b8,#6f8a5e 60%,#3d5a3a);transition:transform 900ms cubic-bezier(0.16,1,0.3,1)}.ds-frame:hover .ds-photo{transform:scale(1.025)}.ds-feature h3{margin:0 0 0.5em;font-family:'Noticia Text',Georgia,serif;font-weight:700;font-size:1.8rem;line-height:1.12;color:#144134}.ds-feature p{margin:0;font-size:1.1rem;line-height:1.6;font-weight:300;color:#1b3525}"
+    },
+    {
+      "name": "Steps on the Route",
+      "kind": "custom",
+      "refersTo": "ink-band",
+      "description": "Three steps on a Forest Ink band, joined by the yellow route with ring stops and a filled destination stop.",
+      "html": "<div class=\"ds-steps\"><span class=\"ds-line\"></span><div class=\"ds-step\"><span class=\"ds-stop\"></span><h3>Dinos a dónde vas.</h3><p>Escribe tu destino.</p></div><div class=\"ds-step\"><span class=\"ds-stop\"></span><h3>Compara dos caminos.</h3><p>Tú eliges.</p></div><div class=\"ds-step\"><span class=\"ds-stop ds-end\"></span><h3>Camina.</h3><p>Y avisa si ves algo.</p></div></div>",
+      "css": ".ds-steps{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:32px;padding:32px;background:#144134;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-line{position:absolute;left:45px;right:32px;top:43px;height:4px;border-radius:2px;background:#f2c94c}.ds-step{position:relative;padding-top:52px}.ds-stop{position:absolute;top:0;left:0;width:26px;height:26px;border-radius:50%;background:#144134;border:4px solid #f2c94c;box-sizing:border-box}.ds-end{background:#f2c94c}.ds-step h3{margin:0 0 0.45em;font-family:'Noticia Text',Georgia,serif;font-weight:700;font-size:1.4rem;line-height:1.2;color:#fbfbf7}.ds-step p{margin:0;color:#d5ded7;font-weight:300}"
+    },
+    {
+      "name": "Map Stage",
+      "kind": "custom",
+      "refersTo": "map-stage",
+      "description": "Sample street map with a yellow GoIA route, dotted gray fastest route, clay report zone, sample tag and a leaf-light lens.",
+      "html": "<div class=\"ds-map\"><span class=\"ds-tag\">Datos de ejemplo</span><svg viewBox=\"0 0 600 260\" width=\"100%\" height=\"100%\" aria-hidden=\"true\"><g stroke=\"#f1f0ea\" stroke-width=\"6\" stroke-linecap=\"round\"><path d=\"M0 70H600M0 150H600M0 220H600M120 0V260M260 0V260M400 0V260M520 0V260\"/></g><circle cx=\"300\" cy=\"185\" r=\"38\" fill=\"rgba(176,110,84,0.12)\" stroke=\"#a26650\" stroke-width=\"1.5\" stroke-dasharray=\"5 5\"/><path d=\"M120 220H520\" stroke=\"#9c9d97\" stroke-width=\"4\" stroke-dasharray=\"2 8\" stroke-linecap=\"round\" fill=\"none\"/><path d=\"M120 220V70H520V220\" stroke=\"#f2c94c\" stroke-width=\"6\" stroke-linejoin=\"round\" fill=\"none\"/><circle cx=\"330\" cy=\"70\" r=\"62\" fill=\"rgba(251,251,243,0.55)\" stroke=\"rgba(20,65,52,0.55)\" stroke-width=\"1.5\"/><path d=\"M268 70H392\" stroke=\"#d9a92a\" stroke-width=\"11\" stroke-linecap=\"round\"/><path d=\"M268 70H392\" stroke=\"#f2c94c\" stroke-width=\"7\" stroke-linecap=\"round\"/><circle cx=\"120\" cy=\"220\" r=\"8\" fill=\"#fbfbf7\" stroke=\"#144134\" stroke-width=\"3\"/><circle cx=\"520\" cy=\"220\" r=\"9\" fill=\"#144134\"/></svg></div>",
+      "css": ".ds-map{position:relative;aspect-ratio:16/7;border-radius:8px;overflow:hidden;background:#e4e3dc;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-tag{position:absolute;left:16px;top:16px;padding:6px 12px;border-radius:999px;background:rgba(251,251,247,0.92);color:#144134;font-size:0.86rem;font-weight:500}"
+    },
+    {
+      "name": "Needs List Item",
+      "kind": "custom",
+      "refersTo": "route",
+      "description": "Yellow dot with ochre rim, bold ink lead-in, light follow-up line.",
+      "html": "<ul class=\"ds-needs\"><li><span class=\"ds-mark\"></span><span><strong>Tu app de mapas busca lo más corto.</strong>Te manda por la calle que ahorra un minuto.</span></li></ul>",
+      "css": ".ds-needs{list-style:none;margin:0;padding:0;font-family:'Vend Sans','Segoe UI',system-ui,sans-serif}.ds-needs li{display:grid;grid-template-columns:22px 1fr;gap:16px;font-size:1.08rem;line-height:1.55;color:#1b3525}.ds-needs strong{display:block;font-weight:600;color:#144134;margin-bottom:0.15em}.ds-mark{width:14px;height:14px;margin-top:0.38em;border-radius:50%;background:#f2c94c;border:2px solid #d9a92a;box-sizing:border-box}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Banqueta con sombra",
+    "overview": "GoIA looks like an ordinary sunny sidewalk that a local would pick: shaded, kept up, with people walking on it. The ground is a fresh off-white, the ink is a deep forest green, and the only accent in the whole world is one sun-yellow route line that walks you along the street. Safety is told through daylight, trees and people, never through night, sirens or shield icons.\n\nDensity is calm and generous. Sections breathe with tall vertical padding, copy sits in short measures beside large eye-level photographs, and the yellow line threads the page as a continuous object: it starts in the hero photo, lands on the hero map, connects the three steps, and becomes the route on the sample map. Leaf-shadow light is the texture. It appears as dappled shade in the photography and, literally, as a multiplied leaf-light pattern inside the map lens.\n\nThe voice is a confident editorial serif for headlines over a light, plain sans for copy, with square-shouldered green controls. Nothing is glossy, nothing floats on shadows, and nothing reads as a tech product.",
+    "keyCharacteristics": [
+      "Off-white ground, forest-green ink, one sun-yellow accent reserved for the route.",
+      "Bold slab-leaning serif (Noticia Text) headlines, light-weight sans (Vend Sans) copy.",
+      "Morning daylight photography of tree-lined CDMX sidewalks with leaf shadows and people walking.",
+      "Flat surfaces, small 6px corners, no drop shadows.",
+      "The route line is the narrative thread and the only animated object."
+    ],
+    "rules": [
+      {
+        "name": "The One Line Rule",
+        "body": "Yellow belongs to the route. It may mark the route, its time, its stops, and keyboard focus. It never fills a button, a background band or a decorative shape.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gray Alternative Rule",
+        "body": "The comparison route is shown in neutral gray (dotted on the map), so the choice reads as \"the route\" versus \"just faster,\" not as two competing colors.",
+        "section": "colors"
+      },
+      {
+        "name": "The Daylight Rule",
+        "body": "No dark or night themes for brand surfaces. Dark green appears only as solid ink bands between daylight sections.",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif Speaks First Rule",
+        "body": "Every section opens with a serif sentence, written as a plain statement ending in a period. Sans text never takes the heading role.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light Copy Rule",
+        "body": "Running copy is Vend Sans at weight 300 to 400. Weight 600 is reserved for short bold lead-ins and legend names.",
+        "section": "typography"
+      },
+      {
+        "name": "The Light Not Shadow Rule",
+        "body": "Depth is sunlight and shade, never drop shadows. A surface that needs separation gets a tonal change or a photo wash.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep Sun Route Yellow (route) for the route, its stops, its time pill and focus, and nothing else.",
+      "**Do** pair every safe-route time with the fastest-route time, in a yellow pill and a gray pill.",
+      "**Do** use morning daylight photography of tree-lined CDMX sidewalks with people walking calmly, and fade it into Daylight Ground where copy sits on it.",
+      "**Do** open sections with a Noticia Text 700 sentence and follow with a light Vend Sans lead (weight 300, max 34em).",
+      "**Do** keep controls square-shouldered (6px) in Button Green with a 1px Button Edge border.",
+      "**Do** honor reduced motion: hold the lens, drop the walker, keep every route fully drawn.",
+      "**Do** label sample data on the map (\"Datos de ejemplo\") and keep zones illustrative."
+    ],
+    "donts": [
+      "**Don't** use drop shadows or floating cards. Depth is light, washes and ink bands.",
+      "**Don't** show night streets, crime-news imagery, sirens, shields or alarm red. Report zones are muted clay.",
+      "**Don't** introduce a second accent color. The fast route stays gray.",
+      "**Don't** start content hidden or draw routes in on scroll. Static views must show every route complete.",
+      "**Don't** put a phone mockup over a map as the hero.",
+      "**Don't** use small uppercase eyebrow labels above headings. Uppercase tracked text belongs only to place names printed on a map."
+    ]
+  }
+}
