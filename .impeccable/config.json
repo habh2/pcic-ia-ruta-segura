@@ -12,6 +12,15 @@
         ],
         "createdAt": "2026-11-23T14:56:04.729Z",
         "reason": "finish reviewer confirmed false positive: every section keeps content inside the .wrap gutter (16-64px) in desktop and mobile captures"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          "web/index.html"
+        ],
+        "createdAt": "2026-11-24T00:01:39.942Z",
+        "reason": "Claude audit: static parser misses the .wrap inline gutter inside .section; rendered scans at 1440x900 and 390x844 report no cramped padding"
       }
     ]
   }

@@ -1,0 +1,2251 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f3f4ef">
+<title>GoIA</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23144134'/%3E%3Cpath d='M8 24c4-1 5-7 9-9s6-4 7-7' fill='none' stroke='%23f2c94c' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/noticia-text-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/noticia-text-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/vend-sans-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/vend-sans-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+
+:root {
+  --route: #f2c94c;
+  --route-deep: #d9a92a;
+  --route-pill: #f7d75c;
+  --ink: #144134;
+  --ink-soft: #1b3525;
+  --ink-muted: #4d6357;
+  --button-green: #0f4535;
+  --button-green-deep: #0a3327;
+  --button-edge: #2d5e50;
+  --field-edge: #4f6b5f;
+  --ink-mist: #d5ded7;
+  --ground: #f3f4ef;
+  --ground-deep: #e9ebe3;
+  --paper: #fbfbf7;
+  --map-ground: #e4e3dc;
+  --fast-gray: #9c9d97;
+  --fast-pill: #e6e5df;
+  --zone-clay: #a26650;
+  --error-brick: #8a2c1f;
+  --line: rgba(20, 65, 52, 0.16);
+  --line-strong: rgba(20, 65, 52, 0.32);
+  --fs-caption: .82rem;
+  --fs-small: .9rem;
+  --fs-ui: .95rem;
+  --fs-body: 1rem;
+  --fs-lead: 1.06rem;
+  --fs-title: 1.12rem;
+  --fs-title-lg: 1.25rem;
+  --fs-wordmark: 1.6rem;
+  --fs-figure: 2rem;
+  --fs-credit: .75rem;
+  --fast-gray-deep: #6f706a;
+  --serif: "Noticia Text", Georgia, serif;
+  --sans: "Vend Sans", "Segoe UI", system-ui, sans-serif;
+  --sheet-max: 64dvh;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font: 400 var(--fs-body)/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased;
+  font-variant-numeric: tabular-nums;
+}
+::selection { background: var(--route-pill); color: var(--ink); }
+:focus-visible { outline: 3px solid var(--route); outline-offset: 3px; border-radius: 4px; }
+button { font: inherit; color: inherit; }
+input, textarea, select { font: inherit; color: var(--ink); caret-color: var(--ink); }
+
+.app { display: grid; grid-template-columns: minmax(360px, 420px) 1fr; height: 100dvh; }
+.panel {
+  background: var(--ground);
+  border-right: 1px solid var(--line);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ink-mist) transparent;
+  position: relative;
+  z-index: 700;
+}
+.map-wrap { position: relative; min-width: 0; }
+#map { position: absolute; inset: 0; background: var(--map-ground); }
+
+.bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 12px 12px 8px 12px;
+  position: sticky; top: 0; z-index: 2;
+  background: var(--ground);
+}
+.bar-title { font: 500 var(--fs-body) var(--sans); margin-left: 2px; }
+.wordmark { font: 700 var(--fs-wordmark)/1 var(--serif); letter-spacing: -0.01em; margin: 0 auto 0 8px; color: var(--ink); }
+.icon-btn {
+  width: 44px; height: 44px; flex: none;
+  display: grid; place-items: center;
+  border: 0; border-radius: 6px; background: none; cursor: pointer; color: var(--ink);
+  transition: background-color .16s ease-out;
+}
+.icon-btn:hover { background: var(--ground-deep); }
+.icon-btn svg, .btn svg, .row svg, .opt svg, .seg svg { width: 20px; height: 20px; }
+svg.i { fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+.view { padding: 0 20px 28px; }
+.view > :first-child { margin-top: 4px; }
+h1.vh {
+  font: 700 clamp(1.5rem, 1.25rem + 0.8vw, 1.85rem)/1.16 var(--serif);
+  letter-spacing: -0.012em; margin: 8px 0 10px; text-wrap: balance;
+}
+h1.vh:focus { outline: none; }
+h2.sh { font: 700 var(--fs-title)/1.25 var(--serif); margin: 28px 0 8px; }
+.lead { font-weight: 300; font-size: var(--fs-lead); line-height: 1.55; color: var(--ink-soft); margin: 0 0 20px; max-width: 34em; }
+.note { font-size: var(--fs-small); color: var(--ink-muted); margin: 8px 0 0; line-height: 1.45; }
+.muted { color: var(--ink-muted); }
+strong { font-weight: 600; }
+
+.btn {
+  height: 52px; padding: 0 20px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  border-radius: 6px; border: 1px solid var(--button-edge);
+  background: var(--button-green); color: var(--paper);
+  font: 500 var(--fs-body) var(--sans); cursor: pointer; text-decoration: none;
+  transition: background-color .16s ease-out, transform .12s ease-out;
+}
+.btn:hover { background: var(--button-green-deep); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; transform: none; }
+.btn.block { width: 100%; }
+.btn.secondary { background: var(--paper); color: var(--ink); border-color: var(--field-edge); }
+.btn.secondary:hover { background: var(--ground-deep); }
+.btn.small { height: 40px; padding: 0 14px; font-size: var(--fs-ui); }
+.btn-row { display: flex; gap: 10px; margin-top: 20px; }
+.btn-row > .btn { flex: 1; }
+.stack { display: grid; gap: 10px; margin-top: 20px; }
+.link-btn { border: 0; background: none; padding: 0; color: var(--ink); text-decoration: underline; text-underline-offset: .25em; text-decoration-color: var(--route-deep); cursor: pointer; font-weight: 500; }
+
+.search {
+  display: flex; align-items: center; gap: 12px;
+  width: 100%; height: 56px; padding: 0 16px;
+  border: 1.5px solid var(--field-edge); border-radius: 6px;
+  background: var(--paper); color: var(--ink-muted);
+  font: 400 var(--fs-lead) var(--sans); text-align: left; cursor: text;
+  transition: border-color .16s ease-out;
+}
+.search:hover { border-color: var(--ink); }
+.search svg { width: 22px; height: 22px; color: var(--ink); }
+.here { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: var(--fs-ui); color: var(--ink-muted); }
+.here .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); flex: none; }
+
+.list { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; min-height: 60px; padding: 10px 6px;
+  border: 0; border-bottom: 1px solid var(--line); background: none;
+  text-align: left; cursor: pointer; color: var(--ink);
+  transition: background-color .16s ease-out;
+}
+.row:hover { background: var(--ground-deep); }
+a.row { text-decoration: none; }
+.row.static { cursor: default; }
+.row.static:hover { background: none; }
+.row-ico { width: 38px; height: 38px; border-radius: 50%; background: var(--ground-deep); color: var(--ink); display: grid; place-items: center; flex: none; }
+.row-ico.clay { color: var(--zone-clay); }
+.row-txt { flex: 1; min-width: 0; }
+.row-t { display: block; font-weight: 500; line-height: 1.3; }
+.row-s { display: block; font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.35; margin-top: 2px; }
+.row-end { color: var(--ink-muted); flex: none; display: flex; align-items: center; }
+
+.fields { border: 1.5px solid var(--field-edge); border-radius: 6px; background: var(--paper); display: grid; grid-template-columns: 1fr auto; }
+.fields .f { display: flex; align-items: center; gap: 12px; padding: 0 14px; height: 56px; }
+.fields .f + .f { border-top: 1px solid var(--line); }
+.fields label { font-size: var(--fs-caption); font-weight: 500; color: var(--ink-muted); width: 44px; flex: none; }
+.fields input { border: 0; background: none; height: 100%; flex: 1; min-width: 0; font-size: var(--fs-body); outline: none; }
+.fields .f:focus-within { background: var(--ground); }
+.fields .stops { grid-column: 1; }
+.fields .swap { grid-column: 2; grid-row: 1; align-self: center; margin-right: 6px; }
+
+.field { margin-top: 18px; }
+.field > label, .legend { display: block; font-weight: 500; font-size: var(--fs-ui); margin-bottom: 8px; }
+.input, textarea.input, select.input {
+  width: 100%; min-height: 50px; padding: 12px 14px;
+  border: 1.5px solid var(--field-edge); border-radius: 6px; background: var(--paper);
+  transition: border-color .16s ease-out;
+}
+.input:hover { border-color: var(--ink); }
+textarea.input { min-height: 96px; resize: vertical; line-height: 1.45; }
+.err { color: var(--error-brick); font-size: var(--fs-small); margin-top: 6px; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 12px; }
+.pill { display: inline-flex; align-items: center; height: 32px; padding: 0 13px; border-radius: 999px; font: 500 var(--fs-ui) var(--sans); font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.pill.route { background: var(--route-pill); }
+.pill.fast { background: var(--fast-pill); }
+
+.opt {
+  display: block; width: 100%; text-align: left;
+  padding: 14px 16px; margin-top: 10px;
+  border: 1.5px solid var(--line-strong); border-radius: 8px; background: var(--paper);
+  cursor: pointer; transition: border-color .16s ease-out;
+}
+.opt:hover { border-color: var(--field-edge); }
+.opt[aria-checked="true"] { border-color: var(--ink); outline: 1.5px solid var(--ink); outline-offset: -3px; }
+.opt[aria-checked="true"]:focus-visible { outline: 3px solid var(--route); outline-offset: 3px; }
+.opt-head { display: flex; align-items: center; gap: 12px; }
+.opt-name { font: 700 var(--fs-title) var(--serif); }
+.opt-time { margin-left: auto; font-weight: 500; font-size: var(--fs-lead); white-space: nowrap; }
+.opt-meta { font-size: var(--fs-small); color: var(--ink-muted); margin: 4px 0 0; }
+.why { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; font-size: var(--fs-ui); line-height: 1.4; }
+.why li { display: flex; gap: 8px; }
+.why svg { width: 18px; height: 18px; margin-top: 1px; }
+.why .ok { color: var(--ink); }
+.why .warn { color: var(--ink); }
+.why .warn svg { color: var(--zone-clay); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+p { text-wrap: pretty; }
+.swatch-route { width: 30px; height: 8px; border-radius: 4px; background: var(--route); box-shadow: 0 0 0 1.5px var(--route-deep); flex: none; }
+.swatch-fast { width: 30px; height: 0; border-top: 5px dotted var(--fast-gray); flex: none; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  min-height: 92px; padding: 14px; text-align: left;
+  border: 1.5px solid var(--line-strong); border-radius: 8px; background: var(--paper); cursor: pointer;
+  transition: border-color .16s ease-out, background-color .16s ease-out;
+}
+.tile:hover { border-color: var(--field-edge); }
+.tile[aria-checked="true"] { border-color: var(--ink); background: var(--ground-deep); outline: 1.5px solid var(--ink); outline-offset: -3px; }
+.tile svg { width: 24px; height: 24px; }
+.tile span { font-weight: 500; line-height: 1.25; }
+.seg { display: flex; border: 1.5px solid var(--field-edge); border-radius: 6px; overflow: hidden; background: var(--paper); }
+.seg button { flex: 1; height: 46px; border: 0; background: none; cursor: pointer; font-weight: 500; font-size: var(--fs-ui); }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-checked="true"] { background: var(--button-green); color: var(--paper); }
+.where { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1.5px solid var(--line-strong); border-radius: 6px; background: var(--paper); }
+.where .row-txt { font-weight: 500; }
+
+.switch { width: 48px; height: 28px; border-radius: 999px; border: 1.5px solid var(--field-edge); background: var(--ground-deep); position: relative; flex: none; transition: background-color .16s ease-out; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 19px; height: 19px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--field-edge); transition: transform .18s cubic-bezier(.16, 1, .3, 1); }
+[aria-checked="true"] > .switch, [aria-checked="true"] .switch { background: var(--button-green); border-color: var(--button-green); }
+[aria-checked="true"] .switch::after { transform: translateX(20px); border-color: var(--button-green); }
+
+.ad { font-size: var(--fs-caption); font-weight: 500; color: var(--ink-muted); border: 1px solid var(--line-strong); border-radius: 999px; padding: 1px 8px; margin-left: 6px; white-space: nowrap; }
+
+details.tech { margin-top: 24px; border-top: 1px solid var(--line); padding-top: 6px; }
+details.tech summary { cursor: pointer; font-weight: 500; padding: 10px 0; }
+.code { font: 400 var(--fs-caption)/1.5 "Cascadia Mono", Consolas, ui-monospace, monospace; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; overflow-x: auto; white-space: pre; margin: 6px 0 12px; }
+table.t { width: 100%; border-collapse: collapse; font-size: var(--fs-ui); margin: 6px 0 12px; }
+table.t th, table.t td { text-align: left; padding: 7px 4px; border-bottom: 1px solid var(--line); }
+table.t th { font-weight: 500; color: var(--ink-muted); }
+table.t td:not(:first-child), table.t th:not(:first-child) { text-align: right; }
+
+.nav-stats { display: flex; align-items: baseline; gap: 12px; margin-top: 6px; }
+.nav-min { font: 700 var(--fs-figure)/1 var(--serif); }
+.nav-sub { color: var(--ink-muted); }
+.nav-to { margin: 6px 0 0; color: var(--ink-soft); font: 400 var(--fs-body)/1.5 var(--sans); }
+.nav-to:focus { outline: none; }
+.notice { display: flex; gap: 12px; align-items: center; margin-top: 16px; padding: 12px 14px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--paper); }
+.notice .row-txt { font-size: var(--fs-ui); }
+.nav-actions { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; margin-top: 18px; }
+
+.map-tag { position: absolute; z-index: 600; top: 12px; left: 12px; background: var(--paper); border: 1px solid var(--line-strong); border-radius: 999px; padding: 6px 12px; font: 500 var(--fs-caption) var(--sans); color: var(--ink); pointer-events: none; }
+.nav-banner {
+  position: absolute; z-index: 650; top: 12px; left: 12px; right: 12px; max-width: 520px;
+  display: flex; align-items: center; gap: 14px;
+  background: var(--ink); color: var(--paper); border-radius: 8px; padding: 14px 16px;
+}
+.nav-banner svg { width: 34px; height: 34px; color: var(--route); }
+.nav-banner .nb-t { font: 700 var(--fs-title-lg)/1.2 var(--serif); }
+.nav-banner .nb-d { color: var(--ink-mist); font-size: var(--fs-ui); margin-top: 2px; }
+.pick-pin { position: absolute; z-index: 640; left: 50%; top: 50%; transform: translate(-50%, -100%); pointer-events: none; color: var(--ink); }
+.pick-pin svg { width: 40px; height: 40px; fill: var(--paper); stroke: var(--ink); stroke-width: 1.75; }
+.pick-bar {
+  position: absolute; z-index: 660; left: 12px; right: 12px; bottom: calc(16px + env(safe-area-inset-bottom));
+  max-width: 520px; margin: 0 auto;
+  background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; padding: 14px 16px;
+}
+.pick-bar .pb-t { font-weight: 500; }
+.pick-bar .pb-s { font-size: var(--fs-small); color: var(--ink-muted); margin-top: 2px; }
+.pick-bar .btn-row { margin-top: 12px; }
+[hidden] { display: none !important; }
+
+.m-me { width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 4px solid var(--ink); }
+.m-a { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); border: 4px solid var(--route); }
+.m-b { width: 26px; height: 26px; border-radius: 50%; background: var(--route); border: 4px solid var(--ink); }
+.m-pin { width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 4px solid var(--zone-clay); }
+.m-biz { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); color: var(--ink); display: grid; place-items: center; }
+.m-biz svg { width: 16px; height: 16px; }
+.m-biz.far { opacity: .55; }
+
+.leaflet-container { font-family: var(--sans); background: var(--map-ground); }
+.leaflet-tile-pane { filter: saturate(.28) sepia(.12) contrast(.92) brightness(1.04); }
+.leaflet-touch .leaflet-bar, .leaflet-bar { border: 1px solid var(--line-strong) !important; box-shadow: none !important; border-radius: 6px; }
+.leaflet-bar a { color: var(--ink); background: var(--paper); width: 40px !important; height: 40px !important; line-height: 40px !important; }
+.leaflet-marker-icon:focus-visible { outline: 3px solid var(--route); outline-offset: 2px; border-radius: 50%; }
+.leaflet-bar a:hover { background: var(--ground-deep); }
+.leaflet-control-attribution { background: rgba(251, 251, 247, .9) !important; font-size: var(--fs-credit); padding: 3px 8px !important; }
+.leaflet-control-attribution a { color: var(--ink-muted); }
+.leaflet-popup-content-wrapper { border-radius: 8px; box-shadow: none; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); }
+.leaflet-popup-tip { box-shadow: none; border: 1px solid var(--line-strong); background: var(--paper); }
+.leaflet-popup-content { margin: 14px 16px; font: 400 var(--fs-ui)/1.45 var(--sans); }
+.pop-t { font: 700 var(--fs-body)/1.25 var(--serif); display: block; margin-bottom: 4px; }
+.pop-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+.toasts { position: fixed; z-index: 900; left: 50%; transform: translateX(-50%); bottom: 24px; width: min(92vw, 440px); display: grid; gap: 8px; pointer-events: none; }
+.toast { pointer-events: auto; display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--paper); border-radius: 8px; padding: 12px 14px 12px 16px; animation: toast-in .28s cubic-bezier(.16, 1, .3, 1); }
+.toast span { flex: 1; }
+.toast button { border: 0; background: none; color: var(--paper); font-weight: 600; text-decoration: underline; text-underline-offset: .25em; cursor: pointer; padding: 6px; min-height: 44px; }
+.toast .toast-close { width: 44px; display: grid; place-items: center; text-decoration: none; }
+.toast .toast-close svg { width: 18px; height: 18px; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+dialog { border: 1px solid var(--line-strong); border-radius: 8px; padding: 22px; width: min(92vw, 380px); background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: rgba(20, 65, 52, .38); }
+dialog h2 { font: 700 var(--fs-title-lg)/1.2 var(--serif); margin: 0 0 8px; }
+dialog p { margin: 0; color: var(--ink-soft); }
+
+@media (max-width: 899px) {
+  .app { display: block; }
+  .map-wrap { position: fixed; inset: 0; }
+  .panel {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    max-height: var(--sheet-max);
+    border-right: 0; border-top: 1px solid var(--line-strong);
+    border-radius: 8px 8px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .bar { border-radius: 8px 8px 0 0; padding-top: 10px; }
+  body.picking .panel { display: none; }
+  body.walking { --sheet-max: 46dvh; }
+  body.walking .map-tag { display: none; }
+  .nav-banner { top: 28px; }
+  .toasts { top: 12px; bottom: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <main class="panel" id="panel"></main>
+  <section class="map-wrap" aria-label="Mapa">
+    <div id="map"></div>
+    <span class="map-tag" id="map-tag">Datos de ejemplo · Col. Cuauhtémoc</span>
+    <div class="nav-banner" id="nav-banner" role="status" hidden></div>
+    <div class="pick-pin" id="pick-pin" hidden></div>
+    <div class="pick-bar" id="pick-bar" hidden>
+      <div class="pb-t" id="pick-title"></div>
+      <div class="pb-s" id="pick-place">Mueve el mapa para colocar el punto.</div>
+      <div class="btn-row">
+        <button class="btn secondary small" type="button" id="pick-cancel">Cancelar</button>
+        <button class="btn small" type="button" id="pick-ok">Usar este punto</button>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+<dialog id="confirm">
+  <h2 id="confirm-t"></h2>
+  <p id="confirm-b"></p>
+  <div class="btn-row">
+    <button class="btn secondary small" type="button" id="confirm-no">Cancelar</button>
+    <button class="btn small" type="button" id="confirm-yes"></button>
+  </div>
+</dialog>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+const SIM_STEP_M = 6;
+const SIM_TICK_MS = 100;
+const WALK_M_PER_MIN = 80;
+const REPORT_RADIUS_M = 70;
+const OUT_OF_AREA_M = 260;
+
+const AREA = {
+  center: [19.4298, -99.1648],
+  zoom: 16,
+  boundary: [
+    [19.4254, -99.1722], [19.4275, -99.1674], [19.4296, -99.1628], [19.4319, -99.1576],
+    [19.4342, -99.1569], [19.4337, -99.1592], [19.4333, -99.1615], [19.4326, -99.1657],
+    [19.4321, -99.1682], [19.4315, -99.1725], [19.4282, -99.1728]
+  ]
+};
+
+const USER_LOCATION = { id: 'me', name: 'Tu ubicación', sub: 'Río Pánuco y Río Tiber (simulada)', lat: 19.4299, lng: -99.1679, kind: 'me' };
+
+const SAMPLE_ZONES = [
+  { id: 'risk-1', lat: 19.4309, lng: -99.1621, radius: 110, level: 'high', title: 'Cruce Río Lerma y Río Sena', description: 'Poca iluminación de noche y reportes recientes en calles interiores.' },
+  { id: 'risk-2', lat: 19.4316, lng: -99.1634, radius: 90, level: 'medium', title: 'Río Pánuco y Río Danubio', description: 'Tramo con poca visibilidad para peatones y obras en la banqueta.' }
+];
+
+const SAFE_SPOTS = [
+  { id: 'safe-1', lat: 19.4276, lng: -99.1672, title: 'Módulo de policía Reforma y Tiber' },
+  { id: 'safe-2', lat: 19.4285, lng: -99.1677, title: 'Corredor iluminado Río Lerma' },
+  { id: 'safe-3', lat: 19.4318, lng: -99.1578, title: 'Cruce vigilado Reforma e Insurgentes' },
+  { id: 'safe-4', lat: 19.4296, lng: -99.1628, title: 'Glorieta de la Palma' }
+];
+
+const SAMPLE_BUSINESSES = [
+  { id: 'biz-1', name: 'Café Río Lerma', category: 'cafe', tier: 'gold', promo: '2×1 en espresso americano', lat: 19.4287, lng: -99.1674 },
+  { id: 'biz-2', name: 'Farmacia Guadalquivir 24 h', category: 'pharmacy', tier: 'gold', promo: '15% en vitaminas y cuidado personal', lat: 19.4274, lng: -99.1695 },
+  { id: 'biz-3', name: 'Bistró Río Tiber', category: 'restaurant', tier: 'gold', promo: 'Bebida de cortesía con el menú del día', lat: 19.4301, lng: -99.1677 },
+  { id: 'biz-4', name: 'Panadería Villalongín', category: 'restaurant', tier: 'basic', promo: 'Café americano gratis con tu pan', lat: 19.4326, lng: -99.1613 },
+  { id: 'biz-5', name: 'Express Reforma 24 h', category: 'store24', tier: 'basic', promo: '10% en bebidas y snacks', lat: 19.4294, lng: -99.1631 }
+];
+
+const BIZ_CATEGORIES = [
+  { id: 'cafe', label: 'Cafetería', icon: 'cup' },
+  { id: 'pharmacy', label: 'Farmacia', icon: 'cross' },
+  { id: 'restaurant', label: 'Restaurante', icon: 'fork' },
+  { id: 'store24', label: 'Tienda 24 h', icon: 'store' },
+  { id: 'bank', label: 'Banco', icon: 'bank' }
+];
+
+const BIZ_TIERS = [
+  { id: 'gold', label: 'Oro', radius: 120 },
+  { id: 'basic', label: 'Básico', radius: 65 }
+];
+
+const REPORT_TYPES = [
+  { id: 'luz', label: 'Poca iluminación', level: 'medium', icon: 'bulb' },
+  { id: 'robo', label: 'Asalto o robo', level: 'high', icon: 'alert' },
+  { id: 'acoso', label: 'Acoso', level: 'high', icon: 'message' },
+  { id: 'sola', label: 'Calle sola', level: 'medium', icon: 'eye' },
+  { id: 'banqueta', label: 'Banqueta rota u obra', level: 'medium', icon: 'cone' },
+  { id: 'otro', label: 'Otra cosa', level: 'medium', icon: 'dots' }
+];
+
+const REPORT_WHEN = [
+  { id: 'ahora', label: 'Ahora' },
+  { id: 'hoy', label: 'Hoy' },
+  { id: 'semana', label: 'Esta semana' }
+];
+
+const LANDMARKS = [
+  { node: 'ref_tiber', name: 'Ángel de la Independencia' },
+  { node: 'mon_madre', name: 'Monumento a la Madre' },
+  { node: 'mon_madre', name: 'Jardín del Arte Sullivan' },
+  { node: 'ref_palma', name: 'Glorieta de la Palma' },
+  { node: 'ref_ins', name: 'Reforma e Insurgentes' },
+  { node: 'ref_circ', name: 'Reforma y Circuito Interior' }
+];
+
+const RAW_NODES = [
+  ['ref_circ', 19.4254, -99.1722, 'Paseo de la Reforma & Circuito Interior'],
+  ['ref_guad', 19.4263, -99.1701, 'Paseo de la Reforma & Río Guadalquivir'],
+  ['ref_tiber', 19.4275, -99.1674, 'Paseo de la Reforma & Río Tiber'],
+  ['ref_rhin', 19.4286, -99.1650, 'Paseo de la Reforma & Río Rhin'],
+  ['ref_palma', 19.4296, -99.1628, 'Paseo de la Reforma & Glorieta de la Palma'],
+  ['ref_sena', 19.4305, -99.1607, 'Paseo de la Reforma & Río Sena'],
+  ['ref_ins', 19.4319, -99.1576, 'Paseo de la Reforma & Av. Insurgentes Centro'],
+  ['bal_guad', 19.4269, -99.1702, 'Río Balsas & Río Guadalquivir'],
+  ['bal_tiber', 19.4280, -99.1675, 'Río Balsas & Río Tiber'],
+  ['bal_rhin', 19.4290, -99.1651, 'Río Balsas & Río Rhin'],
+  ['nilo_palma', 19.4300, -99.1629, 'Río Nilo & Río Danubio'],
+  ['ler_circ', 19.4267, -99.1726, 'Río Lerma & Circuito Interior'],
+  ['ler_guad', 19.4275, -99.1704, 'Río Lerma & Río Guadalquivir'],
+  ['ler_tiber', 19.4285, -99.1677, 'Río Lerma & Río Tiber'],
+  ['ler_rhin', 19.4295, -99.1653, 'Río Lerma & Río Rhin'],
+  ['ler_dan', 19.4304, -99.1631, 'Río Lerma & Río Danubio'],
+  ['ler_sena', 19.4313, -99.1610, 'Río Lerma & Río Sena'],
+  ['ler_neva', 19.4322, -99.1588, 'Río Lerma & Río Neva'],
+  ['ler_ins', 19.4326, -99.1574, 'Río Lerma & Av. Insurgentes Centro'],
+  ['ebro_guad', 19.4283, -99.1705, 'Río Ebro & Río Guadalquivir'],
+  ['ama_tiber', 19.4292, -99.1678, 'Río Amazonas & Río Tiber'],
+  ['ama_rhin', 19.4301, -99.1654, 'Río Amazonas & Río Rhin'],
+  ['amur_sena', 19.4318, -99.1611, 'Río Amur & Río Sena'],
+  ['pan_circ', 19.4282, -99.1728, 'Río Pánuco & Circuito Interior'],
+  ['pan_guad', 19.4290, -99.1706, 'Río Pánuco & Río Guadalquivir'],
+  ['pan_tiber', 19.4299, -99.1680, 'Río Pánuco & Río Tiber'],
+  ['pan_rhin', 19.4308, -99.1655, 'Río Pánuco & Río Rhin'],
+  ['pan_dan', 19.4316, -99.1634, 'Río Pánuco & Río Danubio'],
+  ['pan_sena', 19.4323, -99.1612, 'Río Pánuco & Río Sena'],
+  ['pan_neva', 19.4330, -99.1590, 'Río Pánuco & Río Neva'],
+  ['po_tiber', 19.4305, -99.1681, 'Río Po & Río Tiber'],
+  ['naz_guad', 19.4303, -99.1708, 'Río Nazas & Río Guadalquivir'],
+  ['naz_tiber', 19.4311, -99.1681, 'Río Nazas & Río Tiber'],
+  ['naz_rhin', 19.4318, -99.1656, 'Río Nazas & Río Rhin'],
+  ['naz_dan', 19.4325, -99.1635, 'Río Nazas & Río Danubio'],
+  ['vil_circ', 19.4315, -99.1725, 'Calz. Manuel Villalongín & Circuito Interior'],
+  ['vil_tiber', 19.4321, -99.1682, 'Calz. Manuel Villalongín & Río Tiber'],
+  ['vil_rhin', 19.4326, -99.1657, 'Calz. Manuel Villalongín & Río Rhin'],
+  ['vil_sena', 19.4333, -99.1615, 'Calz. Manuel Villalongín & Río Sena'],
+  ['vil_neva', 19.4337, -99.1592, 'Calz. Manuel Villalongín & Río Neva'],
+  ['vil_ins', 19.4342, -99.1569, 'Calz. Manuel Villalongín & Av. Insurgentes'],
+  ['mon_madre', 19.4318, -99.1594, 'Monumento a la Madre & Jardín del Arte']
+];
+
+const RAW_EDGES = [
+  ['ref_circ', 'ref_guad', 'Paseo de la Reforma', true], ['ref_guad', 'ref_tiber', 'Paseo de la Reforma', true],
+  ['ref_tiber', 'ref_rhin', 'Paseo de la Reforma', true], ['ref_rhin', 'ref_palma', 'Paseo de la Reforma', true],
+  ['ref_palma', 'ref_sena', 'Paseo de la Reforma', true], ['ref_sena', 'ref_ins', 'Paseo de la Reforma', true],
+  ['ref_ins', 'ler_ins', 'Av. Insurgentes Centro', true], ['ler_ins', 'vil_ins', 'Av. Insurgentes Centro', true],
+  ['vil_circ', 'vil_tiber', 'Calz. Manuel Villalongín', true], ['vil_tiber', 'vil_rhin', 'Calz. Manuel Villalongín', true],
+  ['vil_rhin', 'vil_sena', 'Calz. Manuel Villalongín', true], ['vil_sena', 'vil_neva', 'Calz. Manuel Villalongín', true],
+  ['vil_neva', 'vil_ins', 'Calz. Manuel Villalongín', true],
+  ['ref_circ', 'ler_circ', 'Circuito Interior', true], ['ler_circ', 'pan_circ', 'Circuito Interior', true], ['pan_circ', 'vil_circ', 'Circuito Interior', true],
+  ['ref_tiber', 'bal_tiber', 'Río Tiber', false], ['bal_tiber', 'ler_tiber', 'Río Tiber', false], ['ler_tiber', 'ama_tiber', 'Río Tiber', false],
+  ['ama_tiber', 'pan_tiber', 'Río Tiber', false], ['pan_tiber', 'po_tiber', 'Río Tiber', false], ['po_tiber', 'naz_tiber', 'Río Tiber', false],
+  ['naz_tiber', 'vil_tiber', 'Río Tiber', false],
+  ['ref_guad', 'bal_guad', 'Río Guadalquivir', false], ['bal_guad', 'ler_guad', 'Río Guadalquivir', false], ['ler_guad', 'ebro_guad', 'Río Guadalquivir', false],
+  ['ebro_guad', 'pan_guad', 'Río Guadalquivir', false], ['pan_guad', 'naz_guad', 'Río Guadalquivir', false],
+  ['ref_rhin', 'bal_rhin', 'Río Rhin', false], ['bal_rhin', 'ler_rhin', 'Río Rhin', false], ['ler_rhin', 'ama_rhin', 'Río Rhin', false],
+  ['ama_rhin', 'pan_rhin', 'Río Rhin', false], ['pan_rhin', 'naz_rhin', 'Río Rhin', false], ['naz_rhin', 'vil_rhin', 'Río Rhin', false],
+  ['ref_palma', 'nilo_palma', 'Río Nilo', false], ['nilo_palma', 'ler_dan', 'Río Danubio', false], ['ler_dan', 'pan_dan', 'Río Danubio', false],
+  ['pan_dan', 'naz_dan', 'Río Danubio', false],
+  ['ref_sena', 'ler_sena', 'Río Sena', false], ['ler_sena', 'amur_sena', 'Río Sena', false], ['amur_sena', 'pan_sena', 'Río Sena', false],
+  ['pan_sena', 'vil_sena', 'Río Sena', false],
+  ['ler_neva', 'ler_ins', 'Río Lerma', false], ['ler_neva', 'pan_neva', 'Río Neva', false], ['pan_neva', 'vil_neva', 'Río Neva', false],
+  ['ler_sena', 'mon_madre', 'Jardín del Arte', false], ['ler_neva', 'mon_madre', 'Río Neva', false], ['pan_sena', 'mon_madre', 'Sullivan', false],
+  ['pan_neva', 'mon_madre', 'Río Neva', false], ['ref_sena', 'mon_madre', 'Sendero Reforma-Sullivan', false],
+  ['ler_circ', 'ler_guad', 'Río Lerma', false], ['ler_guad', 'ler_tiber', 'Río Lerma', false], ['ler_tiber', 'ler_rhin', 'Río Lerma', false],
+  ['ler_rhin', 'ler_dan', 'Río Lerma', false], ['ler_dan', 'ler_sena', 'Río Lerma', false], ['ler_sena', 'ler_neva', 'Río Lerma', false],
+  ['bal_guad', 'bal_tiber', 'Río Balsas', false], ['bal_tiber', 'bal_rhin', 'Río Balsas', false],
+  ['ebro_guad', 'ama_tiber', 'Río Ebro', false], ['ama_tiber', 'ama_rhin', 'Río Amazonas', false], ['ama_rhin', 'ler_dan', 'Río Amazonas', false],
+  ['amur_sena', 'mon_madre', 'Río Amur', false],
+  ['pan_circ', 'pan_guad', 'Río Pánuco', false], ['pan_guad', 'pan_tiber', 'Río Pánuco', false], ['pan_tiber', 'pan_rhin', 'Río Pánuco', false],
+  ['pan_rhin', 'pan_dan', 'Río Pánuco', false], ['pan_dan', 'pan_sena', 'Río Pánuco', false], ['pan_sena', 'pan_neva', 'Río Pánuco', false],
+  ['naz_guad', 'naz_tiber', 'Río Nazas', false], ['naz_tiber', 'naz_rhin', 'Río Nazas', false], ['naz_rhin', 'naz_dan', 'Río Nazas', false],
+  ['naz_dan', 'pan_sena', 'Río Nazas', false]
+];
+
+const ICONS = {
+  search: '<circle cx="11" cy="11" r="7.5"/><path d="m20.5 20.5-4.2-4.2"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  back: '<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  close: '<path d="M18 6 6 18M6 6l12 12"/>',
+  swap: '<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>',
+  pin: '<path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  locate: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+  flag: '<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  chev: '<path d="m9 18 6-6-6-6"/>',
+  left: '<path d="M9 14 4 9l5-5"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/>',
+  right: '<path d="m15 14 5-5-5-5"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/>',
+  up: '<path d="m5 11 7-7 7 7"/><path d="M12 20V4"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
+  play: '<path d="M7 4v16l13-8z"/>',
+  trash: '<path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v5M14 11v5"/>',
+  file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/>',
+  code: '<path d="m16 18 6-6-6-6M8 6l-6 6 6 6"/>',
+  reset: '<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/>',
+  info: '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/>',
+  bulb: '<path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/>',
+  alert: '<circle cx="12" cy="12" r="9"/><path d="M12 7v6M12 16.5h.01"/>',
+  message: '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22z"/><path d="M12 8v4M12 15.5h.01"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  cone: '<path d="M9.3 6h5.4M8.2 10h7.6M7 14h10M10 2h4l5 18H5z"/><path d="M3 20h18"/>',
+  dots: '<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+  cup: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4z"/><path d="M7 2v3M11 2v3"/>',
+  cross: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/>',
+  fork: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/>',
+  store: '<path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M3 9h18M9.5 20v-6h5v6"/>',
+  bank: '<path d="M3 21h18M5 18v-7M9.5 18v-7M14.5 18v-7M19 18v-7M12 3l8.5 5h-17z"/>',
+  walk: '<circle cx="13" cy="4" r="2"/><path d="m9 21 2.5-6.5L14 17v4M7 12l2.5-4L13 9l2.5 3H18M11.5 14.5 10 8"/>',
+  layers: '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 17 10 5 10-5M2 12l10 5 10-5"/>'
+};
+
+function icon(name) {
+  return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>';
+}
+
+function esc(text) {
+  const div = document.createElement('div');
+  div.textContent = text === undefined || text === null ? '' : String(text);
+  return div.innerHTML;
+}
+
+function storeGet(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {}
+  return fallback;
+}
+
+function storeSet(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {}
+}
+
+function haversineMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const toRad = Math.PI / 180;
+  const dLat = (lat2 - lat1) * toRad;
+  const dLon = (lon2 - lon1) * toRad;
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * toRad) * Math.cos(lat2 * toRad) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  return 2 * R * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
+function pointToRoute(lat, lng, coords) {
+  if (!coords || coords.length < 2) return { distance: Infinity, progress: 0 };
+  const mLat = 110540;
+  const mLng = 111320 * Math.cos(lat * Math.PI / 180);
+  let best = Infinity;
+  let bestProgress = 0;
+  let cumulative = 0;
+  for (let i = 0; i < coords.length - 1; i++) {
+    const ax = (coords[i][1] - lng) * mLng;
+    const ay = (coords[i][0] - lat) * mLat;
+    const bx = (coords[i + 1][1] - lng) * mLng;
+    const by = (coords[i + 1][0] - lat) * mLat;
+    const dx = bx - ax;
+    const dy = by - ay;
+    const lenSq = dx * dx + dy * dy;
+    let t = 0;
+    if (lenSq > 1e-9) t = Math.max(0, Math.min(1, -(ax * dx + ay * dy) / lenSq));
+    const qx = ax + t * dx;
+    const qy = ay + t * dy;
+    const d = Math.sqrt(qx * qx + qy * qy);
+    if (d < best) {
+      best = d;
+      bestProgress = cumulative + t * Math.sqrt(lenSq);
+    }
+    cumulative += Math.sqrt(lenSq);
+  }
+  return { distance: Math.round(best), progress: bestProgress };
+}
+
+function insideArea(lat, lng) {
+  const poly = AREA.boundary;
+  let inside = false;
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const yi = poly[i][0], xi = poly[i][1], yj = poly[j][0], xj = poly[j][1];
+    const crosses = (yi > lat) !== (yj > lat) && lng < (xj - xi) * (lat - yi) / (yj - yi) + xi;
+    if (crosses) inside = !inside;
+  }
+  return inside;
+}
+
+function buildGraph() {
+  const nodes = new Map();
+  const adj = new Map();
+  for (const raw of RAW_NODES) {
+    nodes.set(raw[0], { id: raw[0], lat: raw[1], lng: raw[2], name: raw[3] });
+    adj.set(raw[0], []);
+  }
+  for (const e of RAW_EDGES) {
+    const u = nodes.get(e[0]);
+    const v = nodes.get(e[1]);
+    const dist = haversineMeters(u.lat, u.lng, v.lat, v.lng);
+    adj.get(e[0]).push({ to: e[1], dist: dist, street: e[2], isMain: e[3] });
+    adj.get(e[1]).push({ to: e[0], dist: dist, street: e[2], isMain: e[3] });
+  }
+  return { nodes: nodes, adj: adj };
+}
+
+class MinHeap {
+  constructor() { this.heap = []; }
+  size() { return this.heap.length; }
+  push(item) {
+    const h = this.heap;
+    h.push(item);
+    let i = h.length - 1;
+    while (i > 0) {
+      const p = Math.floor((i - 1) / 2);
+      if (h[i].f >= h[p].f) break;
+      const tmp = h[i]; h[i] = h[p]; h[p] = tmp;
+      i = p;
+    }
+  }
+  pop() {
+    const h = this.heap;
+    if (h.length === 0) return null;
+    const top = h[0];
+    const last = h.pop();
+    if (h.length > 0) {
+      h[0] = last;
+      let i = 0;
+      while (true) {
+        const l = 2 * i + 1;
+        const r = 2 * i + 2;
+        let m = i;
+        if (l < h.length && h[l].f < h[m].f) m = l;
+        if (r < h.length && h[r].f < h[m].f) m = r;
+        if (m === i) break;
+        const tmp = h[i]; h[i] = h[m]; h[m] = tmp;
+        i = m;
+      }
+    }
+    return top;
+  }
+}
+
+const graph = buildGraph();
+let zones = [];
+
+function riskField(lat, lng) {
+  let phi = 0;
+  for (const z of zones) {
+    const d = haversineMeters(lat, lng, z.lat, z.lng);
+    const reach = z.radius * 1.35;
+    if (d <= reach) {
+      const severity = z.level === 'high' ? 2.8 : 1.5;
+      const k = 1 - d / reach;
+      phi += severity * k * k;
+    }
+  }
+  return phi;
+}
+
+function safeField(lat, lng) {
+  let bonus = 0;
+  for (const s of SAFE_SPOTS) {
+    const d = haversineMeters(lat, lng, s.lat, s.lng);
+    if (d <= 135) bonus += 0.55 * (1 - d / 135);
+  }
+  return Math.min(bonus, 1.4);
+}
+
+function lineOfSightRisk(latN, lngN, latB, lngB) {
+  const local = riskField(latN, lngN);
+  let ray = 0;
+  for (const t of [0.25, 0.5, 0.75]) {
+    ray += riskField(latN + (latB - latN) * t, lngN + (lngB - lngN) * t);
+  }
+  return local * 0.65 + (ray / 3) * 0.35;
+}
+
+function nearestNode(lat, lng) {
+  let bestId = null;
+  let bestDist = Infinity;
+  for (const node of graph.nodes.values()) {
+    const d = haversineMeters(lat, lng, node.lat, node.lng);
+    if (d < bestDist) {
+      bestDist = d;
+      bestId = node.id;
+    }
+  }
+  return { id: bestId, dist: bestDist };
+}
+
+const ALPHA = 1.35;
+const BETA = 32.0;
+const V_MAX = 1.55;
+const GAMMA = 0.14;
+
+function runAStar(mode, from, to) {
+  const t0 = performance.now();
+  const start = nearestNode(from.lat, from.lng);
+  const goal = nearestNode(to.lat, to.lng);
+  const goalNode = graph.nodes.get(goal.id);
+
+  function heuristic(node) {
+    const d = haversineMeters(node.lat, node.lng, goalNode.lat, goalNode.lng);
+    if (mode === 'safe') {
+      const phi = lineOfSightRisk(node.lat, node.lng, goalNode.lat, goalNode.lng);
+      return Math.max(0, d * (1 + ALPHA * phi) - BETA * safeField(node.lat, node.lng));
+    }
+    return (d / V_MAX) * (1 + GAMMA * riskField(node.lat, node.lng));
+  }
+
+  const open = new MinHeap();
+  const gScore = new Map();
+  const cameFrom = new Map();
+  const closed = new Set();
+  const explored = [];
+  gScore.set(start.id, 0);
+  open.push({ id: start.id, g: 0, f: heuristic(graph.nodes.get(start.id)) });
+  let found = false;
+
+  while (open.size() > 0) {
+    const cur = open.pop();
+    if (closed.has(cur.id)) continue;
+    closed.add(cur.id);
+    const curNode = graph.nodes.get(cur.id);
+    explored.push([curNode.lat, curNode.lng]);
+    if (cur.id === goal.id) {
+      found = true;
+      break;
+    }
+    for (const edge of graph.adj.get(cur.id)) {
+      if (closed.has(edge.to)) continue;
+      const next = graph.nodes.get(edge.to);
+      const midLat = (curNode.lat + next.lat) / 2;
+      const midLng = (curNode.lng + next.lng) / 2;
+      const edgePhi = (riskField(curNode.lat, curNode.lng) + 2 * riskField(midLat, midLng) + riskField(next.lat, next.lng)) / 4;
+      let cost;
+      if (mode === 'safe') {
+        const mainDiscount = edge.isMain ? 0.88 : 1.0;
+        cost = edge.dist * Math.max(0.55, (1 + 5.2 * edgePhi - 0.30 * safeField(midLat, midLng)) * mainDiscount);
+      } else {
+        const speed = edge.isMain ? 1.55 : 1.22;
+        cost = (edge.dist / speed) * (1 + 0.25 * edgePhi);
+      }
+      const g = cur.g + cost;
+      if (!gScore.has(edge.to) || g < gScore.get(edge.to)) {
+        gScore.set(edge.to, g);
+        cameFrom.set(edge.to, { from: cur.id, street: edge.street, dist: edge.dist });
+        open.push({ id: edge.to, g: g, f: g + heuristic(next) });
+      }
+    }
+  }
+
+  const computeMs = performance.now() - t0;
+  if (!found) return null;
+
+  const coords = [];
+  const segStreets = [];
+  let distM = 0;
+  let id = goal.id;
+  while (id) {
+    const n = graph.nodes.get(id);
+    coords.unshift([n.lat, n.lng]);
+    const prev = cameFrom.get(id);
+    if (prev) {
+      segStreets.unshift(prev.street);
+      distM += prev.dist;
+      id = prev.from;
+    } else {
+      id = null;
+    }
+  }
+  if (start.dist > 6) {
+    coords.unshift([from.lat, from.lng]);
+    segStreets.unshift(segStreets.length ? segStreets[0] : 'la calle');
+    distM += start.dist;
+  }
+  if (goal.dist > 6) {
+    coords.push([to.lat, to.lng]);
+    segStreets.push(segStreets.length ? segStreets[segStreets.length - 1] : 'la calle');
+    distM += goal.dist;
+  }
+
+  const risks = [];
+  for (const z of zones) {
+    if (pointToRoute(z.lat, z.lng, coords).distance <= z.radius) risks.push(z);
+  }
+  const safe = [];
+  for (const s of SAFE_SPOTS) {
+    if (pointToRoute(s.lat, s.lng, coords).distance <= 125) safe.push(s);
+  }
+  const streets = [];
+  for (const s of segStreets) {
+    if (streets.indexOf(s) === -1) streets.push(s);
+  }
+
+  return {
+    mode: mode,
+    coords: coords,
+    segStreets: segStreets,
+    distM: distM,
+    min: Math.max(1, Math.round(distM / WALK_M_PER_MIN)),
+    risks: risks,
+    safe: safe,
+    streets: streets,
+    explored: explored,
+    computeMs: computeMs
+  };
+}
+
+function sameCoords(a, b) {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i][0] !== b[i][0] || a[i][1] !== b[i][1]) return false;
+  }
+  return true;
+}
+
+function computeTrip(from, to) {
+  if (!insideArea(from.lat, from.lng) && nearestNode(from.lat, from.lng).dist > OUT_OF_AREA_M) return { error: 'fuera' };
+  if (!insideArea(to.lat, to.lng) && nearestNode(to.lat, to.lng).dist > OUT_OF_AREA_M) return { error: 'fuera' };
+  if (nearestNode(from.lat, from.lng).id === nearestNode(to.lat, to.lng).id) return { error: 'cerca' };
+  const safe = runAStar('safe', from, to);
+  const fast = runAStar('fast', from, to);
+  if (!safe || !fast) return { error: 'sin-ruta' };
+  const same = sameCoords(safe.coords, fast.coords) || fast.distM >= safe.distM;
+  return { safe: safe, fast: same ? safe : fast, same: same };
+}
+
+function prettyName(name) {
+  return name.replace(' & ', ' y ').replace('Calz. ', 'Calzada ').replace('Av. ', 'Avenida ');
+}
+
+function nameAt(lat, lng) {
+  const near = nearestNode(lat, lng);
+  const base = prettyName(graph.nodes.get(near.id).name);
+  if (near.dist > 45) return 'Cerca de ' + base;
+  return base;
+}
+
+function atPlace(name) {
+  if (name.indexOf('Cerca de ') === 0) return 'cerca de ' + name.slice(9);
+  return 'en ' + name;
+}
+
+function categoryOf(id) {
+  for (const c of BIZ_CATEGORIES) if (c.id === id) return c;
+  return BIZ_CATEGORIES[0];
+}
+
+function tierOf(id) {
+  for (const t of BIZ_TIERS) if (t.id === id) return t;
+  return BIZ_TIERS[1];
+}
+
+function reportTypeOf(id) {
+  for (const t of REPORT_TYPES) if (t.id === id) return t;
+  return REPORT_TYPES[REPORT_TYPES.length - 1];
+}
+
+function whenLabel(id) {
+  for (const w of REPORT_WHEN) if (w.id === id) return w.label;
+  return '';
+}
+
+function formatDist(m) {
+  if (m < 1000) return Math.max(10, Math.round(m / 10) * 10) + ' m';
+  return (m / 1000).toFixed(1) + ' km';
+}
+
+function clockIn(min) {
+  return new Date(Date.now() + min * 60000).toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+}
+
+function dateLabel(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-MX', { day: 'numeric', month: 'short' }) + ', ' + d.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' });
+}
+
+function normalize(text) {
+  return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+}
+
+let reports = storeGet('goia.reports', []);
+let businesses = storeGet('goia.businesses', null) || SAMPLE_BUSINESSES.map(function (b) { return Object.assign({}, b); });
+let recents = storeGet('goia.recents', []);
+
+const state = {
+  plan: { from: USER_LOCATION, to: null, active: 'to', query: '' },
+  choice: 'safe',
+  trip: null,
+  nav: null,
+  lastTrip: null,
+  report: null,
+  lastReport: null,
+  bizDraft: null,
+  tech: storeGet('goia.tech', false),
+  showExplored: false,
+  pick: null,
+  stack: []
+};
+
+function rebuildZones() {
+  zones = [];
+  for (const z of SAMPLE_ZONES) zones.push(Object.assign({ sample: true }, z));
+  for (const r of reports) {
+    const type = reportTypeOf(r.type);
+    zones.push({ id: r.id, lat: r.lat, lng: r.lng, radius: REPORT_RADIUS_M, level: type.level, title: type.label, description: r.note, place: r.place, createdAt: r.createdAt, sample: false });
+  }
+}
+
+function buildPlaces() {
+  const places = [];
+  for (const l of LANDMARKS) {
+    const n = graph.nodes.get(l.node);
+    places.push({ id: 'l:' + l.name, name: l.name, sub: 'Colonia Cuauhtémoc', lat: n.lat, lng: n.lng, kind: 'landmark' });
+  }
+  for (const b of businesses) {
+    places.push({ id: 'b:' + b.id, name: b.name, sub: categoryOf(b.category).label + ' · ' + nameAt(b.lat, b.lng), lat: b.lat, lng: b.lng, kind: 'shop', icon: categoryOf(b.category).icon });
+  }
+  for (const n of graph.nodes.values()) {
+    places.push({ id: 'n:' + n.id, name: prettyName(n.name), sub: 'Esquina · Colonia Cuauhtémoc', lat: n.lat, lng: n.lng, kind: 'corner' });
+  }
+  return places;
+}
+
+function searchPlaces(query) {
+  const tokens = normalize(query).split(/\s+/).filter(function (t) { return t.length > 0; });
+  const found = [];
+  for (const p of buildPlaces()) {
+    const hay = normalize(p.name + ' ' + p.sub);
+    let ok = true;
+    for (const t of tokens) {
+      if (hay.indexOf(t) === -1) ok = false;
+    }
+    if (ok) found.push(p);
+    if (found.length >= 8) break;
+  }
+  return found;
+}
+
+function placeIcon(p) {
+  if (p.kind === 'me') return 'locate';
+  if (p.kind === 'shop') return p.icon || 'store';
+  if (p.kind === 'recent') return 'clock';
+  if (p.kind === 'point') return 'pin';
+  if (p.kind === 'corner') return 'pin';
+  return 'flag';
+}
+
+function addRecent(place) {
+  if (place.kind === 'me') return;
+  const kept = [];
+  for (const r of recents) if (r.name !== place.name) kept.push(r);
+  kept.unshift({ id: place.id, name: place.name, sub: place.sub, lat: place.lat, lng: place.lng, kind: place.kind, icon: place.icon });
+  recents = kept.slice(0, 4);
+  storeSet('goia.recents', recents);
+}
+
+function matchedBusinesses(coords) {
+  const list = [];
+  for (const b of businesses) {
+    const tier = tierOf(b.tier);
+    const prox = pointToRoute(b.lat, b.lng, coords);
+    if (prox.distance <= tier.radius) list.push({ biz: b, distance: prox.distance, progress: prox.progress });
+  }
+  list.sort(function (a, b) { return a.progress - b.progress; });
+  return list;
+}
+
+function describeRoute(route) {
+  const lines = [];
+  if (route.risks.length === 0) {
+    lines.push({ ok: true, text: 'Evita las zonas con reportes.' });
+  } else {
+    const names = [];
+    for (const r of route.risks) {
+      const name = r.place || r.title;
+      if (names.indexOf(name.replace('Cerca de ', '')) === -1) names.push(name.replace('Cerca de ', ''));
+    }
+    const label = route.risks.length === 1 ? 'una zona' : route.risks.length + ' zonas';
+    lines.push({ ok: false, text: 'Pasa cerca de ' + label + ' con reportes: ' + names.join(', ') + '.' });
+  }
+  if (route.safe.length > 0) {
+    const label = route.safe.length === 1 ? 'un punto' : route.safe.length + ' puntos';
+    lines.push({ ok: true, text: 'Pasa junto a ' + label + ' con vigilancia o comercio abierto.' });
+  }
+  return lines;
+}
+
+function tripSummary(trip) {
+  if (trip.same) return 'Aquí el camino más rápido es también el de menor riesgo estimado.';
+  const extra = trip.safe.min - trip.fast.min;
+  const avoided = trip.fast.risks.length - trip.safe.risks.length;
+  let text = extra <= 0 ? 'La ruta GoIA tarda lo mismo' : 'La ruta GoIA tarda ' + extra + ' min más';
+  if (avoided > 0) {
+    text += ' y evita ' + (avoided === 1 ? 'una zona' : avoided + ' zonas') + ' con reportes.';
+  } else if (trip.safe.safe.length > trip.fast.safe.length) {
+    text += ' y pasa junto a más puntos con vigilancia.';
+  } else {
+    text += ' y va por calles con menos riesgo estimado.';
+  }
+  return text;
+}
+
+let map;
+const COLORS = {};
+
+function readColors() {
+  const css = getComputedStyle(document.documentElement);
+  COLORS.ink = css.getPropertyValue('--ink').trim();
+  COLORS.clay = css.getPropertyValue('--zone-clay').trim();
+  COLORS.route = css.getPropertyValue('--route').trim();
+  COLORS.routeDeep = css.getPropertyValue('--route-deep').trim();
+  COLORS.paper = css.getPropertyValue('--paper').trim();
+  COLORS.fast = css.getPropertyValue('--fast-gray').trim();
+  COLORS.fastDeep = css.getPropertyValue('--fast-gray-deep').trim();
+}
+const layers = {};
+let userMarker = null;
+let walkerMarker = null;
+
+function divIcon(cls, size, html) {
+  return L.divIcon({ className: '', html: '<div class="' + cls + '">' + (html || '') + '</div>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
+}
+
+function initMap() {
+  map = L.map('map', { zoomControl: false, attributionControl: true, minZoom: 14, maxZoom: 19 }).setView(AREA.center, AREA.zoom);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+  map.attributionControl.setPrefix(false);
+  map.attributionControl.setPosition(isMobile() ? 'topright' : 'bottomright');
+  if (!isMobile()) L.control.zoom({ position: 'bottomright', zoomInTitle: 'Acercar', zoomOutTitle: 'Alejar' }).addTo(map);
+
+  L.polygon(AREA.boundary, { color: COLORS.ink, weight: 1.5, opacity: 0.35, dashArray: '2 6', fill: false, interactive: false }).addTo(map);
+  layers.zones = L.layerGroup().addTo(map);
+  layers.tech = L.layerGroup().addTo(map);
+  layers.routes = L.layerGroup().addTo(map);
+  layers.biz = L.layerGroup().addTo(map);
+  layers.marks = L.layerGroup().addTo(map);
+  userMarker = L.marker([USER_LOCATION.lat, USER_LOCATION.lng], { icon: divIcon('m-me', 20), keyboard: false, title: 'Tu ubicación' });
+
+  map.on('click', onMapClick);
+  map.on('move', updatePickLabel);
+}
+
+function isMobile() {
+  return window.matchMedia('(max-width: 899px)').matches;
+}
+
+function fitTo(latlngs) {
+  if (!latlngs.length) return;
+  const bounds = L.latLngBounds(latlngs);
+  const panel = document.getElementById('panel');
+  if (isMobile()) {
+    map.fitBounds(bounds, { paddingTopLeft: [28, 70], paddingBottomRight: [28, panel.offsetHeight + 28], maxZoom: 17 });
+  } else {
+    map.fitBounds(bounds, { padding: [56, 56], maxZoom: 17 });
+  }
+}
+
+function centerOn(latlng, zoom) {
+  map.setView(latlng, zoom, { animate: false });
+  if (isMobile()) map.panBy([0, document.getElementById('panel').offsetHeight / 2], { animate: false });
+}
+
+function keepVisible(pos) {
+  const pt = map.latLngToContainerPoint(pos);
+  const size = map.getSize();
+  const bottom = isMobile() ? size.y - document.getElementById('panel').offsetHeight : size.y;
+  if (pt.x < 50 || pt.x > size.x - 50 || pt.y < 110 || pt.y > bottom - 50) centerOn(pos, map.getZoom());
+}
+
+function drawZones() {
+  layers.zones.clearLayers();
+  for (const z of zones) {
+    const circle = L.circle([z.lat, z.lng], {
+      radius: z.radius,
+      color: COLORS.clay,
+      weight: 1.5,
+      dashArray: '4 5',
+      fillColor: COLORS.clay,
+      fillOpacity: z.level === 'high' ? 0.2 : 0.12,
+      bubblingMouseEvents: false
+    });
+    let body = '<span class="pop-t">' + esc(z.sample ? z.title : z.title + ' · ' + (z.place || '')) + '</span>';
+    if (z.description) body += esc(z.description) + '<br>';
+    body += '<span class="muted">' + (z.sample ? 'Reporte de ejemplo' : 'Tu reporte · ' + esc(dateLabel(z.createdAt))) + '</span>';
+    circle.bindPopup(body);
+    circle.addTo(layers.zones);
+  }
+}
+
+function drawRoute(route, kind, strong) {
+  const opts = { bubblingMouseEvents: false, lineCap: 'round', lineJoin: 'round' };
+  let lines = [];
+  if (kind === 'safe') {
+    lines.push(L.polyline(route.coords, Object.assign({}, opts, { color: COLORS.routeDeep, weight: strong ? 12 : 9, opacity: strong ? 1 : 0.7 })));
+    lines.push(L.polyline(route.coords, Object.assign({}, opts, { color: COLORS.route, weight: strong ? 7 : 5, opacity: strong ? 1 : 0.8 })));
+  } else {
+    lines.push(L.polyline(route.coords, Object.assign({}, opts, { color: COLORS.paper, weight: strong ? 10 : 8, opacity: 0.9 })));
+    lines.push(L.polyline(route.coords, Object.assign({}, opts, { color: strong ? COLORS.fastDeep : COLORS.fast, weight: strong ? 6 : 5, dashArray: '0.1 11' })));
+  }
+  for (const line of lines) {
+    if (currentView() === 'rutas') {
+      line.on('click', function () { selectRoute(kind); });
+    }
+    line.addTo(layers.routes);
+  }
+}
+
+function drawEndpoints(from, to) {
+  if (from && from.kind !== 'me') L.marker([from.lat, from.lng], { icon: divIcon('m-a', 22), keyboard: false, title: 'Salida' }).addTo(layers.marks);
+  if (to) L.marker([to.lat, to.lng], { icon: divIcon('m-b', 26), keyboard: false, title: 'Destino' }).addTo(layers.marks);
+}
+
+function drawBusinesses(list, showAll) {
+  layers.biz.clearLayers();
+  const shown = showAll ? businesses.map(function (b) { return { biz: b }; }) : list;
+  for (const item of shown) {
+    const b = item.biz;
+    const cat = categoryOf(b.category);
+    const m = L.marker([b.lat, b.lng], { icon: divIcon('m-biz', 30, icon(cat.icon)), title: b.name + ', ' + cat.label, keyboard: true, bubblingMouseEvents: false });
+    m.bindPopup('<span class="pop-t">' + esc(b.name) + '</span>' + esc(b.promo) + '<br><span class="muted">' + esc(cat.label) + ' · Patrocinado</span>');
+    m.addTo(layers.biz);
+    if (showAll) {
+      L.circle([b.lat, b.lng], { radius: tierOf(b.tier).radius, color: COLORS.ink, weight: 1, opacity: 0.4, dashArray: '2 4', fill: false, interactive: false }).addTo(layers.biz);
+    }
+  }
+}
+
+function drawMap(view) {
+  layers.routes.clearLayers();
+  layers.marks.clearLayers();
+  layers.biz.clearLayers();
+  layers.tech.clearLayers();
+  if (walkerMarker) {
+    walkerMarker.remove();
+    walkerMarker = null;
+  }
+  const showUser = view !== 'caminar' && view !== 'llegada';
+  if (showUser) userMarker.addTo(map); else userMarker.remove();
+
+  if (view === 'rutas' && state.trip && !state.trip.error) {
+    const trip = state.trip;
+    if (!trip.same) drawRoute(trip.fast, 'fast', state.choice === 'fast');
+    drawRoute(trip.safe, 'safe', state.choice === 'safe' || trip.same);
+    drawEndpoints(state.plan.from, state.plan.to);
+    const chosen = state.choice === 'fast' ? trip.fast : trip.safe;
+    drawBusinesses(matchedBusinesses(chosen.coords), false);
+    if (state.tech && state.showExplored) {
+      for (const p of chosen.explored) L.circleMarker(p, { radius: 4, color: COLORS.ink, weight: 1, fillColor: COLORS.ink, fillOpacity: 0.35, interactive: false }).addTo(layers.tech);
+    }
+    fitTo(trip.safe.coords.concat(trip.fast.coords));
+    return;
+  }
+  if (view === 'rutas' || view === 'planear') {
+    drawEndpoints(state.plan.from, state.plan.to);
+    const pts = [];
+    if (state.plan.from) pts.push([state.plan.from.lat, state.plan.from.lng]);
+    if (state.plan.to) pts.push([state.plan.to.lat, state.plan.to.lng]);
+    if (pts.length === 2) fitTo(pts);
+    return;
+  }
+  if (view === 'caminar' && state.nav) {
+    const nav = state.nav;
+    drawRoute(nav.route, nav.kind, true);
+    L.marker([nav.to.lat, nav.to.lng], { icon: divIcon('m-b', 26), keyboard: false, title: 'Destino' }).addTo(layers.marks);
+    drawBusinesses(nav.bizOnRoute, false);
+    const pos = positionAt(nav.p);
+    walkerMarker = L.marker(pos, { icon: divIcon('m-me', 20), keyboard: false, zIndexOffset: 1000 }).addTo(map);
+    centerOn(pos, 17);
+    return;
+  }
+  if (view === 'llegada' && state.lastTrip) {
+    drawRoute({ coords: state.lastTrip.coords }, state.lastTrip.kind, true);
+    L.marker([state.lastTrip.to.lat, state.lastTrip.to.lng], { icon: divIcon('m-b', 26), keyboard: false }).addTo(layers.marks);
+    fitTo(state.lastTrip.coords);
+    return;
+  }
+  if (view === 'reportar' && state.report) {
+    L.marker([state.report.lat, state.report.lng], { icon: divIcon('m-pin', 22), keyboard: false, title: 'Lugar del reporte' }).addTo(layers.marks);
+    L.circle([state.report.lat, state.report.lng], { radius: REPORT_RADIUS_M, color: COLORS.clay, weight: 1.5, dashArray: '4 5', fillOpacity: 0.08, interactive: false }).addTo(layers.marks);
+    centerOn([state.report.lat, state.report.lng], 17);
+    return;
+  }
+  if (view === 'comercios') {
+    drawBusinesses([], true);
+    return;
+  }
+  if (view === 'comercio' && state.bizDraft && state.bizDraft.lat) {
+    L.marker([state.bizDraft.lat, state.bizDraft.lng], { icon: divIcon('m-biz', 30, icon(categoryOf(state.bizDraft.category).icon)), keyboard: false }).addTo(layers.marks);
+    L.circle([state.bizDraft.lat, state.bizDraft.lng], { radius: tierOf(state.bizDraft.tier).radius, color: COLORS.ink, weight: 1, opacity: 0.5, dashArray: '2 4', fill: false, interactive: false }).addTo(layers.marks);
+    centerOn([state.bizDraft.lat, state.bizDraft.lng], 17);
+  }
+}
+
+function onMapClick(e) {
+  if (state.pick) return;
+  const view = currentView();
+  if (view !== 'inicio' && view !== 'planear') return;
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+  let html;
+  if (!insideArea(lat, lng) && nearestNode(lat, lng).dist > OUT_OF_AREA_M) {
+    html = '<span class="pop-t">Fuera de la zona de ejemplo</span>Por ahora GoIA cubre la colonia Cuauhtémoc.';
+  } else {
+    html = '<span class="pop-t">' + esc(nameAt(lat, lng)) + '</span>' +
+      '<div class="pop-actions"><button class="btn small" type="button" data-pop="to">Ir aquí</button>' +
+      '<button class="btn small secondary" type="button" data-pop="from">Salir desde aquí</button></div>';
+  }
+  const popup = L.popup({ closeButton: true, autoPanPaddingBottomRight: [20, isMobile() ? document.getElementById('panel').offsetHeight + 20 : 20] })
+    .setLatLng(e.latlng).setContent(html).openOn(map);
+  const el = popup.getElement();
+  if (!el) return;
+  el.addEventListener('click', function (ev) {
+    const btn = ev.target.closest('[data-pop]');
+    if (!btn) return;
+    const place = { id: 'p:' + lat.toFixed(5) + ',' + lng.toFixed(5), name: nameAt(lat, lng), sub: 'Punto en el mapa', lat: lat, lng: lng, kind: 'point' };
+    map.closePopup();
+    if (btn.dataset.pop === 'to') {
+      if (!state.plan.from) state.plan.from = USER_LOCATION;
+      state.plan.to = place;
+      go('rutas');
+    } else {
+      state.plan.from = place;
+      state.plan.active = 'to';
+      state.plan.query = '';
+      go('planear');
+    }
+  });
+}
+
+function startPick(title, start, done) {
+  state.pick = { done: done };
+  document.body.classList.add('picking');
+  document.getElementById('pick-title').textContent = title;
+  document.getElementById('pick-pin').innerHTML = icon('pin');
+  document.getElementById('pick-pin').hidden = false;
+  document.getElementById('pick-bar').hidden = false;
+  map.invalidateSize();
+  map.setView(start, 17, { animate: false });
+  updatePickLabel();
+  document.getElementById('pick-ok').focus();
+}
+
+function updatePickLabel() {
+  if (!state.pick) return;
+  const c = map.getCenter();
+  const label = document.getElementById('pick-place');
+  const ok = document.getElementById('pick-ok');
+  if (!insideArea(c.lat, c.lng) && nearestNode(c.lat, c.lng).dist > OUT_OF_AREA_M) {
+    label.textContent = 'Fuera de la zona de ejemplo. Acerca el punto a la colonia Cuauhtémoc.';
+    ok.disabled = true;
+  } else {
+    label.textContent = nameAt(c.lat, c.lng);
+    ok.disabled = false;
+  }
+}
+
+function endPick(confirmed) {
+  if (!state.pick) return;
+  const done = state.pick.done;
+  const c = map.getCenter();
+  state.pick = null;
+  document.body.classList.remove('picking');
+  document.getElementById('pick-pin').hidden = true;
+  document.getElementById('pick-bar').hidden = true;
+  map.invalidateSize();
+  if (confirmed) {
+    done({ id: 'p:' + c.lat.toFixed(5) + ',' + c.lng.toFixed(5), name: nameAt(c.lat, c.lng), sub: 'Punto en el mapa', lat: c.lat, lng: c.lng, kind: 'point' });
+  } else {
+    render();
+  }
+}
+
+function toast(message, actionLabel, action) {
+  const box = document.getElementById('toasts');
+  const el = document.createElement('div');
+  el.className = 'toast';
+  const span = document.createElement('span');
+  span.textContent = message;
+  el.appendChild(span);
+  box.appendChild(el);
+  if (!actionLabel) {
+    setTimeout(function () { el.remove(); }, 4000);
+    return;
+  }
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = actionLabel;
+  b.addEventListener('click', function () {
+    action();
+    el.remove();
+  });
+  el.appendChild(b);
+  const close = document.createElement('button');
+  close.type = 'button';
+  close.className = 'toast-close';
+  close.setAttribute('aria-label', 'Cerrar aviso');
+  close.innerHTML = icon('close');
+  close.addEventListener('click', function () { el.remove(); });
+  el.appendChild(close);
+}
+
+function confirmDialog(title, body, okLabel) {
+  const dlg = document.getElementById('confirm');
+  document.getElementById('confirm-t').textContent = title;
+  document.getElementById('confirm-b').textContent = body;
+  document.getElementById('confirm-yes').textContent = okLabel;
+  return new Promise(function (resolve) {
+    function finish(answer) {
+      dlg.close();
+      document.getElementById('confirm-yes').onclick = null;
+      document.getElementById('confirm-no').onclick = null;
+      dlg.oncancel = null;
+      resolve(answer);
+    }
+    document.getElementById('confirm-yes').onclick = function () { finish(true); };
+    document.getElementById('confirm-no').onclick = function () { finish(false); };
+    dlg.oncancel = function () { finish(false); };
+    dlg.showModal();
+  });
+}
+
+const PARENTS = {
+  inicio: null, planear: 'inicio', rutas: 'planear', caminar: 'rutas', llegada: 'inicio',
+  reportar: 'inicio', 'reporte-enviado': 'inicio', reportes: 'menu', menu: 'inicio',
+  comercios: 'menu', comercio: 'comercios'
+};
+
+function currentView() {
+  const v = location.hash.replace('#', '');
+  if (Object.prototype.hasOwnProperty.call(PARENTS, v)) return v;
+  return 'inicio';
+}
+
+function go(view, replace) {
+  if (currentView() === view && location.hash) {
+    render();
+    return;
+  }
+  if (replace) location.replace('#' + view); else location.hash = view;
+}
+
+function back() {
+  const view = currentView();
+  let parent = PARENTS[view] || 'inicio';
+  if (view === 'reportar' && state.report) parent = state.report.returnTo;
+  const s = state.stack;
+  if (s.length > 1 && s[s.length - 2] === parent) history.back(); else go(parent, true);
+}
+
+function bar(title) {
+  return '<div class="bar"><button class="icon-btn" type="button" data-action="back" aria-label="Volver">' + icon('back') + '</button>' +
+    '<span class="bar-title">' + esc(title) + '</span></div>';
+}
+
+function row(opts) {
+  const tag = opts.action ? 'button' : 'div';
+  let attrs = opts.action ? ' type="button" data-action="' + opts.action + '"' : '';
+  if (opts.id !== undefined) attrs += ' data-id="' + esc(opts.id) + '"';
+  if (opts.role) attrs += ' role="' + opts.role + '" aria-checked="' + (opts.checked ? 'true' : 'false') + '"';
+  const cls = 'row' + (opts.action ? '' : ' static');
+  return '<li><' + tag + ' class="' + cls + '"' + attrs + '>' +
+    '<span class="row-ico' + (opts.clay ? ' clay' : '') + '">' + icon(opts.icon) + '</span>' +
+    '<span class="row-txt"><span class="row-t">' + esc(opts.title) + '</span>' + (opts.sub ? '<span class="row-s">' + esc(opts.sub) + '</span>' : '') + '</span>' +
+    (opts.end ? '<span class="row-end">' + opts.end + '</span>' : '') +
+    '</' + tag + '></li>';
+}
+
+function viewHome() {
+  let html = '<div class="bar"><span class="wordmark">GoIA</span>' +
+    '<button class="icon-btn" type="button" data-action="menu" aria-label="Más opciones">' + icon('menu') + '</button></div>' +
+    '<div class="view"><h1 class="vh" tabindex="-1">¿A dónde caminas hoy?</h1>' +
+    '<button class="search" type="button" data-action="search">' + icon('search') + '<span>Busca un lugar o una esquina</span></button>' +
+    '<p class="here"><span class="dot" aria-hidden="true"></span>Estás en Río Pánuco y Río Tiber (ubicación simulada).</p>';
+  if (recents.length) {
+    html += '<h2 class="sh">Tus destinos recientes.</h2><ul class="list">';
+    for (let i = 0; i < recents.length; i++) {
+      html += row({ action: 'recent', id: i, icon: 'clock', title: recents[i].name, sub: recents[i].sub });
+    }
+    html += '</ul>';
+  }
+  html += '<h2 class="sh">Lugares en la colonia.</h2><ul class="list">';
+  const landmarks = buildPlaces();
+  for (const i of [1, 0, 4]) {
+    html += row({ action: 'landmark', id: i, icon: 'flag', title: landmarks[i].name, sub: landmarks[i].sub });
+  }
+  html += '</ul>';
+  html += '<h2 class="sh">¿Viste algo en la calle?</h2>' +
+    '<p class="lead">Tu reporte ayuda a que otras personas eviten ese tramo.</p>' +
+    '<button class="btn secondary block" type="button" data-action="report-here">' + icon('flag') + 'Reportar algo cerca de mí</button>' +
+    '<p class="note">También puedes tocar el mapa para ir a un punto.</p></div>';
+  return html;
+}
+
+function viewPlan() {
+  const p = state.plan;
+  return bar('Planear camino') +
+    '<div class="view"><h1 class="vh" tabindex="-1">Planea tu camino.</h1>' +
+    '<div class="fields"><div class="stops">' +
+    '<div class="f"><label for="in-from">Desde</label><input id="in-from" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="plan-results" aria-expanded="' + (p.active === 'from') + '" aria-describedby="plan-help" placeholder="Punto de salida" value="' + esc(p.from ? p.from.name : '') + '"></div>' +
+    '<div class="f"><label for="in-to">Hasta</label><input id="in-to" autocomplete="off" role="combobox" aria-autocomplete="list" aria-controls="plan-results" aria-expanded="' + (p.active === 'to') + '" aria-describedby="plan-help" placeholder="¿A dónde vas?" value="' + esc(p.to ? p.to.name : '') + '"></div>' +
+    '</div><button class="icon-btn swap" type="button" data-action="swap" aria-label="Intercambiar salida y destino">' + icon('swap') + '</button></div>' +
+    '<p class="visually-hidden" id="plan-help">Usa flecha abajo para ir a los resultados.</p>' +
+    '<p class="visually-hidden" id="plan-count" role="status" aria-live="polite"></p>' +
+    '<ul class="list" id="plan-results" aria-label="Resultados" style="margin-top:12px"></ul></div>';
+}
+
+function renderPlanResults() {
+  const box = document.getElementById('plan-results');
+  if (!box) return;
+  const p = state.plan;
+  const q = p.query.trim();
+  let html = '';
+  if (p.active === 'from' && (!q || normalize('tu ubicacion').indexOf(normalize(q)) !== -1)) {
+    html += row({ action: 'place', id: 'me', icon: 'locate', title: 'Tu ubicación', sub: USER_LOCATION.sub });
+  }
+  html += row({ action: 'pick-plan', icon: 'pin', title: 'Elegir en el mapa', sub: p.active === 'from' ? 'Mueve el mapa hasta tu punto de salida' : 'Mueve el mapa hasta tu destino' });
+  let list;
+  if (!q) {
+    list = [];
+    for (const r of recents) list.push(Object.assign({}, r, { kind: 'recent' }));
+    const places = buildPlaces();
+    for (let i = 0; i < LANDMARKS.length; i++) list.push(places[i]);
+  } else {
+    list = searchPlaces(q);
+  }
+  state.planList = list;
+  for (let i = 0; i < list.length; i++) {
+    html += row({ action: 'place', id: i, icon: placeIcon(list[i]), title: list[i].name, sub: list[i].sub });
+  }
+  if (q && list.length === 0) {
+    html += '<li class="note" style="padding:14px 6px">No encontramos “' + esc(q) + '” en la colonia Cuauhtémoc. Prueba con el nombre de una calle, como Río Lerma, o elige el punto en el mapa.</li>';
+  }
+  box.innerHTML = html;
+  const count = document.getElementById('plan-count');
+  if (count && q) count.textContent = list.length === 1 ? '1 resultado' : list.length + ' resultados';
+  if (count && !q) count.textContent = '';
+  for (const key of ['from', 'to']) {
+    const input = document.getElementById('in-' + key);
+    if (input) input.setAttribute('aria-expanded', p.active === key ? 'true' : 'false');
+  }
+}
+
+function choosePlace(place) {
+  const p = state.plan;
+  p[p.active] = place;
+  p.query = '';
+  if (p.active === 'to') addRecent(place);
+  if (p.from && p.to) {
+    go('rutas');
+    return;
+  }
+  p.active = p.from ? 'to' : 'from';
+  render();
+}
+
+function viewRoutes() {
+  const p = state.plan;
+  const trip = state.trip;
+  let html = bar('Rutas') + '<div class="view">';
+  if (trip.error) {
+    let msg = 'No encontramos un camino entre esos puntos dentro de la zona de ejemplo.';
+    if (trip.error === 'fuera') msg = 'Uno de los puntos está fuera de la zona de ejemplo. Por ahora GoIA cubre la colonia Cuauhtémoc.';
+    if (trip.error === 'cerca') msg = 'La salida y el destino están en la misma esquina. Elige un destino más lejano.';
+    html += '<h1 class="vh" tabindex="-1">No pudimos trazar este camino.</h1><p class="lead">' + msg + '</p>' +
+      '<button class="btn block" type="button" data-action="edit-plan">Cambiar salida o destino</button></div>';
+    return html;
+  }
+  const chosen = state.choice === 'fast' ? trip.fast : trip.safe;
+  html += '<h1 class="vh" tabindex="-1">' + (trip.same ? 'Un camino' : 'Dos caminos') + ' a ' + esc(p.to.name) + '.</h1>' +
+    '<div class="pills"><span class="pill route">Ruta GoIA · ' + trip.safe.min + ' min</span><span class="pill fast">Más rápida · ' + trip.fast.min + ' min</span></div>' +
+    '<p class="lead">' + esc(tripSummary(trip)) + '</p>' +
+    '<p class="note" style="margin:-10px 0 4px">Desde ' + esc(p.from.kind === 'me' ? 'tu ubicación' : p.from.name) + '. <button class="link-btn" type="button" data-action="edit-plan">Cambiar</button></p>' +
+    '<div role="radiogroup" aria-label="Elige una ruta">';
+  html += routeOption('safe', trip.safe, 'Ruta GoIA');
+  if (!trip.same) html += routeOption('fast', trip.fast, 'Más rápida');
+  html += '</div>';
+  html += '<button class="btn block" type="button" data-action="start" style="margin-top:18px">' + icon('walk') + 'Caminar por ' + (state.choice === 'fast' ? 'la más rápida' : 'la ruta GoIA') + '</button>';
+
+  const along = matchedBusinesses(chosen.coords);
+  if (along.length) {
+    html += '<h2 class="sh">En el camino.</h2><ul class="list">';
+    for (const item of along) {
+      const cat = categoryOf(item.biz.category);
+      html += row({ icon: cat.icon, title: item.biz.name, sub: item.biz.promo + ' · a ' + formatDist(item.distance) + ' de tu ruta', end: '<span class="ad">Patrocinado</span>' });
+    }
+    html += '</ul>';
+  }
+  if (state.tech) html += techDetails(trip);
+  html += '</div>';
+  return html;
+}
+
+function routeOption(kind, route, name) {
+  let html = '<button class="opt" type="button" role="radio" data-action="choose" data-id="' + kind + '" aria-checked="' + (state.choice === kind ? 'true' : 'false') + '">' +
+    '<span class="opt-head"><span class="' + (kind === 'safe' ? 'swatch-route' : 'swatch-fast') + '" aria-hidden="true"></span>' +
+    '<span class="opt-name">' + esc(name) + '</span><span class="opt-time">' + route.min + ' min</span></span>' +
+    '<span class="opt-meta" style="display:block">' + formatDist(route.distM) + ' · por ' + esc(route.streets.slice(0, 2).join(' y ')) + '</span><ul class="why">';
+  for (const line of describeRoute(route)) {
+    html += '<li class="' + (line.ok ? 'ok' : 'warn') + '">' + icon(line.ok ? 'check' : 'alert') + '<span>' + esc(line.text) + '</span></li>';
+  }
+  return html + '</ul></button>';
+}
+
+function techDetails(trip) {
+  return '<details class="tech"' + (state.techOpen ? ' open' : '') + ' data-action-toggle="tech-open"><summary>Detalle técnico (A*)</summary>' +
+    '<table class="t"><thead><tr><th></th><th>GoIA</th><th>Más rápida</th></tr></thead><tbody>' +
+    '<tr><td>Nodos explorados</td><td>' + trip.safe.explored.length + '</td><td>' + trip.fast.explored.length + '</td></tr>' +
+    '<tr><td>Tiempo de cómputo</td><td>' + trip.safe.computeMs.toFixed(2) + ' ms</td><td>' + trip.fast.computeMs.toFixed(2) + ' ms</td></tr>' +
+    '<tr><td>Distancia</td><td>' + Math.round(trip.safe.distM) + ' m</td><td>' + Math.round(trip.fast.distM) + ' m</td></tr>' +
+    '<tr><td>Zonas cruzadas</td><td>' + trip.safe.risks.length + '</td><td>' + trip.fast.risks.length + '</td></tr>' +
+    '</tbody></table>' +
+    '<div class="code">h_seg(n) = d(n,B)·[1 + α·Φ(n,B)] − β·S(n)\nh_rap(n) = [d(n,B)/v_max]·[1 + γ·Φ(n)]\nα = ' + ALPHA + '   β = ' + BETA + '   v_max = ' + V_MAX + ' m/s   γ = ' + GAMMA + '</div>' +
+    '<button class="row" type="button" role="switch" aria-checked="' + (state.showExplored ? 'true' : 'false') + '" data-action="explored">' +
+    '<span class="row-ico">' + icon('layers') + '</span><span class="row-txt"><span class="row-t">Ver nodos explorados</span><span class="row-s">De la ruta seleccionada</span></span><span class="switch" aria-hidden="true"></span></button>' +
+    '</details>';
+}
+
+function selectRoute(kind) {
+  if (state.choice === kind) return;
+  state.choice = kind;
+  render();
+}
+
+function buildNav(route, kind, to) {
+  const coords = route.coords;
+  const cum = [0];
+  for (let i = 1; i < coords.length; i++) cum.push(cum[i - 1] + haversineMeters(coords[i - 1][0], coords[i - 1][1], coords[i][0], coords[i][1]));
+  const steps = [];
+  for (let i = 0; i < route.segStreets.length; i++) {
+    if (i === 0 || route.segStreets[i] !== route.segStreets[i - 1]) {
+      let turn = 'straight';
+      if (i > 0) {
+        const diff = bearing(coords[i], coords[i + 1]) - bearing(coords[i - 1], coords[i]);
+        const d = ((diff + 540) % 360) - 180;
+        if (d > 30) turn = 'right';
+        if (d < -30) turn = 'left';
+      }
+      steps.push({ street: route.segStreets[i], start: cum[i], turn: turn });
+    }
+  }
+  return {
+    route: route, kind: kind, to: to, coords: coords, cum: cum, total: cum[cum.length - 1],
+    steps: steps, p: 0, paused: false, timer: null, seenBiz: [], notice: null,
+    bizOnRoute: matchedBusinesses(coords), rerouted: false
+  };
+}
+
+function bearing(a, b) {
+  const toRad = Math.PI / 180;
+  const y = Math.sin((b[1] - a[1]) * toRad) * Math.cos(b[0] * toRad);
+  const x = Math.cos(a[0] * toRad) * Math.sin(b[0] * toRad) - Math.sin(a[0] * toRad) * Math.cos(b[0] * toRad) * Math.cos((b[1] - a[1]) * toRad);
+  return Math.atan2(y, x) * 180 / Math.PI;
+}
+
+function positionAt(p) {
+  const nav = state.nav;
+  const c = nav.coords;
+  for (let i = 0; i < c.length - 1; i++) {
+    if (p <= nav.cum[i + 1]) {
+      const seg = nav.cum[i + 1] - nav.cum[i];
+      const t = seg > 0 ? (p - nav.cum[i]) / seg : 0;
+      return [c[i][0] + (c[i + 1][0] - c[i][0]) * t, c[i][1] + (c[i + 1][1] - c[i][1]) * t];
+    }
+  }
+  return c[c.length - 1];
+}
+
+function navInstruction() {
+  const nav = state.nav;
+  let current = 0;
+  for (let i = 0; i < nav.steps.length; i++) if (nav.steps[i].start <= nav.p) current = i;
+  const next = nav.steps[current + 1];
+  if (nav.p < 1) {
+    return { icon: 'up', title: 'Camina por ' + nav.steps[0].street, dist: next ? 'por ' + formatDist(next.start) : formatDist(nav.total) + ' hasta tu destino' };
+  }
+  if (!next) {
+    return { icon: 'flag', title: 'Llegas a ' + nav.to.name, dist: 'en ' + formatDist(nav.total - nav.p) };
+  }
+  let verb = 'Sigue derecho por ';
+  let ic = 'up';
+  if (next.turn === 'right') { verb = 'Gira a la derecha en '; ic = 'right'; }
+  if (next.turn === 'left') { verb = 'Gira a la izquierda en '; ic = 'left'; }
+  return { icon: ic, title: verb + next.street, dist: 'en ' + formatDist(next.start - nav.p) };
+}
+
+function viewNav() {
+  const nav = state.nav;
+  return '<div class="view" style="padding-top:16px">' +
+    '<div class="nav-stats"><span class="nav-min" id="nav-min"></span><span class="nav-sub" id="nav-sub"></span></div>' +
+    '<h1 class="nav-to" tabindex="-1">Hacia ' + esc(nav.to.name) + ' por ' + (nav.kind === 'safe' ? 'la ruta GoIA' : 'la ruta más rápida') + '.</h1>' +
+    '<div id="nav-notice"></div>' +
+    '<div class="nav-actions">' +
+    '<button class="btn" type="button" data-action="report-nav">' + icon('flag') + 'Reportar</button>' +
+    '<button class="btn secondary" type="button" data-action="pause" id="btn-pause" aria-label="Pausar">' + icon('pause') + '</button>' +
+    '<button class="btn secondary" type="button" data-action="end-nav">Terminar</button>' +
+    '</div><p class="note">Caminata simulada a velocidad acelerada.</p></div>';
+}
+
+function updateNavUI() {
+  const nav = state.nav;
+  if (!nav) return;
+  const remain = Math.max(0, nav.total - nav.p);
+  const min = Math.max(1, Math.round(remain / WALK_M_PER_MIN));
+  const minEl = document.getElementById('nav-min');
+  if (minEl) {
+    minEl.textContent = min + ' min';
+    document.getElementById('nav-sub').textContent = formatDist(remain) + ' · llegas ' + clockIn(min);
+    const pause = document.getElementById('btn-pause');
+    pause.innerHTML = icon(nav.paused ? 'play' : 'pause');
+    pause.setAttribute('aria-label', nav.paused ? 'Continuar' : 'Pausar');
+    const noticeBox = document.getElementById('nav-notice');
+    if (nav.notice && !noticeBox.dataset.id) {
+      const b = nav.notice;
+      noticeBox.dataset.id = b.id;
+      noticeBox.innerHTML = '<div class="notice"><span class="row-ico">' + icon(categoryOf(b.category).icon) + '</span>' +
+        '<span class="row-txt"><span class="row-t">' + esc(b.name) + '</span><span class="row-s">' + esc(b.promo) + '</span></span><span class="ad">Patrocinado</span></div>';
+    }
+  }
+  const banner = document.getElementById('nav-banner');
+  const ins = navInstruction();
+  banner.innerHTML = icon(ins.icon) + '<div><div class="nb-t">' + esc(ins.title) + '</div><div class="nb-d">' + esc(ins.dist) + '</div></div>';
+}
+
+function tick() {
+  const nav = state.nav;
+  if (!nav || nav.paused) return;
+  nav.p = Math.min(nav.total, nav.p + SIM_STEP_M);
+  const pos = positionAt(nav.p);
+  if (walkerMarker) walkerMarker.setLatLng(pos);
+  keepVisible(pos);
+  for (const item of nav.bizOnRoute) {
+    const b = item.biz;
+    if (nav.seenBiz.indexOf(b.id) === -1 && haversineMeters(pos[0], pos[1], b.lat, b.lng) <= tierOf(b.tier).radius) {
+      nav.seenBiz.push(b.id);
+      nav.notice = b;
+      const box = document.getElementById('nav-notice');
+      if (box) delete box.dataset.id;
+    }
+  }
+  updateNavUI();
+  if (nav.p >= nav.total) arrive();
+}
+
+function stopTimer() {
+  if (state.nav && state.nav.timer) {
+    clearInterval(state.nav.timer);
+    state.nav.timer = null;
+  }
+}
+
+function arrive() {
+  const nav = state.nav;
+  stopTimer();
+  state.lastTrip = { to: nav.to, distM: nav.total, min: Math.max(1, Math.round(nav.total / WALK_M_PER_MIN)), coords: nav.coords, kind: nav.kind, last: positionAt(nav.total) };
+  state.nav = null;
+  go('llegada', true);
+}
+
+function viewArrive() {
+  const t = state.lastTrip;
+  return '<div class="bar"><span class="wordmark">GoIA</span></div><div class="view">' +
+    '<h1 class="vh" tabindex="-1">Llegaste a ' + esc(t.to.name) + '.</h1>' +
+    '<p class="lead">Caminaste ' + formatDist(t.distM) + ', unos ' + t.min + ' minutos a paso normal.</p>' +
+    '<h2 class="sh">¿Algo del camino que debamos saber?</h2>' +
+    '<p class="lead">Si viste algo que preocupe en el trayecto, repórtalo ahora que lo tienes fresco.</p>' +
+    '<div class="stack"><button class="btn secondary block" type="button" data-action="report-arrive">' + icon('flag') + 'Reportar algo del camino</button>' +
+    '<button class="btn block" type="button" data-action="home">Volver al inicio</button></div></div>';
+}
+
+function openReport(point, returnTo) {
+  state.report = { lat: point.lat, lng: point.lng, place: point.name || nameAt(point.lat, point.lng), type: null, when: 'ahora', note: '', returnTo: returnTo, tried: false };
+  go('reportar');
+}
+
+function viewReport() {
+  const r = state.report;
+  let html = bar('Reportar') + '<div class="view"><h1 class="vh" tabindex="-1">¿Qué viste?</h1>' +
+    '<p class="lead">Tu reporte marca la zona en el mapa y GoIA la rodea al trazar rutas.</p>' +
+    '<div class="grid2" role="radiogroup" aria-label="Tipo de reporte" aria-describedby="type-err">';
+  for (const t of REPORT_TYPES) {
+    html += '<button class="tile" type="button" role="radio" data-action="rtype" data-id="' + t.id + '" aria-checked="' + (r.type === t.id ? 'true' : 'false') + '">' + icon(t.icon) + '<span>' + esc(t.label) + '</span></button>';
+  }
+  html += '</div><div class="err" id="type-err">' + (r.tried && !r.type ? 'Elige qué viste para poder enviar el reporte.' : '') + '</div>' +
+    '<div class="field"><span class="legend">¿Dónde?</span><div class="where"><span class="row-ico clay">' + icon('pin') + '</span><span class="row-txt">' + esc(r.place) + '</span>' +
+    '<button class="link-btn" type="button" data-action="report-pick">Cambiar</button></div></div>' +
+    '<div class="field"><span class="legend" id="when-l">¿Cuándo?</span><div class="seg" role="radiogroup" aria-labelledby="when-l">';
+  for (const w of REPORT_WHEN) {
+    html += '<button type="button" role="radio" data-action="rwhen" data-id="' + w.id + '" aria-checked="' + (r.when === w.id ? 'true' : 'false') + '">' + esc(w.label) + '</button>';
+  }
+  html += '</div></div><div class="field"><label for="r-note">Detalles <span class="muted">(opcional)</span></label>' +
+    '<textarea class="input" id="r-note" maxlength="280" placeholder="Por ejemplo: la luminaria de la esquina no prende.">' + esc(r.note) + '</textarea></div>' +
+    '<button class="btn block" type="button" data-action="send-report" style="margin-top:22px">Enviar reporte</button>' +
+    '<p class="note">Los reportes de este prototipo se guardan solo en este navegador.</p></div>';
+  return html;
+}
+
+function sendReport() {
+  const r = state.report;
+  const note = document.getElementById('r-note');
+  if (note) r.note = note.value.trim();
+  if (!r.type) {
+    r.tried = true;
+    render();
+    const first = document.querySelector('[data-action="rtype"]');
+    if (first) first.focus();
+    return;
+  }
+  const saved = { id: 'rep-' + Date.now(), type: r.type, lat: r.lat, lng: r.lng, place: r.place, when: r.when, note: r.note, createdAt: Date.now() };
+  reports.unshift(saved);
+  storeSet('goia.reports', reports);
+  rebuildZones();
+  drawZones();
+  let rerouted = false;
+  if (r.returnTo === 'caminar' && state.nav) {
+    const nav = state.nav;
+    const here = positionAt(nav.p);
+    const from = { lat: here[0], lng: here[1], name: nameAt(here[0], here[1]) };
+    const fresh = runAStar(nav.kind === 'fast' ? 'fast' : 'safe', from, nav.to);
+    if (fresh) {
+      const restOld = nav.coords.slice(1);
+      if (!sameCoords(fresh.coords.slice(1), restOld)) rerouted = true;
+      const seen = nav.seenBiz;
+      state.nav = buildNav(fresh, nav.kind, nav.to);
+      state.nav.seenBiz = seen;
+    }
+  }
+  state.lastReport = { report: saved, rerouted: rerouted, returnTo: r.returnTo };
+  state.report = null;
+  go('reporte-enviado', true);
+}
+
+function viewReportSent() {
+  const lr = state.lastReport;
+  const type = reportTypeOf(lr.report.type);
+  let html = '<div class="bar"><span class="wordmark">GoIA</span></div><div class="view">' +
+    '<h1 class="vh" tabindex="-1">Gracias. Tu reporte ya cuenta.</h1>' +
+    '<p class="lead">Marcamos “' + esc(type.label) + '” ' + esc(atPlace(lr.report.place)) + '. GoIA lo toma en cuenta desde ahora al trazar rutas por esa zona.</p>';
+  if (lr.returnTo === 'caminar') {
+    html += '<p class="lead">' + (lr.rerouted ? 'Ajustamos tu ruta para rodear el tramo que reportaste.' : 'Tu ruta actual ya rodea ese tramo, así que no cambia.') + '</p>' +
+      '<div class="stack"><button class="btn block" type="button" data-action="resume">' + icon('walk') + 'Seguir caminando</button></div>';
+  } else {
+    html += '<div class="stack"><button class="btn block" type="button" data-action="home">Volver al inicio</button>' +
+      '<button class="btn secondary block" type="button" data-action="go-reports">Ver mis reportes</button></div>';
+  }
+  return html + '</div>';
+}
+
+function viewReports() {
+  let html = bar('Mis reportes') + '<div class="view"><h1 class="vh" tabindex="-1">Tus reportes.</h1>';
+  if (!reports.length) {
+    html += '<p class="lead">Aún no has enviado reportes. Cuando veas algo en la calle, repórtalo desde el inicio o durante tu caminata.</p>' +
+      '<button class="btn secondary block" type="button" data-action="report-here">' + icon('flag') + 'Reportar algo cerca de mí</button>';
+  } else {
+    html += '<p class="lead">GoIA rodea estas zonas al trazar tus rutas.</p><ul class="list">';
+    for (const r of reports) {
+      const type = reportTypeOf(r.type);
+      html += '<li><div class="row static"><span class="row-ico clay">' + icon(type.icon) + '</span>' +
+        '<button type="button" class="row-txt link-plain" data-action="focus-report" data-id="' + esc(r.id) + '" style="border:0;background:none;text-align:left;padding:0;cursor:pointer">' +
+        '<span class="row-t">' + esc(type.label) + '</span><span class="row-s">' + esc(r.place) + ' · ' + esc(dateLabel(r.createdAt)) + (r.note ? ' · ' + esc(r.note) : '') + '</span></button>' +
+        '<button class="icon-btn" type="button" data-action="delete-report" data-id="' + esc(r.id) + '" aria-label="Borrar reporte ' + esc(type.label) + ' en ' + esc(r.place) + '">' + icon('trash') + '</button></div></li>';
+    }
+    html += '</ul>';
+  }
+  html += '<h2 class="sh">Reportes de ejemplo en la zona.</h2><ul class="list">';
+  for (const z of SAMPLE_ZONES) {
+    html += row({ icon: 'alert', clay: true, title: z.title, sub: z.description });
+  }
+  return html + '</ul></div>';
+}
+
+function viewMenu() {
+  return bar('Más opciones') + '<div class="view"><h1 class="vh" tabindex="-1">Más opciones.</h1><ul class="list">' +
+    row({ action: 'go-reports', icon: 'file', title: 'Mis reportes', sub: reports.length === 1 ? '1 reporte enviado' : reports.length + ' reportes enviados', end: icon('chev') }) +
+    row({ action: 'go-business', icon: 'store', title: 'Comercios patrocinados', sub: 'Administrar los comercios que aparecen en las rutas', end: icon('chev') }) +
+    '<li><button class="row" type="button" role="switch" aria-checked="' + (state.tech ? 'true' : 'false') + '" data-action="tech">' +
+    '<span class="row-ico">' + icon('code') + '</span><span class="row-txt"><span class="row-t">Modo técnico</span><span class="row-s">Muestra el detalle de la búsqueda A* en cada ruta</span></span><span class="switch" aria-hidden="true"></span></button></li>' +
+    row({ action: 'reset', icon: 'reset', title: 'Restablecer datos de ejemplo', sub: 'Borra tus reportes, destinos recientes y cambios a comercios' }) +
+    '<li><a class="row" href="/"><span class="row-ico">' + icon('info') + '</span><span class="row-txt"><span class="row-t">Conoce GoIA</span><span class="row-s">Cómo funciona y pre-registro para la versión de prueba</span></span><span class="row-end">' + icon('chev') + '</span></a></li>' +
+    '</ul><h2 class="sh">Sobre estos datos.</h2>' +
+    '<p class="lead">Este prototipo cubre la colonia Cuauhtémoc con un grafo de ' + graph.nodes.size + ' esquinas. Las zonas, los puntos vigilados y los comercios son datos de ejemplo. Tu ubicación y la caminata son simuladas.</p></div>';
+}
+
+function viewBusinesses() {
+  let html = bar('Comercios') + '<div class="view"><h1 class="vh" tabindex="-1">Comercios patrocinados.</h1>' +
+    '<p class="lead">Un comercio aparece en una ruta cuando el camino pasa dentro de su radio: 120 m en el plan Oro y 65 m en el Básico.</p><ul class="list">';
+  for (let i = 0; i < businesses.length; i++) {
+    const b = businesses[i];
+    html += row({ action: 'edit-biz', id: i, icon: categoryOf(b.category).icon, title: b.name, sub: 'Plan ' + tierOf(b.tier).label + ' · ' + b.promo, end: icon('chev') });
+  }
+  return html + '</ul><button class="btn block" type="button" data-action="new-biz" style="margin-top:18px">Agregar comercio</button></div>';
+}
+
+function viewBusinessEdit() {
+  const d = state.bizDraft;
+  let html = bar(d.index === null ? 'Nuevo comercio' : 'Editar comercio') + '<div class="view">' +
+    '<h1 class="vh" tabindex="-1">' + (d.index === null ? 'Nuevo comercio.' : esc(d.name || 'Comercio') + '.') + '</h1>' +
+    '<div class="field"><label for="b-name">Nombre</label><input class="input" id="b-name" maxlength="60" value="' + esc(d.name) + '" aria-describedby="b-name-err"><div class="err" id="b-name-err">' + (d.tried && !d.name ? 'Escribe el nombre del comercio.' : '') + '</div></div>' +
+    '<div class="field"><label for="b-cat">Giro</label><select class="input" id="b-cat">';
+  for (const c of BIZ_CATEGORIES) html += '<option value="' + c.id + '"' + (d.category === c.id ? ' selected' : '') + '>' + esc(c.label) + '</option>';
+  html += '</select></div><div class="field"><span class="legend" id="b-tier-l">Plan</span><div class="seg" role="radiogroup" aria-labelledby="b-tier-l">';
+  for (const t of BIZ_TIERS) html += '<button type="button" role="radio" data-action="btier" data-id="' + t.id + '" aria-checked="' + (d.tier === t.id ? 'true' : 'false') + '">' + esc(t.label) + ' · ' + t.radius + ' m</button>';
+  html += '</div></div><div class="field"><label for="b-promo">Promoción</label><input class="input" id="b-promo" maxlength="80" value="' + esc(d.promo) + '"></div>' +
+    '<div class="field"><span class="legend">Ubicación</span><div class="where"><span class="row-ico">' + icon('pin') + '</span><span class="row-txt">' + (d.lat ? esc(nameAt(d.lat, d.lng)) : '<span class="muted">Sin ubicación</span>') + '</span>' +
+    '<button class="link-btn" type="button" data-action="biz-pick">' + (d.lat ? 'Cambiar' : 'Elegir en el mapa') + '</button></div>' +
+    '<div class="err">' + (d.tried && !d.lat ? 'Elige dónde está el comercio.' : '') + '</div></div>' +
+    '<button class="btn block" type="button" data-action="save-biz" style="margin-top:22px">Guardar comercio</button>';
+  if (d.index !== null) html += '<div class="stack"><button class="btn secondary block" type="button" data-action="delete-biz">' + icon('trash') + 'Quitar comercio</button></div>';
+  return html + '</div>';
+}
+
+function readBizForm() {
+  const d = state.bizDraft;
+  if (!d) return;
+  const name = document.getElementById('b-name');
+  if (!name) return;
+  d.name = name.value.trim();
+  d.category = document.getElementById('b-cat').value;
+  d.promo = document.getElementById('b-promo').value.trim();
+}
+
+function render() {
+  let view = currentView();
+  const panel = document.getElementById('panel');
+
+  if (view === 'rutas' && !(state.plan.from && state.plan.to)) view = redirect('planear');
+  if (view === 'caminar' && !state.nav) view = redirect('inicio');
+  if (view === 'llegada' && !state.lastTrip) view = redirect('inicio');
+  if (view === 'reporte-enviado' && !state.lastReport) view = redirect('inicio');
+  if (view === 'comercio' && !state.bizDraft) view = redirect('comercios');
+  if (view === 'reportar' && !state.report) {
+    state.report = { lat: USER_LOCATION.lat, lng: USER_LOCATION.lng, place: nameAt(USER_LOCATION.lat, USER_LOCATION.lng), type: null, when: 'ahora', note: '', returnTo: 'inicio', tried: false };
+  }
+  if (view !== 'caminar') stopTimer();
+  if (view === 'rutas') {
+    state.trip = computeTrip(state.plan.from, state.plan.to);
+    if (state.trip.same) state.choice = 'safe';
+  }
+
+  const s = state.stack;
+  if (s.length > 1 && s[s.length - 2] === view) s.pop(); else if (s[s.length - 1] !== view) s.push(view);
+
+  let html = '';
+  if (view === 'inicio') html = viewHome();
+  else if (view === 'planear') html = viewPlan();
+  else if (view === 'rutas') html = viewRoutes();
+  else if (view === 'caminar') html = viewNav();
+  else if (view === 'llegada') html = viewArrive();
+  else if (view === 'reportar') html = viewReport();
+  else if (view === 'reporte-enviado') html = viewReportSent();
+  else if (view === 'reportes') html = viewReports();
+  else if (view === 'menu') html = viewMenu();
+  else if (view === 'comercios') html = viewBusinesses();
+  else if (view === 'comercio') html = viewBusinessEdit();
+
+  const sameView = panel.dataset.view === view;
+  const scroll = panel.scrollTop;
+  panel.innerHTML = html;
+  panel.dataset.view = view;
+  applyRoving(panel);
+  document.body.classList.toggle('walking', view === 'caminar');
+  document.getElementById('nav-banner').hidden = view !== 'caminar';
+  document.title = view === 'inicio' ? 'GoIA' : 'GoIA · ' + (panel.querySelector('h1') ? panel.querySelector('h1').textContent.replace(/\.$/, '') : '');
+
+  if (view === 'planear') {
+    renderPlanResults();
+    bindPlanInputs();
+  }
+  if (view === 'caminar') {
+    updateNavUI();
+    if (!state.nav.timer && !state.nav.paused) state.nav.timer = setInterval(tick, SIM_TICK_MS);
+  }
+
+  if (sameView) {
+    panel.scrollTop = scroll;
+  } else {
+    panel.scrollTop = 0;
+    const h = panel.querySelector('h1');
+    if (h && view !== 'planear') h.focus({ preventScroll: true });
+  }
+  requestAnimationFrame(function () {
+    map.invalidateSize();
+    drawMap(view);
+  });
+}
+
+function redirect(view) {
+  history.replaceState(null, '', '#' + view);
+  return view;
+}
+
+function bindPlanInputs() {
+  const p = state.plan;
+  const inputs = { from: document.getElementById('in-from'), to: document.getElementById('in-to') };
+  for (const key of ['from', 'to']) {
+    const input = inputs[key];
+    input.addEventListener('focus', function () {
+      if (p.active !== key) {
+        p.active = key;
+        p.query = '';
+      }
+      input.select();
+      renderPlanResults();
+    });
+    input.addEventListener('input', function () {
+      p.active = key;
+      p.query = input.value;
+      p[key] = null;
+      renderPlanResults();
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && state.planList && state.planList.length && p.query.trim()) {
+        e.preventDefault();
+        choosePlace(state.planList[0]);
+      }
+      if (e.key === 'ArrowDown') {
+        const first = document.querySelector('#plan-results .row');
+        if (first) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    });
+  }
+  const target = inputs[p.active];
+  target.focus({ preventScroll: true });
+  if (p.query) {
+    target.value = p.query;
+  }
+}
+
+document.getElementById('panel').addEventListener('click', async function (e) {
+  const el = e.target.closest('[data-action]');
+  if (!el) return;
+  const action = el.dataset.action;
+  const id = el.dataset.id;
+
+  if (action === 'back') back();
+  else if (action === 'menu') go('menu');
+  else if (action === 'home') go('inicio');
+  else if (action === 'search') {
+    state.plan = { from: state.plan.from || USER_LOCATION, to: null, active: 'to', query: '' };
+    go('planear');
+  } else if (action === 'recent') {
+    state.plan = { from: USER_LOCATION, to: recents[Number(id)], active: 'to', query: '' };
+    go('rutas');
+  } else if (action === 'landmark') {
+    const place = buildPlaces()[Number(id)];
+    addRecent(place);
+    state.plan = { from: USER_LOCATION, to: place, active: 'to', query: '' };
+    go('rutas');
+  } else if (action === 'place') {
+    if (id === 'me') choosePlace(USER_LOCATION);
+    else choosePlace(state.planList[Number(id)]);
+  } else if (action === 'pick-plan') {
+    const key = state.plan.active;
+    startPick(key === 'from' ? 'Elige tu punto de salida' : 'Elige tu destino', AREA.center, function (place) {
+      state.plan[key] = place;
+      state.plan.query = '';
+      if (key === 'to') addRecent(place);
+      if (state.plan.from && state.plan.to) go('rutas');
+      else {
+        state.plan.active = state.plan.from ? 'to' : 'from';
+        render();
+      }
+    });
+  } else if (action === 'swap') {
+    const p = state.plan;
+    const tmp = p.from;
+    p.from = p.to;
+    p.to = tmp;
+    p.query = '';
+    if (p.from && p.to) go('rutas'); else render();
+  } else if (action === 'edit-plan') {
+    state.plan.active = 'to';
+    state.plan.query = '';
+    go('planear');
+  } else if (action === 'choose') {
+    selectRoute(id);
+  } else if (action === 'start') {
+    const trip = state.trip;
+    const route = state.choice === 'fast' ? trip.fast : trip.safe;
+    state.nav = buildNav(route, trip.same ? 'safe' : state.choice, state.plan.to);
+    go('caminar');
+  } else if (action === 'pause') {
+    const nav = state.nav;
+    nav.paused = !nav.paused;
+    if (!nav.paused && !nav.timer) nav.timer = setInterval(tick, SIM_TICK_MS);
+    updateNavUI();
+  } else if (action === 'end-nav') {
+    const nav = state.nav;
+    const wasPaused = nav.paused;
+    nav.paused = true;
+    const ok = await confirmDialog('¿Terminar la caminata?', 'Dejarás de recibir indicaciones para llegar a ' + nav.to.name + '.', 'Terminar');
+    if (ok) {
+      stopTimer();
+      state.nav = null;
+      go('inicio');
+    } else {
+      nav.paused = wasPaused;
+      updateNavUI();
+    }
+  } else if (action === 'report-nav') {
+    const pos = positionAt(state.nav.p);
+    openReport({ lat: pos[0], lng: pos[1] }, 'caminar');
+  } else if (action === 'report-arrive') {
+    openReport({ lat: state.lastTrip.last[0], lng: state.lastTrip.last[1] }, 'llegada');
+  } else if (action === 'report-here') {
+    openReport({ lat: USER_LOCATION.lat, lng: USER_LOCATION.lng }, currentView());
+  } else if (action === 'rtype') {
+    state.report.note = document.getElementById('r-note').value;
+    state.report.type = id;
+    render();
+    const again = document.querySelector('[data-action="rtype"][data-id="' + id + '"]');
+    if (again) again.focus();
+  } else if (action === 'rwhen') {
+    state.report.note = document.getElementById('r-note').value;
+    state.report.when = id;
+    render();
+    const again = document.querySelector('[data-action="rwhen"][data-id="' + id + '"]');
+    if (again) again.focus();
+  } else if (action === 'report-pick') {
+    const r = state.report;
+    r.note = document.getElementById('r-note').value;
+    startPick('¿Dónde lo viste?', [r.lat, r.lng], function (place) {
+      r.lat = place.lat;
+      r.lng = place.lng;
+      r.place = place.name;
+      render();
+    });
+  } else if (action === 'send-report') {
+    sendReport();
+  } else if (action === 'resume') {
+    go('caminar', true);
+  } else if (action === 'go-reports') {
+    go('reportes');
+  } else if (action === 'focus-report') {
+    for (const r of reports) {
+      if (r.id === id) centerOn([r.lat, r.lng], 17);
+    }
+  } else if (action === 'delete-report') {
+    let removed = null;
+    let at = 0;
+    for (let i = 0; i < reports.length; i++) {
+      if (reports[i].id === id) {
+        removed = reports[i];
+        at = i;
+      }
+    }
+    if (!removed) return;
+    reports.splice(at, 1);
+    storeSet('goia.reports', reports);
+    rebuildZones();
+    drawZones();
+    render();
+    toast('Reporte borrado.', 'Deshacer', function () {
+      reports.splice(at, 0, removed);
+      storeSet('goia.reports', reports);
+      rebuildZones();
+      drawZones();
+      render();
+    });
+  } else if (action === 'tech') {
+    state.tech = !state.tech;
+    storeSet('goia.tech', state.tech);
+    render();
+  } else if (action === 'explored') {
+    state.showExplored = !state.showExplored;
+    state.techOpen = true;
+    render();
+  } else if (action === 'reset') {
+    const ok = await confirmDialog('¿Restablecer los datos de ejemplo?', 'Se borrarán tus reportes, tus destinos recientes y los cambios a comercios.', 'Restablecer');
+    if (!ok) return;
+    reports = [];
+    recents = [];
+    businesses = SAMPLE_BUSINESSES.map(function (b) { return Object.assign({}, b); });
+    storeSet('goia.reports', reports);
+    storeSet('goia.recents', recents);
+    storeSet('goia.businesses', businesses);
+    rebuildZones();
+    drawZones();
+    render();
+    toast('Datos de ejemplo restablecidos.');
+  } else if (action === 'go-business') {
+    go('comercios');
+  } else if (action === 'edit-biz') {
+    const b = businesses[Number(id)];
+    state.bizDraft = Object.assign({ index: Number(id), tried: false }, b);
+    go('comercio');
+  } else if (action === 'new-biz') {
+    state.bizDraft = { index: null, name: '', category: 'cafe', tier: 'basic', promo: '', lat: null, lng: null, tried: false };
+    go('comercio');
+  } else if (action === 'btier') {
+    readBizForm();
+    state.bizDraft.tier = id;
+    render();
+  } else if (action === 'biz-pick') {
+    readBizForm();
+    const d = state.bizDraft;
+    startPick('¿Dónde está el comercio?', d.lat ? [d.lat, d.lng] : AREA.center, function (place) {
+      d.lat = place.lat;
+      d.lng = place.lng;
+      render();
+    });
+  } else if (action === 'save-biz') {
+    readBizForm();
+    const d = state.bizDraft;
+    if (!d.name || !d.lat) {
+      d.tried = true;
+      render();
+      return;
+    }
+    const clean = { id: d.id || 'biz-' + Date.now(), name: d.name, category: d.category, tier: d.tier, promo: d.promo || 'Visítanos en tu camino', lat: d.lat, lng: d.lng };
+    if (d.index === null) businesses.push(clean); else businesses[d.index] = clean;
+    storeSet('goia.businesses', businesses);
+    state.bizDraft = null;
+    toast('Comercio guardado.');
+    back();
+  } else if (action === 'delete-biz') {
+    const d = state.bizDraft;
+    const ok = await confirmDialog('¿Quitar ' + (d.name || 'este comercio') + '?', 'Dejará de aparecer en las rutas.', 'Quitar');
+    if (!ok) return;
+    businesses.splice(d.index, 1);
+    storeSet('goia.businesses', businesses);
+    state.bizDraft = null;
+    toast('Comercio quitado.');
+    back();
+  }
+});
+
+function applyRoving(root) {
+  for (const group of root.querySelectorAll('[role="radiogroup"]')) {
+    const items = group.querySelectorAll('[role="radio"]');
+    let checked = null;
+    for (const item of items) {
+      item.tabIndex = -1;
+      if (item.getAttribute('aria-checked') === 'true') checked = item;
+    }
+    if (checked) checked.tabIndex = 0;
+    else if (items.length) items[0].tabIndex = 0;
+  }
+}
+
+document.getElementById('panel').addEventListener('keydown', function (e) {
+  const forward = e.key === 'ArrowDown' || e.key === 'ArrowRight';
+  const backward = e.key === 'ArrowUp' || e.key === 'ArrowLeft';
+  if (!forward && !backward) return;
+
+  const radio = e.target.closest('[role="radio"]');
+  if (radio) {
+    e.preventDefault();
+    const items = Array.from(radio.closest('[role="radiogroup"]').querySelectorAll('[role="radio"]'));
+    let i = items.indexOf(radio);
+    i = forward ? (i + 1) % items.length : (i - 1 + items.length) % items.length;
+    const action = items[i].dataset.action;
+    const id = items[i].dataset.id;
+    items[i].click();
+    const again = document.querySelector('[data-action="' + action + '"][data-id="' + id + '"]');
+    if (again) again.focus();
+    return;
+  }
+
+  const result = e.target.closest('#plan-results .row');
+  if (result && (e.key === 'ArrowDown' || e.key === 'ArrowUp')) {
+    e.preventDefault();
+    const rows = Array.from(document.querySelectorAll('#plan-results .row'));
+    const i = rows.indexOf(result);
+    if (e.key === 'ArrowDown' && i < rows.length - 1) rows[i + 1].focus();
+    if (e.key === 'ArrowUp') {
+      if (i > 0) rows[i - 1].focus();
+      else document.getElementById(state.plan.active === 'from' ? 'in-from' : 'in-to').focus();
+    }
+  }
+});
+
+document.getElementById('panel').addEventListener('toggle', function (e) {
+  if (e.target.matches && e.target.matches('details.tech')) state.techOpen = e.target.open;
+}, true);
+
+document.getElementById('pick-ok').addEventListener('click', function () { endPick(true); });
+document.getElementById('pick-cancel').addEventListener('click', function () { endPick(false); });
+
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('confirm').open) return;
+  if (state.pick) {
+    endPick(false);
+    return;
+  }
+  if (map && map.closePopup) map.closePopup();
+  const view = currentView();
+  if (view !== 'inicio' && view !== 'caminar' && !(e.target && e.target.tagName === 'TEXTAREA')) back();
+});
+
+window.addEventListener('hashchange', function () {
+  if (state.pick) endPick(false);
+  render();
+});
+
+rebuildZones();
+readColors();
+initMap();
+drawZones();
+render();
+</script>
+</body>
+</html>
