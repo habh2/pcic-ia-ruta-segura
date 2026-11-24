@@ -24,6 +24,11 @@
   --route: #f2c94c;
   --route-deep: #d9a92a;
   --white: #fbfbf7;
+  --ink-mist: #d5ded7;
+  --ink-mist-dim: #aebdb3;
+  --fast-gray: #9c9d97;
+  --map-ground: #e4e3dc;
+  --map-street: #f1f0ea;
   --serif: "Noticia Text", Georgia, serif;
   --sans: "Vend Sans", "Segoe UI", system-ui, sans-serif;
 }
@@ -31,6 +36,7 @@
 * { box-sizing: border-box; }
 html { background: var(--ground); color: var(--ink); -webkit-text-size-adjust: 100%; }
 body { margin: 0; font-family: var(--sans); font-weight: 400; line-height: 1.5; }
+p { text-wrap: pretty; }
 ::selection { background: var(--route); color: var(--ink); }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--route); outline-offset: 3px; border-radius: 4px; }
@@ -40,7 +46,6 @@ a { color: inherit; }
 .hero-photo { position: absolute; left: 0; top: 9.56%; width: 100%; height: 90.44%; object-fit: cover; object-position: center; display: block; }
 
 .site-header { position: absolute; inset: 0 0 auto 0; height: 9.56%; display: block; }
-.nav-link, .nav-cta, .signup button, .pill { will-change: transform; }
 .brand { position: absolute; left: 4.42%; top: 19.6%; font-family: var(--serif); font-weight: 700; font-size: 3.66cqw; line-height: 1; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
 .nav-link { position: absolute; top: 37.5%; font-size: 1.24cqw; line-height: 1.2; color: #1c3a2f; text-decoration: none; font-weight: 500; letter-spacing: 0.012em; }
 .status-link { color: var(--ink); font-weight: 500; text-underline-offset: 0.25em; text-decoration-color: var(--route-deep); }
@@ -48,7 +53,7 @@ a { color: inherit; }
 .nav-demo { left: 56.3%; }
 .nav-como { left: 67.9%; }
 .nav-mapa { left: 79.45%; }
-.nav-cta { position: absolute; left: 86.51%; top: 25.6%; width: 8.77%; height: 43.6%; border: 1px solid #2d5e50; display: flex; align-items: center; justify-content: center; border-radius: 0.45cqw; background: var(--button); color: var(--white); font-size: 1.22cqw; font-weight: 400; text-decoration: none; transition: background-color 160ms ease-out, transform 120ms ease-out; }
+.nav-cta { position: absolute; left: 86.51%; top: 25.6%; width: 8.77%; height: 43.6%; border: 1px solid #2d5e50; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: var(--button); color: var(--white); font-size: 1.22cqw; font-weight: 400; text-decoration: none; transition: background-color 160ms ease-out, transform 120ms ease-out; }
 .nav-cta:hover { background: var(--button-hover); }
 .nav-cta:active { transform: translateY(1px); }
 
@@ -57,10 +62,10 @@ a { color: inherit; }
 .hero-sub { position: absolute; left: 8.99%; top: 31.86%; width: 34.76%; margin: 0; font-size: 1.448cqw; line-height: 1.36; font-weight: 300; color: var(--ink-soft); }
 
 .signup { position: absolute; left: 9.15%; top: 40.56%; width: 33.91%; height: 5.39%; display: flex; gap: 1.22%; }
-.signup input { flex: 0 0 57.8%; height: 100%; min-width: 0; padding: 0 0.9cqw; border: 1.5px solid #4f6b5f; border-radius: 0.45cqw; background: var(--white); font: inherit; font-size: 1.22cqw; color: var(--ink); caret-color: var(--ink); }
+.signup input { flex: 0 0 57.8%; height: 100%; min-width: 0; padding: 0 0.9cqw; border: 1.5px solid #4f6b5f; border-radius: 6px; background: var(--white); font: inherit; font-size: 1.22cqw; color: var(--ink); caret-color: var(--ink); }
 .signup input::placeholder { color: #5c6e64; }
 .signup input:hover { border-color: var(--ink); }
-.signup button { flex: 1 1 auto; height: auto; margin: 0.15cqw 0.15cqw 0.3cqw; border: 1px solid #2d5e50; border-radius: 0.45cqw; background: var(--button); color: var(--white); font: inherit; font-size: 1.22cqw; font-weight: 400; cursor: pointer; transition: background-color 160ms ease-out, transform 120ms ease-out; }
+.signup button { flex: 1 1 auto; height: auto; margin: 0.15cqw 0.15cqw 0.3cqw; border: 1px solid #2d5e50; border-radius: 6px; background: var(--button); color: var(--white); font: inherit; font-size: 1.22cqw; font-weight: 400; cursor: pointer; transition: background-color 160ms ease-out, transform 120ms ease-out; }
 .signup button:hover { background: var(--button-hover); }
 .signup button:active { transform: translateY(1px); }
 .signup button[disabled] { opacity: 0.7; cursor: progress; }
@@ -111,8 +116,8 @@ a { color: inherit; }
 .map-head h2 { margin: 0 0 0.45em; }
 .map-legend { display: grid; gap: 12px; justify-items: start; }
 .legend-row { display: flex; align-items: center; gap: 12px; font-size: 1.04rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
-.legend-swatch { width: 34px; height: 6px; border-radius: 3px; background: var(--route); }
-.legend-swatch.is-fast { background: #8f908b; height: 4px; }
+.legend-swatch { width: 34px; height: 6px; border-radius: 999px; background: var(--route); }
+.legend-swatch.is-fast { background: var(--fast-gray); height: 4px; }
 .legend-swatch.is-zone { height: 14px; width: 14px; border-radius: 50%; background: rgba(176, 110, 84, 0.22); border: 1.5px dashed #a26650; }
 .legend-row b { font-weight: 600; color: var(--ink); }
 .map-stage { position: relative; width: 100%; aspect-ratio: 16 / 7; min-height: 380px; border-radius: 8px; overflow: hidden; background: #ebeae3; cursor: none; touch-action: pan-y; }
@@ -146,14 +151,14 @@ a { color: inherit; }
 .cta-status[data-state="error"] { color: #8a2c1f; }
 .fine-print { margin: 10px 0 0; font-size: 0.9rem; color: var(--ink-muted); }
 
-.site-footer { background: var(--ink); color: #d5ded7; padding-block: 56px 40px; font-size: 0.95rem; }
+.site-footer { background: var(--ink); color: var(--ink-mist); padding-block: 56px 40px; font-size: 0.95rem; }
 .footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; align-items: flex-start; }
 .footer-brand { font-family: var(--serif); font-weight: 700; font-size: 1.9rem; color: var(--white); text-decoration: none; line-height: 1; }
 .footer-tag { margin: 10px 0 0; max-width: 22em; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 12px 28px; list-style: none; margin: 0; padding: 0; }
 .footer-links a { text-decoration: none; color: var(--white); }
 .footer-links a:hover { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-color: var(--route); }
-.footer-base { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(213, 222, 215, 0.2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; color: #aebdb3; }
+.footer-base { margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(213, 222, 215, 0.2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; color: var(--ink-mist-dim); }
 @media (max-width: 1024px) {
   .needs, .feature, .map-head { grid-template-columns: minmax(0, 1fr); }
   .feature:nth-child(even) .feature-media { order: 0; }
@@ -178,7 +183,7 @@ a { color: inherit; }
   .site-header { position: static; height: auto; display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
   .brand { position: static; font-size: 2rem; }
   .nav-link { display: none; }
-  .nav-cta { position: static; width: auto; height: auto; padding: 10px 16px; border-radius: 6px; font-size: 0.98rem; }
+  .nav-cta { position: static; width: auto; height: auto; padding: 10px 16px; border-radius: 6px; font-size: 1rem; }
   .hero-copy, .hero-sub, .signup, .signup-status { position: static; width: auto; }
   .hero-copy { margin-top: 20px; }
   .hero h1 { font-size: clamp(2rem, 1.2rem + 4vw, 2.9rem); line-height: 1.1; }
@@ -353,6 +358,17 @@ a { color: inherit; }
 </footer>
 <script src="assets/js/mapa-ejemplo.js"></script>
 <script>
+var rootStyle = getComputedStyle(document.documentElement);
+var PAL = {
+  route: rootStyle.getPropertyValue("--route").trim(),
+  routeDeep: rootStyle.getPropertyValue("--route-deep").trim(),
+  ink: rootStyle.getPropertyValue("--ink").trim(),
+  inkSoft: rootStyle.getPropertyValue("--ink-soft").trim(),
+  paper: rootStyle.getPropertyValue("--white").trim(),
+  mapGround: rootStyle.getPropertyValue("--map-ground").trim(),
+  mapStreet: rootStyle.getPropertyValue("--map-street").trim(),
+  fast: rootStyle.getPropertyValue("--fast-gray").trim()
+};
 var MAPA = window.MAPA_EJEMPLO;
 
 function setupCanvas(canvas) {
@@ -532,10 +548,10 @@ function drawHeroMap() {
   drawStreets(c.ctx, project, c.h * 0.022, c.h * 0.013, "#ffffff", "#ffffff");
   drawStreetNames(c.ctx, { project: project }, mobile ? c.w * 0.55 : c.w * 0.86, c.h * 0.5, mobile ? c.w : c.w * 0.26, 4, mobile ? 0 : 0.326);
   drawPath(c.ctx, project, MAPA.fast.nodes, "#a4a4a3", Math.max(3, c.h * 0.018));
-  drawPath(c.ctx, project, MAPA.safe.nodes, "#f2c94c", Math.max(4, c.h * 0.028));
+  drawPath(c.ctx, project, MAPA.safe.nodes, PAL.route, Math.max(4, c.h * 0.028));
   if (mobile) {
     var o = project(MAPA.nodes[MAPA.origin]);
-    c.ctx.strokeStyle = "#f2c94c";
+    c.ctx.strokeStyle = PAL.route;
     c.ctx.lineWidth = Math.max(4, c.h * 0.028);
     c.ctx.lineCap = "round";
     c.ctx.beginPath();
@@ -547,13 +563,13 @@ function drawHeroMap() {
     var legendY = c.h - 17;
     c.ctx.font = "500 13px 'Vend Sans', sans-serif";
     c.ctx.textBaseline = "middle";
-    c.ctx.fillStyle = "#f2c94c";
+    c.ctx.fillStyle = PAL.route;
     c.ctx.fillRect(c.w * 0.05, legendY - 3, 24, 6);
-    c.ctx.fillStyle = "#1b3525";
+    c.ctx.fillStyle = PAL.inkSoft;
     c.ctx.fillText("Ruta GoIA · 14 min", c.w * 0.05 + 32, legendY + 1);
     c.ctx.fillStyle = "#a4a4a3";
     c.ctx.fillRect(c.w * 0.55, legendY - 2, 24, 4);
-    c.ctx.fillStyle = "#1b3525";
+    c.ctx.fillStyle = PAL.inkSoft;
     c.ctx.fillText("Más rápida · 11 min", c.w * 0.55 + 32, legendY + 1);
   }
 }
@@ -678,19 +694,19 @@ function drawZones(ctx, v, fill, stroke) {
 function drawEndpoints(ctx, v) {
   var o = v.project(MAPA.nodes[MAPA.origin]);
   var d = v.project(MAPA.nodes[MAPA.dest]);
-  ctx.fillStyle = "#fbfbf7";
-  ctx.strokeStyle = "#144134";
+  ctx.fillStyle = PAL.paper;
+  ctx.strokeStyle = PAL.ink;
   ctx.lineWidth = 3;
   ctx.beginPath();
   ctx.arc(o[0], o[1], 8, 0, Math.PI * 2);
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle = "#144134";
+  ctx.fillStyle = PAL.ink;
   ctx.beginPath();
   ctx.arc(d[0], d[1], 9, 0, Math.PI * 2);
   ctx.fill();
   ctx.font = "600 13px 'Vend Sans', sans-serif";
-  ctx.fillStyle = "#144134";
+  ctx.fillStyle = PAL.ink;
   ctx.textBaseline = "middle";
   ctx.fillText("Inicio", o[0] + 14, o[1] + 1);
   if (d[0] + 80 > v.w) {
@@ -783,13 +799,13 @@ function drawMap(time) {
   var v = mapView;
   var ctx = v.ctx;
   ctx.clearRect(0, 0, v.w, v.h);
-  ctx.fillStyle = "#e4e3dc";
+  ctx.fillStyle = PAL.mapGround;
   ctx.fillRect(0, 0, v.w, v.h);
-  drawStreets(ctx, v.project, 7, 4.5, "#f1f0ea", "#f1f0ea");
+  drawStreets(ctx, v.project, 7, 4.5, PAL.mapStreet, PAL.mapStreet);
   drawZones(ctx, v, "rgba(176, 110, 84, 0.10)", "rgba(162, 102, 80, 0.55)");
   var pFast = Math.min(1, mapDraw.progress * 1.25);
   var pSafe = Math.max(0, Math.min(1, mapDraw.progress * 1.25 - 0.25));
-  drawPath(ctx, v.project, MAPA.fast.nodes, "#9c9d97", 4, [2, 8], pFast);
+  drawPath(ctx, v.project, MAPA.fast.nodes, PAL.fast, 4, [2, 8], pFast);
   drawPath(ctx, v.project, MAPA.safe.nodes, "rgba(242, 201, 76, 0.75)", 6, null, pSafe);
   drawEndpoints(ctx, v);
 
@@ -804,8 +820,8 @@ function drawMap(time) {
   drawStreets(ctx, v.project, 12, 8, "#ffffff", "#ffffff");
   drawZones(ctx, v, "rgba(176, 110, 84, 0.16)", "rgba(162, 102, 80, 0.8)");
   drawPath(ctx, v.project, MAPA.fast.nodes, "#7c7d78", 4, [2, 8], pFast);
-  drawPath(ctx, v.project, MAPA.safe.nodes, "#d9a92a", 11, null, pSafe);
-  drawPath(ctx, v.project, MAPA.safe.nodes, "#f2c94c", 7, null, pSafe);
+  drawPath(ctx, v.project, MAPA.safe.nodes, PAL.routeDeep, 11, null, pSafe);
+  drawPath(ctx, v.project, MAPA.safe.nodes, PAL.route, 7, null, pSafe);
   drawEndpoints(ctx, v);
   drawStreetNames(ctx, v, lens.x, lens.y, radius);
   ctx.restore();
@@ -814,10 +830,10 @@ function drawMap(time) {
     var walker = pointAlong(MAPA.safe.nodes, (time % 9000) / 9000, v.project);
     ctx.beginPath();
     ctx.arc(walker[0], walker[1], 7, 0, Math.PI * 2);
-    ctx.fillStyle = "#fbfbf7";
+    ctx.fillStyle = PAL.paper;
     ctx.fill();
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "#144134";
+    ctx.strokeStyle = PAL.ink;
     ctx.stroke();
   }
 
@@ -828,9 +844,16 @@ function drawMap(time) {
   ctx.stroke();
 }
 
+var mapVisible = false;
+var loopRunning = false;
+
 function tick(time) {
+  if (!mapVisible) {
+    loopRunning = false;
+    return;
+  }
   if (!lens.active && mapView) {
-    var t = reduceMotion ? 0.5 : 0.5 + Math.sin(time * 0.00018) * 0.42;
+    var t = 0.5 + Math.sin(time * 0.00018) * 0.42;
     var p = pointAlong(MAPA.safe.nodes, t, mapView.project);
     lens.tx = p[0];
     lens.ty = p[1];
@@ -841,16 +864,47 @@ function tick(time) {
   window.requestAnimationFrame(tick);
 }
 
+function startLoop() {
+  if (reduceMotion || loopRunning || !mapVisible) return;
+  loopRunning = true;
+  window.requestAnimationFrame(tick);
+}
+
+function holdLens() {
+  if (!mapView) return;
+  var p = pointAlong(MAPA.safe.nodes, 0.5, mapView.project);
+  lens.x = lens.tx = p[0];
+  lens.y = lens.ty = p[1];
+  drawMap(0);
+}
+
 function moveLens(event) {
   var rect = mapCanvas.getBoundingClientRect();
   lens.tx = event.clientX - rect.left;
   lens.ty = event.clientY - rect.top;
   lens.active = true;
+  if (reduceMotion) {
+    lens.x = lens.tx;
+    lens.y = lens.ty;
+    drawMap(0);
+  }
 }
 
 mapStage.addEventListener("pointermove", moveLens);
 mapStage.addEventListener("pointerdown", moveLens);
-mapStage.addEventListener("pointerleave", function () { lens.active = false; });
+mapStage.addEventListener("pointerleave", function () {
+  lens.active = false;
+  if (reduceMotion) holdLens();
+});
+
+if ("IntersectionObserver" in window) {
+  new IntersectionObserver(function (entries) {
+    mapVisible = entries[0].isIntersecting;
+    startLoop();
+  }, { rootMargin: "100px" }).observe(mapStage);
+} else {
+  mapVisible = true;
+}
 
 function drawAll() {
   drawHeroMap();
@@ -867,7 +921,7 @@ if (window.matchMedia("(pointer: coarse), (max-width: 900px)").matches) {
 drawAll();
 window.addEventListener("resize", drawAll);
 if (document.fonts) { document.fonts.ready.then(drawAll); }
-window.requestAnimationFrame(tick);
+startLoop();
 
 var forms = document.querySelectorAll("[data-signup]");
 for (var f = 0; f < forms.length; f++) {

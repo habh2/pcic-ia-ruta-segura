@@ -22,7 +22,69 @@ colors:
   fast-pill: "#e6e5df"
   zone-clay: "#a26650"
   error-brick: "#8a2c1f"
+  fast-gray-deep: "#6f706a"
+  ink-mist-dim: "#aebdb3"
 typography:
+  display-compact:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "clamp(2rem, 1.2rem + 4vw, 2.9rem)"
+    fontWeight: 700
+    lineHeight: 1.1
+  ui-heading:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "clamp(1.5rem, 1.25rem + 0.8vw, 1.85rem)"
+    fontWeight: 700
+    lineHeight: 1.16
+  ui-figure:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "2rem"
+    fontWeight: 700
+    lineHeight: 1
+  ui-wordmark:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "1.6rem"
+    fontWeight: 700
+    lineHeight: 1
+  ui-title-lg:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "1.25rem"
+    fontWeight: 700
+    lineHeight: 1.2
+  ui-title:
+    fontFamily: "Noticia Text, Georgia, serif"
+    fontSize: "1.12rem"
+    fontWeight: 700
+    lineHeight: 1.25
+  ui-lead:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "1.06rem"
+    fontWeight: 300
+    lineHeight: 1.55
+  ui-body:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  ui:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "0.95rem"
+    fontWeight: 400
+    lineHeight: 1.45
+  ui-small:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "0.9rem"
+    fontWeight: 400
+    lineHeight: 1.4
+  ui-caption:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "0.82rem"
+    fontWeight: 500
+    lineHeight: 1.3
+  credit:
+    fontFamily: "Vend Sans, Segoe UI, system-ui, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 400
+    lineHeight: 1.3
   display:
     fontFamily: "Noticia Text, Georgia, serif"
     fontSize: "clamp(2rem, 1.2rem + 4vw, 3.4rem)"
@@ -159,10 +221,10 @@ A daylight palette: pale paper ground, deep leaf-green ink, and a single warm ye
 - **Paper White** (paper-white): input fields, text on ink bands and buttons, map tag fill.
 - **Soft Ink** (ink-soft) and **Muted Ink** (ink-muted): lead and body copy, then fine print and map notes.
 - **Field Edge** (field-edge): 1.5px input borders.
-- **Ink Mist** (ink-mist): secondary text on Forest Ink bands.
+- **Ink Mist** (ink-mist): secondary text on Forest Ink bands. **Dim Ink Mist** (ink-mist-dim) is the quieter fine print in the footer base row.
 - **Map Ground** (map-ground) and **Map Street** (map-street): the sample map's blocks and streets, quiet so the routes carry it.
-- **Fast Gray** (fast-gray) and **Fast Pill** (fast-pill): the "Más rápida" comparison route (dotted) and its time pill. The fastest route is always gray, never a second accent.
-- **Zone Clay** (zone-clay): dashed outline of "zona con reportes" circles, filled at 10 to 22% alpha. A muted clay, never alarm red.
+- **Fast Gray** (fast-gray) and **Fast Pill** (fast-pill): the "Más rápida" comparison route (dotted) and its time pill. The fastest route is always gray, never a second accent. **Deep Fast Gray** (fast-gray-deep) draws the dotted route when the person has selected it in the app, so the choice reads without a new hue.
+- **Zone Clay** (zone-clay): dashed outline of "zona con reportes" circles, filled at 10 to 22% alpha. A muted clay, never alarm red. Clay is for shapes and icons only: at body sizes it is under 4.5:1 on paper, so warning text stays in Forest Ink beside a clay icon.
 - **Error Brick** (error-brick): form error messages only.
 
 ### Named Rules
@@ -187,6 +249,17 @@ A daylight palette: pale paper ground, deep leaf-green ink, and a single warm ye
 - **Lead** (300, clamp 1.06rem to 1.28rem, 1.55): the one-paragraph intro under a heading, max 34em.
 - **Body** (300 to 400, 1.04 to 1.1rem, 1.55 to 1.6): feature and step copy, max 28 to 34em. Bold lead-ins inside lists use 600 in Forest Ink.
 - **Label** (500, 0.86 to 0.95rem, tabular numerals): pills, map tag, legend rows, map notes. Minutes and meters always use tabular figures.
+- **Display Compact** (700, clamp 2rem to 2.9rem, 1.1): the hero headline below 900px.
+
+### App UI scale
+The app at `/app/` is an Operate surface, so its steps are fixed and smaller than the landing's editorial ramp. They live as `--fs-*` custom properties in `web/app/index.html`.
+- **UI Heading** (Noticia 700, clamp 1.5rem to 1.85rem): one per view, a plain sentence ending in a period.
+- **UI Figure** (Noticia 700, 2rem): minutes left while walking.
+- **UI Wordmark** (Noticia 700, 1.6rem) and **UI Title Large** (Noticia 700, 1.25rem): the app header and the walking instruction or dialog title.
+- **UI Title** (Noticia 700, 1.12rem): section openers and route names.
+- **UI Lead** (Vend Sans 300, 1.06rem) and **UI Body** (400, 1rem): the intro line under a heading, then controls and running text.
+- **UI** (0.95rem), **UI Small** (0.9rem) and **UI Caption** (500, 0.82rem): secondary lines, notes and errors, then badges and the map tag.
+- **Credit** (0.75rem): map attribution only. Nothing a person reads to act goes below UI Caption.
 
 ### Named Rules
 **The Serif Speaks First Rule.** Every section opens with a serif sentence, written as a plain statement ending in a period. Sans text never takes the heading role.
