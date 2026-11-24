@@ -8,8 +8,9 @@ web
 
 ## Stack
 
-- Product app: a single-file web app at `app/index.html` (Tailwind via CDN, Leaflet 1.9.4 with OpenStreetMap tiles, Inter and JetBrains Mono).
-- Landing page: static HTML/CSS/JS plus a small local Python (Flask) backend that writes pre-registration emails to a CSV. Self-hosted by the team. Chosen by the user over a hosted Artifact database.
+- One web application in `web/`, served by a small local Python (Flask) backend (`web/server.py`). Self-hosted by the team. Chosen by the user over a hosted Artifact database.
+- Landing page at `/` (`web/index.html`): static HTML/CSS/JS. The backend writes pre-registration emails to a CSV. A secondary "Probar el demo" link leads to the app.
+- Product app at `/app/` (`web/app/index.html`): single file, Leaflet 1.9.4 with OpenStreetMap tiles, Noticia Text and Vend Sans from the shared `web/assets/fonts/`. It must be served over http, because OpenStreetMap rejects tile requests without a referer.
 
 ## Users
 
@@ -55,7 +56,7 @@ Mainstream planners (Google Maps, Waze) optimize time and are not built for pede
 - One interview so far (E01, a business owner): "Estoy un poco escondido para los ojos del publico".
 - Landing metrics: not collected yet (`metricas_landing.csv` is all `Pendiente`).
 - Original proposal: `reportes/IA propuesta.docx-1.pdf`. Financial model: `reportes/modelo_financiero.xlsx`.
-- Working app build: `app/index.html` (Colonia Cuauhtémoc, Paseo de la Reforma corridor).
+- Working app build: `web/app/index.html` (Colonia Cuauhtémoc, Paseo de la Reforma corridor).
 - Absent, must not be fabricated: user counts, testimonials from users, ratings, press, partner logos, validated percentages, app store presence.
 
 ## Product Principles

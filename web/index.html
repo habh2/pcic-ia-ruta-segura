@@ -43,7 +43,9 @@ a { color: inherit; }
 .nav-link, .nav-cta, .signup button, .pill { will-change: transform; }
 .brand { position: absolute; left: 4.42%; top: 19.6%; font-family: var(--serif); font-weight: 700; font-size: 3.66cqw; line-height: 1; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
 .nav-link { position: absolute; top: 37.5%; font-size: 1.24cqw; line-height: 1.2; color: #1c3a2f; text-decoration: none; font-weight: 500; letter-spacing: 0.012em; }
+.status-link { color: var(--ink); font-weight: 500; text-underline-offset: 0.25em; text-decoration-color: var(--route-deep); }
 .nav-link:hover { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 2px; text-decoration-color: var(--route-deep); }
+.nav-demo { left: 56.3%; }
 .nav-como { left: 67.9%; }
 .nav-mapa { left: 79.45%; }
 .nav-cta { position: absolute; left: 86.51%; top: 25.6%; width: 8.77%; height: 43.6%; border: 1px solid #2d5e50; display: flex; align-items: center; justify-content: center; border-radius: 0.45cqw; background: var(--button); color: var(--white); font-size: 1.22cqw; font-weight: 400; text-decoration: none; transition: background-color 160ms ease-out, transform 120ms ease-out; }
@@ -210,6 +212,7 @@ a { color: inherit; }
     <header class="site-header">
       <a class="brand" href="#inicio" id="inicio">GoIA</a>
       <nav aria-label="Principal">
+        <a class="nav-link nav-demo" href="/app/">Probar el demo</a>
         <a class="nav-link nav-como" href="#como-funciona">Cómo funciona</a>
         <a class="nav-link nav-mapa" href="#mapa">El mapa</a>
         <a class="nav-cta" href="#pre-registro">Pre-registro</a>
@@ -341,6 +344,7 @@ a { color: inherit; }
         <li><a href="#como-funciona">Cómo funciona</a></li>
         <li><a href="#mapa">El mapa</a></li>
         <li><a href="#pre-registro">Pre-registro</a></li>
+        <li><a href="/app/">Probar el demo</a></li>
         <li><a href="mailto:hola@goia.example">hola@goia.example</a></li>
       </ul>
     </div>
@@ -898,6 +902,12 @@ for (var f = 0; f < forms.length; f++) {
         } else {
           status.textContent = "Listo. Te escribiremos cuando abra la versión de prueba.";
         }
+        var demo = document.createElement("a");
+        demo.href = "/app/";
+        demo.className = "status-link";
+        demo.textContent = "Mientras, prueba el demo.";
+        status.appendChild(document.createTextNode(" "));
+        status.appendChild(demo);
       })
       .catch(function () {
         status.dataset.state = "error";

@@ -4,12 +4,12 @@ import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
-from flask import Flask, jsonify, request, send_from_directory
+from flask import Flask, jsonify, redirect, request, send_from_directory
 
 HOST = "127.0.0.1"
 PORT = 8000
-LANDING_DIR = Path(__file__).resolve().parent
-DATA_FILE = LANDING_DIR / "data" / "preregistros.csv"
+WEB_DIR = Path(__file__).resolve().parent
+DATA_FILE = WEB_DIR / "data" / "preregistros.csv"
 EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MAX_EMAIL_LENGTH = 254
 
@@ -50,12 +50,22 @@ def preregister():
 
 @app.get("/")
 def index():
-    return send_from_directory(LANDING_DIR, "index.html")
+    return send_from_directory(WEB_DIR, "index.html")
+
+
+@app.get("/app")
+def app_without_slash():
+    return redirect("/app/")
+
+
+@app.get("/app/")
+def app_page():
+    return send_from_directory(WEB_DIR / "app", "index.html")
 
 
 @app.get("/assets/<path:name>")
 def assets(name):
-    return send_from_directory(LANDING_DIR / "assets", name)
+    return send_from_directory(WEB_DIR / "assets", name)
 
 
 app.run(host=HOST, port=PORT)

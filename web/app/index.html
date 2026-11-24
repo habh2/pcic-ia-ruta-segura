@@ -8,10 +8,10 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23144134'/%3E%3Cpath d='M8 24c4-1 5-7 9-9s6-4 7-7' fill='none' stroke='%23f2c94c' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <style>
-@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/noticia-text-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("assets/fonts/noticia-text-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
-@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/vend-sans-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/vend-sans-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/noticia-text-700-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 700; font-display: swap; src: url("/assets/fonts/noticia-text-700-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/vend-sans-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Vend Sans"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("/assets/fonts/vend-sans-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
 
 :root {
   --route: #f2c94c;
@@ -141,6 +141,7 @@ strong { font-weight: 600; }
   transition: background-color .16s ease-out;
 }
 .row:hover { background: var(--ground-deep); }
+a.row { text-decoration: none; }
 .row.static { cursor: default; }
 .row.static:hover { background: none; }
 .row-ico { width: 38px; height: 38px; border-radius: 50%; background: var(--ground-deep); color: var(--ink); display: grid; place-items: center; flex: none; }
@@ -1772,6 +1773,7 @@ function viewMenu() {
     '<li><button class="row" type="button" role="switch" aria-checked="' + (state.tech ? 'true' : 'false') + '" data-action="tech">' +
     '<span class="row-ico">' + icon('code') + '</span><span class="row-txt"><span class="row-t">Modo técnico</span><span class="row-s">Muestra el detalle de la búsqueda A* en cada ruta</span></span><span class="switch" aria-hidden="true"></span></button></li>' +
     row({ action: 'reset', icon: 'reset', title: 'Restablecer datos de ejemplo', sub: 'Borra tus reportes, destinos recientes y cambios a comercios' }) +
+    '<li><a class="row" href="/"><span class="row-ico">' + icon('info') + '</span><span class="row-txt"><span class="row-t">Conoce GoIA</span><span class="row-s">Cómo funciona y pre-registro para la versión de prueba</span></span><span class="row-end">' + icon('chev') + '</span></a></li>' +
     '</ul><h2 class="sh">Sobre estos datos.</h2>' +
     '<p class="lead">Este prototipo cubre la colonia Cuauhtémoc con un grafo de ' + graph.nodes.size + ' esquinas. Las zonas, los puntos vigilados y los comercios son datos de ejemplo. Tu ubicación y la caminata son simuladas.</p></div>';
 }
