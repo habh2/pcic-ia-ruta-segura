@@ -212,6 +212,7 @@ p { text-wrap: pretty; }
 .swatch-fast { width: 30px; height: 0; border-top: 5px dotted var(--fast-gray); flex: none; }
 
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.grid2 > :last-child:nth-child(odd) { grid-column: 1 / -1; }
 .tile {
   display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
   min-height: 92px; padding: 14px; text-align: left;
@@ -278,6 +279,12 @@ table.t td:not(:first-child), table.t th:not(:first-child) { text-align: right; 
 .m-a { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); border: 4px solid var(--route); }
 .m-b { width: 26px; height: 26px; border-radius: 50%; background: var(--route); border: 4px solid var(--ink); }
 .m-pin { width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 4px solid var(--zone-violet); }
+.pin-wrap { position: relative; width: 32px; height: 32px; }
+.pin { width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); display: grid; place-items: center; box-sizing: border-box; }
+.pin svg { transform: rotate(45deg); width: 16px; height: 16px; }
+.pin.own { background: var(--zone-violet); color: var(--paper); border: 2px solid var(--paper); }
+.pin.community { background: var(--paper); color: var(--ink); border: 2px solid var(--ink); }
+.pin-count { position: absolute; top: -7px; right: -9px; min-width: 19px; height: 19px; padding: 0 5px; box-sizing: border-box; border-radius: 10px; background: var(--ink); color: var(--paper); border: 1.5px solid var(--paper); font: 600 11px/16px var(--sans); text-align: center; }
 .m-biz { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); color: var(--ink); display: grid; place-items: center; }
 .m-biz svg { width: 16px; height: 16px; }
 .m-biz.far { opacity: .55; }
@@ -336,7 +343,7 @@ dialog p { margin: 0; color: var(--ink-soft); }
   <main class="panel" id="panel"></main>
   <section class="map-wrap" aria-label="Mapa">
     <div id="map"></div>
-    <span class="map-tag" id="map-tag">Datos de ejemplo · Col. Cuauhtémoc</span>
+    <span class="map-tag" id="map-tag">Alcaldía Cuauhtémoc</span>
     <div class="nav-banner" id="nav-banner" role="status" hidden></div>
     <div class="pick-pin" id="pick-pin" hidden></div>
     <div class="pick-bar" id="pick-bar" hidden>
@@ -363,33 +370,27 @@ dialog p { margin: 0; color: var(--ink-soft); }
 <script>
 const SIM_STEP_M = 6;
 const SIM_TICK_MS = 100;
-const WALK_M_PER_MIN = 80;
-const REPORT_RADIUS_M = 70;
+const WALK_M_PER_MIN = 84;
+const REPORT_RADIUS_M = 100;
+const NEAR_REPORT_M = 70;
+const REPORT_TTL_DAYS = 30;
 const OUT_OF_AREA_M = 260;
+const EPSILON = 0.2;
+const LAMBDA_MIN = 0.01;
+const LAMBDA_MAX = 10000;
+const LAMBDA_STEPS = 12;
+const SAMPLE_STEP_M = 10;
+const NET_URL = '/assets/data/red_cuauhtemoc.json';
+const COMMUNITY_URL = '/assets/data/reportes_comunidad.json';
+const CLUSTER_PX = 44;
 
 const AREA = {
   center: [19.4298, -99.1648],
   zoom: 16,
-  boundary: [
-    [19.4254, -99.1722], [19.4275, -99.1674], [19.4296, -99.1628], [19.4319, -99.1576],
-    [19.4342, -99.1569], [19.4337, -99.1592], [19.4333, -99.1615], [19.4326, -99.1657],
-    [19.4321, -99.1682], [19.4315, -99.1725], [19.4282, -99.1728]
-  ]
+  boundary: []
 };
 
 const USER_LOCATION = { id: 'me', name: 'Tu ubicación', sub: 'Río Pánuco y Río Tiber (simulada)', lat: 19.4299, lng: -99.1679, kind: 'me' };
-
-const SAMPLE_ZONES = [
-  { id: 'risk-1', lat: 19.4309, lng: -99.1621, radius: 110, level: 'high', title: 'Cruce Río Lerma y Río Sena', description: 'Poca iluminación de noche y reportes recientes en calles interiores.' },
-  { id: 'risk-2', lat: 19.4316, lng: -99.1634, radius: 90, level: 'medium', title: 'Río Pánuco y Río Danubio', description: 'Tramo con poca visibilidad para peatones y obras en la banqueta.' }
-];
-
-const SAFE_SPOTS = [
-  { id: 'safe-1', lat: 19.4276, lng: -99.1672, title: 'Módulo de policía Reforma y Tiber' },
-  { id: 'safe-2', lat: 19.4285, lng: -99.1677, title: 'Corredor iluminado Río Lerma' },
-  { id: 'safe-3', lat: 19.4318, lng: -99.1578, title: 'Cruce vigilado Reforma e Insurgentes' },
-  { id: 'safe-4', lat: 19.4296, lng: -99.1628, title: 'Glorieta de la Palma' }
-];
 
 const SAMPLE_BUSINESSES = [
   { id: 'biz-1', name: 'Café Río Lerma', category: 'cafe', tier: 'gold', promo: '2×1 en espresso americano', lat: 19.4287, lng: -99.1674 },
@@ -417,8 +418,7 @@ const REPORT_TYPES = [
   { id: 'robo', label: 'Asalto o robo', level: 'high', icon: 'alert' },
   { id: 'acoso', label: 'Acoso', level: 'high', icon: 'message' },
   { id: 'sola', label: 'Calle sola', level: 'medium', icon: 'eye' },
-  { id: 'banqueta', label: 'Banqueta rota u obra', level: 'medium', icon: 'cone' },
-  { id: 'otro', label: 'Otra cosa', level: 'medium', icon: 'dots' }
+  { id: 'banqueta', label: 'Banqueta rota u obra', level: 'medium', icon: 'cone' }
 ];
 
 const REPORT_WHEN = [
@@ -428,91 +428,12 @@ const REPORT_WHEN = [
 ];
 
 const LANDMARKS = [
-  { node: 'ref_tiber', name: 'Ángel de la Independencia' },
-  { node: 'mon_madre', name: 'Monumento a la Madre' },
-  { node: 'mon_madre', name: 'Jardín del Arte Sullivan' },
-  { node: 'ref_palma', name: 'Glorieta de la Palma' },
-  { node: 'ref_ins', name: 'Reforma e Insurgentes' },
-  { node: 'ref_circ', name: 'Reforma y Circuito Interior' }
-];
-
-const RAW_NODES = [
-  ['ref_circ', 19.4254, -99.1722, 'Paseo de la Reforma & Circuito Interior'],
-  ['ref_guad', 19.4263, -99.1701, 'Paseo de la Reforma & Río Guadalquivir'],
-  ['ref_tiber', 19.4275, -99.1674, 'Paseo de la Reforma & Río Tiber'],
-  ['ref_rhin', 19.4286, -99.1650, 'Paseo de la Reforma & Río Rhin'],
-  ['ref_palma', 19.4296, -99.1628, 'Paseo de la Reforma & Glorieta de la Palma'],
-  ['ref_sena', 19.4305, -99.1607, 'Paseo de la Reforma & Río Sena'],
-  ['ref_ins', 19.4319, -99.1576, 'Paseo de la Reforma & Av. Insurgentes Centro'],
-  ['bal_guad', 19.4269, -99.1702, 'Río Balsas & Río Guadalquivir'],
-  ['bal_tiber', 19.4280, -99.1675, 'Río Balsas & Río Tiber'],
-  ['bal_rhin', 19.4290, -99.1651, 'Río Balsas & Río Rhin'],
-  ['nilo_palma', 19.4300, -99.1629, 'Río Nilo & Río Danubio'],
-  ['ler_circ', 19.4267, -99.1726, 'Río Lerma & Circuito Interior'],
-  ['ler_guad', 19.4275, -99.1704, 'Río Lerma & Río Guadalquivir'],
-  ['ler_tiber', 19.4285, -99.1677, 'Río Lerma & Río Tiber'],
-  ['ler_rhin', 19.4295, -99.1653, 'Río Lerma & Río Rhin'],
-  ['ler_dan', 19.4304, -99.1631, 'Río Lerma & Río Danubio'],
-  ['ler_sena', 19.4313, -99.1610, 'Río Lerma & Río Sena'],
-  ['ler_neva', 19.4322, -99.1588, 'Río Lerma & Río Neva'],
-  ['ler_ins', 19.4326, -99.1574, 'Río Lerma & Av. Insurgentes Centro'],
-  ['ebro_guad', 19.4283, -99.1705, 'Río Ebro & Río Guadalquivir'],
-  ['ama_tiber', 19.4292, -99.1678, 'Río Amazonas & Río Tiber'],
-  ['ama_rhin', 19.4301, -99.1654, 'Río Amazonas & Río Rhin'],
-  ['amur_sena', 19.4318, -99.1611, 'Río Amur & Río Sena'],
-  ['pan_circ', 19.4282, -99.1728, 'Río Pánuco & Circuito Interior'],
-  ['pan_guad', 19.4290, -99.1706, 'Río Pánuco & Río Guadalquivir'],
-  ['pan_tiber', 19.4299, -99.1680, 'Río Pánuco & Río Tiber'],
-  ['pan_rhin', 19.4308, -99.1655, 'Río Pánuco & Río Rhin'],
-  ['pan_dan', 19.4316, -99.1634, 'Río Pánuco & Río Danubio'],
-  ['pan_sena', 19.4323, -99.1612, 'Río Pánuco & Río Sena'],
-  ['pan_neva', 19.4330, -99.1590, 'Río Pánuco & Río Neva'],
-  ['po_tiber', 19.4305, -99.1681, 'Río Po & Río Tiber'],
-  ['naz_guad', 19.4303, -99.1708, 'Río Nazas & Río Guadalquivir'],
-  ['naz_tiber', 19.4311, -99.1681, 'Río Nazas & Río Tiber'],
-  ['naz_rhin', 19.4318, -99.1656, 'Río Nazas & Río Rhin'],
-  ['naz_dan', 19.4325, -99.1635, 'Río Nazas & Río Danubio'],
-  ['vil_circ', 19.4315, -99.1725, 'Calz. Manuel Villalongín & Circuito Interior'],
-  ['vil_tiber', 19.4321, -99.1682, 'Calz. Manuel Villalongín & Río Tiber'],
-  ['vil_rhin', 19.4326, -99.1657, 'Calz. Manuel Villalongín & Río Rhin'],
-  ['vil_sena', 19.4333, -99.1615, 'Calz. Manuel Villalongín & Río Sena'],
-  ['vil_neva', 19.4337, -99.1592, 'Calz. Manuel Villalongín & Río Neva'],
-  ['vil_ins', 19.4342, -99.1569, 'Calz. Manuel Villalongín & Av. Insurgentes'],
-  ['mon_madre', 19.4318, -99.1594, 'Monumento a la Madre & Jardín del Arte']
-];
-
-const RAW_EDGES = [
-  ['ref_circ', 'ref_guad', 'Paseo de la Reforma', true], ['ref_guad', 'ref_tiber', 'Paseo de la Reforma', true],
-  ['ref_tiber', 'ref_rhin', 'Paseo de la Reforma', true], ['ref_rhin', 'ref_palma', 'Paseo de la Reforma', true],
-  ['ref_palma', 'ref_sena', 'Paseo de la Reforma', true], ['ref_sena', 'ref_ins', 'Paseo de la Reforma', true],
-  ['ref_ins', 'ler_ins', 'Av. Insurgentes Centro', true], ['ler_ins', 'vil_ins', 'Av. Insurgentes Centro', true],
-  ['vil_circ', 'vil_tiber', 'Calz. Manuel Villalongín', true], ['vil_tiber', 'vil_rhin', 'Calz. Manuel Villalongín', true],
-  ['vil_rhin', 'vil_sena', 'Calz. Manuel Villalongín', true], ['vil_sena', 'vil_neva', 'Calz. Manuel Villalongín', true],
-  ['vil_neva', 'vil_ins', 'Calz. Manuel Villalongín', true],
-  ['ref_circ', 'ler_circ', 'Circuito Interior', true], ['ler_circ', 'pan_circ', 'Circuito Interior', true], ['pan_circ', 'vil_circ', 'Circuito Interior', true],
-  ['ref_tiber', 'bal_tiber', 'Río Tiber', false], ['bal_tiber', 'ler_tiber', 'Río Tiber', false], ['ler_tiber', 'ama_tiber', 'Río Tiber', false],
-  ['ama_tiber', 'pan_tiber', 'Río Tiber', false], ['pan_tiber', 'po_tiber', 'Río Tiber', false], ['po_tiber', 'naz_tiber', 'Río Tiber', false],
-  ['naz_tiber', 'vil_tiber', 'Río Tiber', false],
-  ['ref_guad', 'bal_guad', 'Río Guadalquivir', false], ['bal_guad', 'ler_guad', 'Río Guadalquivir', false], ['ler_guad', 'ebro_guad', 'Río Guadalquivir', false],
-  ['ebro_guad', 'pan_guad', 'Río Guadalquivir', false], ['pan_guad', 'naz_guad', 'Río Guadalquivir', false],
-  ['ref_rhin', 'bal_rhin', 'Río Rhin', false], ['bal_rhin', 'ler_rhin', 'Río Rhin', false], ['ler_rhin', 'ama_rhin', 'Río Rhin', false],
-  ['ama_rhin', 'pan_rhin', 'Río Rhin', false], ['pan_rhin', 'naz_rhin', 'Río Rhin', false], ['naz_rhin', 'vil_rhin', 'Río Rhin', false],
-  ['ref_palma', 'nilo_palma', 'Río Nilo', false], ['nilo_palma', 'ler_dan', 'Río Danubio', false], ['ler_dan', 'pan_dan', 'Río Danubio', false],
-  ['pan_dan', 'naz_dan', 'Río Danubio', false],
-  ['ref_sena', 'ler_sena', 'Río Sena', false], ['ler_sena', 'amur_sena', 'Río Sena', false], ['amur_sena', 'pan_sena', 'Río Sena', false],
-  ['pan_sena', 'vil_sena', 'Río Sena', false],
-  ['ler_neva', 'ler_ins', 'Río Lerma', false], ['ler_neva', 'pan_neva', 'Río Neva', false], ['pan_neva', 'vil_neva', 'Río Neva', false],
-  ['ler_sena', 'mon_madre', 'Jardín del Arte', false], ['ler_neva', 'mon_madre', 'Río Neva', false], ['pan_sena', 'mon_madre', 'Sullivan', false],
-  ['pan_neva', 'mon_madre', 'Río Neva', false], ['ref_sena', 'mon_madre', 'Sendero Reforma-Sullivan', false],
-  ['ler_circ', 'ler_guad', 'Río Lerma', false], ['ler_guad', 'ler_tiber', 'Río Lerma', false], ['ler_tiber', 'ler_rhin', 'Río Lerma', false],
-  ['ler_rhin', 'ler_dan', 'Río Lerma', false], ['ler_dan', 'ler_sena', 'Río Lerma', false], ['ler_sena', 'ler_neva', 'Río Lerma', false],
-  ['bal_guad', 'bal_tiber', 'Río Balsas', false], ['bal_tiber', 'bal_rhin', 'Río Balsas', false],
-  ['ebro_guad', 'ama_tiber', 'Río Ebro', false], ['ama_tiber', 'ama_rhin', 'Río Amazonas', false], ['ama_rhin', 'ler_dan', 'Río Amazonas', false],
-  ['amur_sena', 'mon_madre', 'Río Amur', false],
-  ['pan_circ', 'pan_guad', 'Río Pánuco', false], ['pan_guad', 'pan_tiber', 'Río Pánuco', false], ['pan_tiber', 'pan_rhin', 'Río Pánuco', false],
-  ['pan_rhin', 'pan_dan', 'Río Pánuco', false], ['pan_dan', 'pan_sena', 'Río Pánuco', false], ['pan_sena', 'pan_neva', 'Río Pánuco', false],
-  ['naz_guad', 'naz_tiber', 'Río Nazas', false], ['naz_tiber', 'naz_rhin', 'Río Nazas', false], ['naz_rhin', 'naz_dan', 'Río Nazas', false],
-  ['naz_dan', 'pan_sena', 'Río Nazas', false]
+  { lat: 19.4275, lng: -99.1674, name: 'Ángel de la Independencia' },
+  { lat: 19.4318, lng: -99.1594, name: 'Monumento a la Madre' },
+  { lat: 19.4318, lng: -99.1594, name: 'Jardín del Arte Sullivan' },
+  { lat: 19.4296, lng: -99.1628, name: 'Glorieta de la Palma' },
+  { lat: 19.4319, lng: -99.1576, name: 'Reforma e Insurgentes' },
+  { lat: 19.4254, lng: -99.1722, name: 'Reforma y Circuito Interior' }
 ];
 
 const ICONS = {
@@ -626,21 +547,60 @@ function insideArea(lat, lng) {
   return inside;
 }
 
-function buildGraph() {
-  const nodes = new Map();
-  const adj = new Map();
-  for (const raw of RAW_NODES) {
-    nodes.set(raw[0], { id: raw[0], lat: raw[1], lng: raw[2], name: raw[3] });
-    adj.set(raw[0], []);
+let NET = null;
+const graph = { nodes: new Map(), adj: new Map(), edges: [] };
+const UNNAMED = ['la banqueta', 'una calle sin nombre'];
+
+function buildGraph(net) {
+  const count = net.nodes.length / 2;
+  for (let i = 0; i < count; i++) {
+    graph.nodes.set(i, { id: i, lat: net.nodes[2 * i], lng: net.nodes[2 * i + 1], name: '' });
+    graph.adj.set(i, []);
   }
-  for (const e of RAW_EDGES) {
-    const u = nodes.get(e[0]);
-    const v = nodes.get(e[1]);
-    const dist = haversineMeters(u.lat, u.lng, v.lat, v.lng);
-    adj.get(e[0]).push({ to: e[1], dist: dist, street: e[2], isMain: e[3] });
-    adj.get(e[1]).push({ to: e[0], dist: dist, street: e[2], isMain: e[3] });
+  for (const e of net.edges) {
+    const edge = { a: e[0], b: e[1], dist: e[2], baseRisk: e[3], reportRisk: 0, street: net.names[e[4]], geom: e[5] >= 0 ? net.geometries[e[5]] : null, samples: null };
+    graph.edges.push(edge);
+    graph.adj.get(e[0]).push({ to: e[1], edge: edge, forward: true });
+    graph.adj.get(e[1]).push({ to: e[0], edge: edge, forward: false });
   }
-  return { nodes: nodes, adj: adj };
+  for (const node of graph.nodes.values()) {
+    const streets = [];
+    for (const arc of graph.adj.get(node.id)) {
+      const street = arc.edge.street;
+      if (UNNAMED.indexOf(street) === -1 && streets.indexOf(street) === -1) streets.push(street);
+    }
+    if (streets.length >= 2) node.name = streets[0] + ' & ' + streets[1];
+    else if (streets.length === 1) node.name = streets[0];
+  }
+}
+
+function edgeCoords(edge, forward) {
+  const a = graph.nodes.get(edge.a);
+  const b = graph.nodes.get(edge.b);
+  const coords = [[a.lat, a.lng]];
+  if (edge.geom) {
+    for (let i = 0; i < edge.geom.length; i += 2) coords.push([edge.geom[i], edge.geom[i + 1]]);
+  }
+  coords.push([b.lat, b.lng]);
+  if (!forward) coords.reverse();
+  return coords;
+}
+
+function edgeSamples(edge) {
+  if (edge.samples) return edge.samples;
+  const coords = edgeCoords(edge, true);
+  const samples = [];
+  for (let i = 0; i < coords.length - 1; i++) {
+    const len = haversineMeters(coords[i][0], coords[i][1], coords[i + 1][0], coords[i + 1][1]);
+    const steps = Math.max(1, Math.ceil(len / SAMPLE_STEP_M));
+    for (let k = 0; k < steps; k++) {
+      const t = k / steps;
+      samples.push([coords[i][0] + (coords[i + 1][0] - coords[i][0]) * t, coords[i][1] + (coords[i + 1][1] - coords[i][1]) * t]);
+    }
+  }
+  samples.push(coords[coords.length - 1]);
+  edge.samples = samples;
+  return samples;
 }
 
 class MinHeap {
@@ -680,39 +640,38 @@ class MinHeap {
   }
 }
 
-const graph = buildGraph();
-let zones = [];
+let communityReports = [];
 
-function riskField(lat, lng) {
-  let phi = 0;
-  for (const z of zones) {
-    const d = haversineMeters(lat, lng, z.lat, z.lng);
-    const reach = z.radius * 1.35;
-    if (d <= reach) {
-      const severity = z.level === 'high' ? 2.8 : 1.5;
-      const k = 1 - d / reach;
-      phi += severity * k * k;
+function activeReports() {
+  const cutoff = Date.now() - REPORT_TTL_DAYS * 86400000;
+  const list = [];
+  for (const r of reports) if (r.createdAt >= cutoff) list.push(r);
+  return list;
+}
+
+function activeCommunity() {
+  const cutoff = Date.now() - REPORT_TTL_DAYS * 86400000;
+  const list = [];
+  for (const r of communityReports) if (r.createdAt >= cutoff) list.push(r);
+  return list;
+}
+
+function rebuildZones() {
+  for (const edge of graph.edges) edge.reportRisk = 0;
+  const h = NET.bandwidth_m;
+  for (const r of activeReports().concat(activeCommunity())) {
+    for (const edge of graph.edges) {
+      const a = graph.nodes.get(edge.a);
+      if (haversineMeters(r.lat, r.lng, a.lat, a.lng) > edge.dist + 4 * h) continue;
+      const samples = edgeSamples(edge);
+      let sum = 0;
+      for (const p of samples) {
+        const d = haversineMeters(r.lat, r.lng, p[0], p[1]);
+        sum += Math.exp(-d * d / (2 * h * h));
+      }
+      edge.reportRisk += NET.report_peak * sum / samples.length;
     }
   }
-  return phi;
-}
-
-function safeField(lat, lng) {
-  let bonus = 0;
-  for (const s of SAFE_SPOTS) {
-    const d = haversineMeters(lat, lng, s.lat, s.lng);
-    if (d <= 135) bonus += 0.55 * (1 - d / 135);
-  }
-  return Math.min(bonus, 1.4);
-}
-
-function lineOfSightRisk(latN, lngN, latB, lngB) {
-  const local = riskField(latN, lngN);
-  let ray = 0;
-  for (const t of [0.25, 0.5, 0.75]) {
-    ray += riskField(latN + (latB - latN) * t, lngN + (lngB - lngN) * t);
-  }
-  return local * 0.65 + (ray / 3) * 0.35;
 }
 
 function nearestNode(lat, lng) {
@@ -728,111 +687,121 @@ function nearestNode(lat, lng) {
   return { id: bestId, dist: bestDist };
 }
 
-const ALPHA = 1.35;
-const BETA = 32.0;
-const V_MAX = 1.55;
-const GAMMA = 0.14;
-
-function runAStar(mode, from, to) {
-  const t0 = performance.now();
-  const start = nearestNode(from.lat, from.lng);
-  const goal = nearestNode(to.lat, to.lng);
-  const goalNode = graph.nodes.get(goal.id);
-
-  function heuristic(node) {
-    const d = haversineMeters(node.lat, node.lng, goalNode.lat, goalNode.lng);
-    if (mode === 'safe') {
-      const phi = lineOfSightRisk(node.lat, node.lng, goalNode.lat, goalNode.lng);
-      return Math.max(0, d * (1 + ALPHA * phi) - BETA * safeField(node.lat, node.lng));
+function nearestNamedNode(lat, lng) {
+  let bestId = null;
+  let bestDist = Infinity;
+  for (const node of graph.nodes.values()) {
+    if (!node.name) continue;
+    const d = haversineMeters(lat, lng, node.lat, node.lng);
+    if (d < bestDist) {
+      bestDist = d;
+      bestId = node.id;
     }
-    return (d / V_MAX) * (1 + GAMMA * riskField(node.lat, node.lng));
   }
+  return { id: bestId, dist: bestDist };
+}
 
-  const open = new MinHeap();
-  const gScore = new Map();
-  const cameFrom = new Map();
+function search(start, goal, lam) {
+  const goalNode = graph.nodes.get(goal);
+  const speed = NET.speed_mps;
+  const best = new Map();
+  const parentArc = new Map();
   const closed = new Set();
   const explored = [];
-  gScore.set(start.id, 0);
-  open.push({ id: start.id, g: 0, f: heuristic(graph.nodes.get(start.id)) });
+  const open = new MinHeap();
+  best.set(start, 0);
+  open.push({ id: start, g: 0, f: 0 });
   let found = false;
-
   while (open.size() > 0) {
     const cur = open.pop();
     if (closed.has(cur.id)) continue;
     closed.add(cur.id);
-    const curNode = graph.nodes.get(cur.id);
-    explored.push([curNode.lat, curNode.lng]);
-    if (cur.id === goal.id) {
+    explored.push(cur.id);
+    if (cur.id === goal) {
       found = true;
       break;
     }
-    for (const edge of graph.adj.get(cur.id)) {
-      if (closed.has(edge.to)) continue;
-      const next = graph.nodes.get(edge.to);
-      const midLat = (curNode.lat + next.lat) / 2;
-      const midLng = (curNode.lng + next.lng) / 2;
-      const edgePhi = (riskField(curNode.lat, curNode.lng) + 2 * riskField(midLat, midLng) + riskField(next.lat, next.lng)) / 4;
-      let cost;
-      if (mode === 'safe') {
-        const mainDiscount = edge.isMain ? 0.88 : 1.0;
-        cost = edge.dist * Math.max(0.55, (1 + 5.2 * edgePhi - 0.30 * safeField(midLat, midLng)) * mainDiscount);
-      } else {
-        const speed = edge.isMain ? 1.55 : 1.22;
-        cost = (edge.dist / speed) * (1 + 0.25 * edgePhi);
-      }
-      const g = cur.g + cost;
-      if (!gScore.has(edge.to) || g < gScore.get(edge.to)) {
-        gScore.set(edge.to, g);
-        cameFrom.set(edge.to, { from: cur.id, street: edge.street, dist: edge.dist });
-        open.push({ id: edge.to, g: g, f: g + heuristic(next) });
+    for (const arc of graph.adj.get(cur.id)) {
+      if (closed.has(arc.to)) continue;
+      const edge = arc.edge;
+      const g = cur.g + (edge.dist / speed) * (1 + lam * (edge.baseRisk + edge.reportRisk));
+      if (!best.has(arc.to) || g < best.get(arc.to)) {
+        best.set(arc.to, g);
+        parentArc.set(arc.to, { from: cur.id, arc: arc });
+        const next = graph.nodes.get(arc.to);
+        const h = haversineMeters(next.lat, next.lng, goalNode.lat, goalNode.lng) / speed;
+        open.push({ id: arc.to, g: g, f: g + h });
       }
     }
   }
-
-  const computeMs = performance.now() - t0;
   if (!found) return null;
+  const arcs = [];
+  let id = goal;
+  while (parentArc.has(id)) {
+    const p = parentArc.get(id);
+    arcs.unshift(p.arc);
+    id = p.from;
+  }
+  let seconds = 0;
+  for (const arc of arcs) seconds += arc.edge.dist / speed;
+  return { arcs: arcs, seconds: seconds, explored: explored };
+}
 
+function budgetLambda(start, goal, budget) {
+  const top = search(start, goal, LAMBDA_MAX);
+  if (top.seconds <= budget) return LAMBDA_MAX;
+  const bottom = search(start, goal, LAMBDA_MIN);
+  if (bottom.seconds > budget) return 0;
+  let low = Math.log(LAMBDA_MIN);
+  let high = Math.log(LAMBDA_MAX);
+  for (let i = 0; i < LAMBDA_STEPS; i++) {
+    const middle = (low + high) / 2;
+    if (search(start, goal, Math.exp(middle)).seconds <= budget) low = middle;
+    else high = middle;
+  }
+  return Math.exp(low);
+}
+
+function buildRoute(mode, result, lam, from, to, startDist, goalDist, computeMs) {
+  const speed = NET.speed_mps;
   const coords = [];
   const segStreets = [];
   let distM = 0;
-  let id = goal.id;
-  while (id) {
-    const n = graph.nodes.get(id);
-    coords.unshift([n.lat, n.lng]);
-    const prev = cameFrom.get(id);
-    if (prev) {
-      segStreets.unshift(prev.street);
-      distM += prev.dist;
-      id = prev.from;
-    } else {
-      id = null;
+  let riskSec = 0;
+  for (const arc of result.arcs) {
+    const piece = edgeCoords(arc.edge, arc.forward);
+    if (coords.length) piece.shift();
+    for (let i = 0; i < piece.length; i++) {
+      coords.push(piece[i]);
+      if (coords.length > 1) segStreets.push(arc.edge.street);
     }
+    distM += arc.edge.dist;
+    riskSec += (arc.edge.dist / speed) * (arc.edge.baseRisk + arc.edge.reportRisk);
   }
-  if (start.dist > 6) {
+  if (startDist > 6) {
     coords.unshift([from.lat, from.lng]);
     segStreets.unshift(segStreets.length ? segStreets[0] : 'la calle');
-    distM += start.dist;
+    distM += startDist;
   }
-  if (goal.dist > 6) {
+  if (goalDist > 6) {
     coords.push([to.lat, to.lng]);
     segStreets.push(segStreets.length ? segStreets[segStreets.length - 1] : 'la calle');
-    distM += goal.dist;
+    distM += goalDist;
   }
-
   const risks = [];
-  for (const z of zones) {
-    if (pointToRoute(z.lat, z.lng, coords).distance <= z.radius) risks.push(z);
-  }
-  const safe = [];
-  for (const s of SAFE_SPOTS) {
-    if (pointToRoute(s.lat, s.lng, coords).distance <= 125) safe.push(s);
+  for (const r of activeReports()) {
+    if (pointToRoute(r.lat, r.lng, coords).distance <= NEAR_REPORT_M) risks.push(r);
   }
   const streets = [];
   for (const s of segStreets) {
-    if (streets.indexOf(s) === -1) streets.push(s);
+    if (UNNAMED.indexOf(s) === -1 && s !== 'la calle' && streets.indexOf(s) === -1) streets.push(s);
   }
-
+  if (!streets.length) streets.push('calles locales');
+  const explored = [];
+  for (const id of result.explored) {
+    const n = graph.nodes.get(id);
+    explored.push([n.lat, n.lng]);
+  }
   return {
     mode: mode,
     coords: coords,
@@ -840,11 +809,24 @@ function runAStar(mode, from, to) {
     distM: distM,
     min: Math.max(1, Math.round(distM / WALK_M_PER_MIN)),
     risks: risks,
-    safe: safe,
+    riskSec: riskSec,
+    lambda: lam,
     streets: streets,
     explored: explored,
     computeMs: computeMs
   };
+}
+
+function routeFor(mode, from, to) {
+  const t0 = performance.now();
+  const start = nearestNode(from.lat, from.lng);
+  const goal = nearestNode(to.lat, to.lng);
+  const fast = search(start.id, goal.id, 0);
+  if (!fast) return null;
+  if (mode === 'fast') return buildRoute('fast', fast, 0, from, to, start.dist, goal.dist, performance.now() - t0);
+  const lam = budgetLambda(start.id, goal.id, (1 + EPSILON) * fast.seconds);
+  const safe = search(start.id, goal.id, lam);
+  return buildRoute('safe', safe, lam, from, to, start.dist, goal.dist, performance.now() - t0);
 }
 
 function sameCoords(a, b) {
@@ -859,10 +841,12 @@ function computeTrip(from, to) {
   if (!insideArea(from.lat, from.lng) && nearestNode(from.lat, from.lng).dist > OUT_OF_AREA_M) return { error: 'fuera' };
   if (!insideArea(to.lat, to.lng) && nearestNode(to.lat, to.lng).dist > OUT_OF_AREA_M) return { error: 'fuera' };
   if (nearestNode(from.lat, from.lng).id === nearestNode(to.lat, to.lng).id) return { error: 'cerca' };
-  const safe = runAStar('safe', from, to);
-  const fast = runAStar('fast', from, to);
+  const fast = routeFor('fast', from, to);
+  const safe = routeFor('safe', from, to);
   if (!safe || !fast) return { error: 'sin-ruta' };
-  const same = sameCoords(safe.coords, fast.coords) || fast.distM >= safe.distM;
+  const same = sameCoords(safe.coords, fast.coords);
+  safe.lessRiskPct = 0;
+  if (!same && fast.riskSec > 0) safe.lessRiskPct = Math.max(0, Math.round(100 * (1 - safe.riskSec / fast.riskSec)));
   return { safe: safe, fast: same ? safe : fast, same: same };
 }
 
@@ -871,7 +855,7 @@ function prettyName(name) {
 }
 
 function nameAt(lat, lng) {
-  const near = nearestNode(lat, lng);
+  const near = nearestNamedNode(lat, lng);
   const base = prettyName(graph.nodes.get(near.id).name);
   if (near.dist > 45) return 'Cerca de ' + base;
   return base;
@@ -894,7 +878,7 @@ function tierOf(id) {
 
 function reportTypeOf(id) {
   for (const t of REPORT_TYPES) if (t.id === id) return t;
-  return REPORT_TYPES[REPORT_TYPES.length - 1];
+  return { id: 'otro', label: 'Otro reporte', level: 'medium', icon: 'dots' };
 }
 
 function whenLabel(id) {
@@ -921,7 +905,7 @@ function normalize(text) {
 }
 
 let reports = storeGet('goia.reports', []);
-let businesses = storeGet('goia.businesses', null) || SAMPLE_BUSINESSES.map(function (b) { return Object.assign({}, b); });
+const businesses = SAMPLE_BUSINESSES;
 let recents = storeGet('goia.recents', []);
 
 const state = {
@@ -932,34 +916,30 @@ const state = {
   lastTrip: null,
   report: null,
   lastReport: null,
-  bizDraft: null,
-  tech: storeGet('goia.tech', false),
-  showExplored: false,
   pick: null,
   stack: []
 };
 
-function rebuildZones() {
-  zones = [];
-  for (const z of SAMPLE_ZONES) zones.push(Object.assign({ sample: true }, z));
-  for (const r of reports) {
-    const type = reportTypeOf(r.type);
-    zones.push({ id: r.id, lat: r.lat, lng: r.lng, radius: REPORT_RADIUS_M, level: type.level, title: type.label, place: r.place, createdAt: r.createdAt, sample: false });
-  }
-}
+let cornerPlaces = null;
 
 function buildPlaces() {
   const places = [];
   for (const l of LANDMARKS) {
-    const n = graph.nodes.get(l.node);
-    places.push({ id: 'l:' + l.name, name: l.name, sub: 'Colonia Cuauhtémoc', lat: n.lat, lng: n.lng, kind: 'landmark' });
+    places.push({ id: 'l:' + l.name, name: l.name, sub: 'Colonia Cuauhtémoc', lat: l.lat, lng: l.lng, kind: 'landmark' });
   }
   for (const b of businesses) {
     places.push({ id: 'b:' + b.id, name: b.name, sub: categoryOf(b.category).label + ' · ' + nameAt(b.lat, b.lng), lat: b.lat, lng: b.lng, kind: 'shop', icon: categoryOf(b.category).icon });
   }
-  for (const n of graph.nodes.values()) {
-    places.push({ id: 'n:' + n.id, name: prettyName(n.name), sub: 'Esquina · Colonia Cuauhtémoc', lat: n.lat, lng: n.lng, kind: 'corner' });
+  if (!cornerPlaces) {
+    cornerPlaces = [];
+    const seen = [];
+    for (const n of graph.nodes.values()) {
+      if (n.name.indexOf(' & ') === -1 || seen.indexOf(n.name) !== -1) continue;
+      seen.push(n.name);
+      cornerPlaces.push({ id: 'n:' + n.id, name: prettyName(n.name), sub: 'Esquina · Alcaldía Cuauhtémoc', lat: n.lat, lng: n.lng, kind: 'corner' });
+    }
   }
+  for (const c of cornerPlaces) places.push(c);
   return places;
 }
 
@@ -1009,35 +989,31 @@ function matchedBusinesses(coords) {
 
 function describeRoute(route) {
   const lines = [];
-  if (route.risks.length === 0) {
-    lines.push({ ok: true, text: 'Evita las zonas con reportes.' });
-  } else {
+  if (route.mode === 'safe' && route.lessRiskPct > 0) {
+    lines.push({ ok: true, text: 'Pasa por calles con ' + route.lessRiskPct + '% menos robos y reportes que la más rápida.' });
+  }
+  if (route.risks.length > 0) {
     const names = [];
     for (const r of route.risks) {
-      const name = r.place || r.title;
-      if (names.indexOf(name.replace('Cerca de ', '')) === -1) names.push(name.replace('Cerca de ', ''));
+      const name = r.place.replace('Cerca de ', '');
+      if (names.indexOf(name) === -1) names.push(name);
     }
-    const label = route.risks.length === 1 ? 'una zona' : route.risks.length + ' zonas';
-    lines.push({ ok: false, text: 'Pasa cerca de ' + label + ' con reportes: ' + names.join(', ') + '.' });
-  }
-  if (route.safe.length > 0) {
-    const label = route.safe.length === 1 ? 'un punto' : route.safe.length + ' puntos';
-    lines.push({ ok: true, text: 'Pasa junto a ' + label + ' con vigilancia o comercio abierto.' });
+    const label = route.risks.length === 1 ? 'un lugar que reportaste' : route.risks.length + ' lugares que reportaste';
+    lines.push({ ok: false, text: 'Pasa cerca de ' + label + ': ' + names.join(', ') + '.' });
+  } else if (activeReports().length > 0) {
+    lines.push({ ok: true, text: 'No pasa por los lugares que reportaste.' });
   }
   return lines;
 }
 
 function tripSummary(trip) {
-  if (trip.same) return 'Aquí el camino más rápido es también el de menor riesgo estimado.';
+  if (trip.same) return 'Aquí el camino más rápido es también el de menos robos y reportes.';
   const extra = trip.safe.min - trip.fast.min;
-  const avoided = trip.fast.risks.length - trip.safe.risks.length;
   let text = extra <= 0 ? 'La ruta GoIA tarda lo mismo' : 'La ruta GoIA tarda ' + extra + ' min más';
-  if (avoided > 0) {
-    text += ' y evita ' + (avoided === 1 ? 'una zona' : avoided + ' zonas') + ' con reportes.';
-  } else if (trip.safe.safe.length > trip.fast.safe.length) {
-    text += ' y pasa junto a más puntos con vigilancia.';
+  if (trip.safe.lessRiskPct > 0) {
+    text += ' y pasa por calles con ' + trip.safe.lessRiskPct + '% menos robos y reportes.';
   } else {
-    text += ' y va por calles con menos riesgo estimado.';
+    text += ' y rodea los lugares que reportaste.';
   }
   return text;
 }
@@ -1059,23 +1035,36 @@ const layers = {};
 let userMarker = null;
 let walkerMarker = null;
 
+function pinIcon(kind, iconName, count) {
+  let html = '<div class="pin-wrap"><div class="pin ' + kind + '">' + icon(iconName) + '</div>';
+  if (count > 1) html += '<span class="pin-count">' + count + '</span>';
+  html += '</div>';
+  return L.divIcon({ className: '', html: html, iconSize: [32, 32], iconAnchor: [16, 39], popupAnchor: [0, -36] });
+}
+
 function divIcon(cls, size, html) {
   return L.divIcon({ className: '', html: '<div class="' + cls + '">' + (html || '') + '</div>', iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
 }
 
 function initMap() {
-  map = L.map('map', { zoomControl: false, attributionControl: true, minZoom: 14, maxZoom: 19 }).setView(AREA.center, AREA.zoom);
+  map = L.map('map', { zoomControl: false, attributionControl: true, maxZoom: 19, maxBoundsViscosity: 1.0 }).setView(AREA.center, AREA.zoom);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">colaboradores de OpenStreetMap</a> (ODbL) · Robos: FGJ CDMX vía <a href="https://api.hoyodecrimen.com/">Hoyo de Crimen</a>'
   }).addTo(map);
   map.attributionControl.setPrefix(false);
   map.attributionControl.setPosition(isMobile() ? 'topright' : 'bottomright');
   if (!isMobile()) L.control.zoom({ position: 'bottomright', zoomInTitle: 'Acercar', zoomOutTitle: 'Alejar' }).addTo(map);
 
-  L.polygon(AREA.boundary, { color: COLORS.ink, weight: 1.5, opacity: 0.35, dashArray: '2 6', fill: false, interactive: false }).addTo(map);
+  const world = [[89, -179.9], [89, 179.9], [-89, 179.9], [-89, -179.9]];
+  L.polygon([world, AREA.boundary], { stroke: false, fillColor: COLORS.ink, fillOpacity: 0.38, interactive: false }).addTo(map);
+  L.polygon(AREA.boundary, { color: COLORS.ink, weight: 2.5, opacity: 0.8, fill: false, interactive: false }).addTo(map);
+  const area = L.latLngBounds(AREA.boundary).pad(0.04);
+  map.setMaxBounds(area);
+  map.setMinZoom(map.getBoundsZoom(area));
+  layers.community = L.layerGroup().addTo(map);
   layers.zones = L.layerGroup().addTo(map);
-  layers.tech = L.layerGroup().addTo(map);
+  map.on('zoomend', drawCommunity);
   layers.routes = L.layerGroup().addTo(map);
   layers.biz = L.layerGroup().addTo(map);
   layers.marks = L.layerGroup().addTo(map);
@@ -1114,22 +1103,64 @@ function keepVisible(pos) {
 
 function drawZones() {
   layers.zones.clearLayers();
-  for (const z of zones) {
-    const circle = L.circle([z.lat, z.lng], {
-      radius: z.radius,
-      color: COLORS.zone,
-      weight: 2.5,
-      opacity: 0.9,
-      dashArray: '6 4',
-      fillColor: COLORS.zone,
-      fillOpacity: z.level === 'high' ? 0.28 : 0.18,
-      bubblingMouseEvents: false
-    });
-    let body = '<span class="pop-t">' + esc(z.sample ? z.title : z.title + ' · ' + (z.place || '')) + '</span>';
-    if (z.description) body += esc(z.description) + '<br>';
-    body += '<span class="muted">' + (z.sample ? 'Reporte de ejemplo' : 'Tu reporte · ' + esc(dateLabel(z.createdAt))) + '</span>';
-    circle.bindPopup(body);
-    circle.addTo(layers.zones);
+  for (const r of activeReports()) {
+    const type = reportTypeOf(r.type);
+    const marker = L.marker([r.lat, r.lng], { icon: pinIcon('own', type.icon, 1), title: 'Tu reporte: ' + type.label, keyboard: true, bubblingMouseEvents: false, zIndexOffset: 200 });
+    marker.bindPopup('<span class="pop-t">' + esc(type.label) + '</span>' + esc(r.place) + '<br><span class="muted">Tu reporte · ' + esc(dateLabel(r.createdAt)) + '</span>');
+    marker.addTo(layers.zones);
+  }
+  drawCommunity();
+}
+
+function daysAgo(ts) {
+  const days = Math.floor((Date.now() - ts) / 86400000);
+  if (days <= 0) return 'hoy';
+  if (days === 1) return 'hace 1 día';
+  return 'hace ' + days + ' días';
+}
+
+function drawCommunity() {
+  layers.community.clearLayers();
+  const zoom = map.getZoom();
+  const clusters = [];
+  for (const r of activeCommunity()) {
+    const p = map.project([r.lat, r.lng], zoom);
+    let home = null;
+    for (const c of clusters) {
+      if (home === null && Math.abs(c.x - p.x) <= CLUSTER_PX && Math.abs(c.y - p.y) <= CLUSTER_PX) home = c;
+    }
+    if (home === null) {
+      home = { x: p.x, y: p.y, items: [] };
+      clusters.push(home);
+    }
+    home.items.push(r);
+  }
+  for (const c of clusters) {
+    let lat = 0;
+    let lng = 0;
+    let newest = 0;
+    const counts = {};
+    for (const r of c.items) {
+      lat += r.lat;
+      lng += r.lng;
+      if (r.createdAt > newest) newest = r.createdAt;
+      counts[r.type] = (counts[r.type] || 0) + 1;
+    }
+    lat /= c.items.length;
+    lng /= c.items.length;
+    let topType = c.items[0].type;
+    for (const t of REPORT_TYPES) {
+      if ((counts[t.id] || 0) > (counts[topType] || 0)) topType = t.id;
+    }
+    const n = c.items.length;
+    let body = '<span class="pop-t">' + (n === 1 ? '1 reporte de la comunidad' : n + ' reportes de la comunidad') + '</span>';
+    for (const t of REPORT_TYPES) {
+      if (counts[t.id]) body += esc(t.label) + ': ' + counts[t.id] + '<br>';
+    }
+    body += '<span class="muted">El más reciente, ' + daysAgo(newest) + ' · ' + esc(nameAt(lat, lng)) + '</span>';
+    const marker = L.marker([lat, lng], { icon: pinIcon('community', reportTypeOf(topType).icon, n), title: (n === 1 ? '1 reporte' : n + ' reportes') + ' de la comunidad', keyboard: true, bubblingMouseEvents: false });
+    marker.bindPopup(body);
+    marker.addTo(layers.community);
   }
 }
 
@@ -1156,18 +1187,14 @@ function drawEndpoints(from, to) {
   if (to) L.marker([to.lat, to.lng], { icon: divIcon('m-b', 26), keyboard: false, title: 'Destino' }).addTo(layers.marks);
 }
 
-function drawBusinesses(list, showAll) {
+function drawBusinesses(list) {
   layers.biz.clearLayers();
-  const shown = showAll ? businesses.map(function (b) { return { biz: b }; }) : list;
-  for (const item of shown) {
+  for (const item of list) {
     const b = item.biz;
     const cat = categoryOf(b.category);
     const m = L.marker([b.lat, b.lng], { icon: divIcon('m-biz', 30, icon(cat.icon)), title: b.name + ', ' + cat.label, keyboard: true, bubblingMouseEvents: false });
     m.bindPopup('<span class="pop-t">' + esc(b.name) + '</span>' + esc(b.promo) + '<br><span class="muted">' + esc(cat.label) + ' · Patrocinado</span>');
     m.addTo(layers.biz);
-    if (showAll) {
-      L.circle([b.lat, b.lng], { radius: tierOf(b.tier).radius, color: COLORS.ink, weight: 1, opacity: 0.4, dashArray: '2 4', fill: false, interactive: false }).addTo(layers.biz);
-    }
   }
 }
 
@@ -1175,7 +1202,6 @@ function drawMap(view) {
   layers.routes.clearLayers();
   layers.marks.clearLayers();
   layers.biz.clearLayers();
-  layers.tech.clearLayers();
   if (walkerMarker) {
     walkerMarker.remove();
     walkerMarker = null;
@@ -1189,10 +1215,7 @@ function drawMap(view) {
     drawRoute(trip.safe, 'safe', state.choice === 'safe' || trip.same);
     drawEndpoints(state.plan.from, state.plan.to);
     const chosen = state.choice === 'fast' ? trip.fast : trip.safe;
-    drawBusinesses(matchedBusinesses(chosen.coords), false);
-    if (state.tech && state.showExplored) {
-      for (const p of chosen.explored) L.circleMarker(p, { radius: 4, color: COLORS.ink, weight: 1, fillColor: COLORS.ink, fillOpacity: 0.35, interactive: false }).addTo(layers.tech);
-    }
+    drawBusinesses(matchedBusinesses(chosen.coords));
     fitTo(trip.safe.coords.concat(trip.fast.coords));
     return;
   }
@@ -1208,7 +1231,7 @@ function drawMap(view) {
     const nav = state.nav;
     drawRoute(nav.route, nav.kind, true);
     L.marker([nav.to.lat, nav.to.lng], { icon: divIcon('m-b', 26), keyboard: false, title: 'Destino' }).addTo(layers.marks);
-    drawBusinesses(nav.bizOnRoute, false);
+    drawBusinesses(nav.bizOnRoute);
     const pos = positionAt(nav.p);
     walkerMarker = L.marker(pos, { icon: divIcon('m-me', 20), keyboard: false, zIndexOffset: 1000 }).addTo(map);
     centerOn(pos, 17);
@@ -1226,15 +1249,6 @@ function drawMap(view) {
     centerOn([state.report.lat, state.report.lng], 17);
     return;
   }
-  if (view === 'comercios') {
-    drawBusinesses([], true);
-    return;
-  }
-  if (view === 'comercio' && state.bizDraft && state.bizDraft.lat) {
-    L.marker([state.bizDraft.lat, state.bizDraft.lng], { icon: divIcon('m-biz', 30, icon(categoryOf(state.bizDraft.category).icon)), keyboard: false }).addTo(layers.marks);
-    L.circle([state.bizDraft.lat, state.bizDraft.lng], { radius: tierOf(state.bizDraft.tier).radius, color: COLORS.ink, weight: 1, opacity: 0.5, dashArray: '2 4', fill: false, interactive: false }).addTo(layers.marks);
-    centerOn([state.bizDraft.lat, state.bizDraft.lng], 17);
-  }
 }
 
 function onMapClick(e) {
@@ -1245,7 +1259,7 @@ function onMapClick(e) {
   const lng = e.latlng.lng;
   let html;
   if (!insideArea(lat, lng) && nearestNode(lat, lng).dist > OUT_OF_AREA_M) {
-    html = '<span class="pop-t">Fuera de la zona de ejemplo</span>Por ahora GoIA cubre la colonia Cuauhtémoc.';
+    html = '<span class="pop-t">Fuera de la zona</span>Por ahora GoIA cubre la alcaldía Cuauhtémoc.';
   } else {
     html = '<span class="pop-t">' + esc(nameAt(lat, lng)) + '</span>' +
       '<div class="pop-actions"><button class="btn small" type="button" data-pop="to">Ir aquí</button>' +
@@ -1292,7 +1306,7 @@ function updatePickLabel() {
   const label = document.getElementById('pick-place');
   const ok = document.getElementById('pick-ok');
   if (!insideArea(c.lat, c.lng) && nearestNode(c.lat, c.lng).dist > OUT_OF_AREA_M) {
-    label.textContent = 'Fuera de la zona de ejemplo. Acerca el punto a la colonia Cuauhtémoc.';
+    label.textContent = 'Fuera de la zona. Acerca el punto a la alcaldía Cuauhtémoc.';
     ok.disabled = true;
   } else {
     label.textContent = nameAt(c.lat, c.lng);
@@ -1367,8 +1381,7 @@ function confirmDialog(title, body, okLabel) {
 
 const PARENTS = {
   inicio: null, planear: 'inicio', rutas: 'planear', caminar: 'rutas', llegada: 'inicio',
-  reportar: 'inicio', 'reporte-enviado': 'inicio', reportes: 'menu', menu: 'inicio',
-  comercios: 'menu', comercio: 'comercios'
+  reportar: 'inicio', 'reporte-enviado': 'inicio', reportes: 'menu', menu: 'inicio'
 };
 
 function currentView() {
@@ -1474,7 +1487,7 @@ function renderPlanResults() {
     html += row({ action: 'place', id: i, icon: placeIcon(list[i]), title: list[i].name, sub: list[i].sub });
   }
   if (q && list.length === 0) {
-    html += '<li class="note" style="padding:14px 6px">No encontramos “' + esc(q) + '” en la colonia Cuauhtémoc. Prueba con el nombre de una calle, como Río Lerma, o elige el punto en el mapa.</li>';
+    html += '<li class="note" style="padding:14px 6px">No encontramos “' + esc(q) + '” en la alcaldía Cuauhtémoc. Prueba con el nombre de una calle, como Río Lerma, o elige el punto en el mapa.</li>';
   }
   box.innerHTML = html;
   const count = document.getElementById('plan-count');
@@ -1504,8 +1517,8 @@ function viewRoutes() {
   const trip = state.trip;
   let html = bar('Rutas') + '<div class="view">';
   if (trip.error) {
-    let msg = 'No encontramos un camino entre esos puntos dentro de la zona de ejemplo.';
-    if (trip.error === 'fuera') msg = 'Uno de los puntos está fuera de la zona de ejemplo. Por ahora GoIA cubre la colonia Cuauhtémoc.';
+    let msg = 'No encontramos un camino entre esos puntos dentro de la alcaldía Cuauhtémoc.';
+    if (trip.error === 'fuera') msg = 'Uno de los puntos está fuera de la zona. Por ahora GoIA cubre la alcaldía Cuauhtémoc.';
     if (trip.error === 'cerca') msg = 'La salida y el destino están en la misma esquina. Elige un destino más lejano.';
     html += '<h1 class="vh" tabindex="-1">No pudimos trazar este camino.</h1><p class="lead">' + msg + '</p>' +
       '<button class="btn block" type="button" data-action="edit-plan">Cambiar salida o destino</button></div>';
@@ -1531,7 +1544,6 @@ function viewRoutes() {
     }
     html += '</ul>';
   }
-  if (state.tech) html += techDetails(trip);
   html += '</div>';
   return html;
 }
@@ -1545,20 +1557,6 @@ function routeOption(kind, route, name) {
     html += '<li class="' + (line.ok ? 'ok' : 'warn') + '">' + icon(line.ok ? 'check' : 'alert') + '<span>' + esc(line.text) + '</span></li>';
   }
   return html + '</ul></button>';
-}
-
-function techDetails(trip) {
-  return '<details class="tech"' + (state.techOpen ? ' open' : '') + ' data-action-toggle="tech-open"><summary>Detalle técnico (A*)</summary>' +
-    '<table class="t"><thead><tr><th></th><th>GoIA</th><th>Más rápida</th></tr></thead><tbody>' +
-    '<tr><td>Nodos explorados</td><td>' + trip.safe.explored.length + '</td><td>' + trip.fast.explored.length + '</td></tr>' +
-    '<tr><td>Tiempo de cómputo</td><td>' + trip.safe.computeMs.toFixed(2) + ' ms</td><td>' + trip.fast.computeMs.toFixed(2) + ' ms</td></tr>' +
-    '<tr><td>Distancia</td><td>' + Math.round(trip.safe.distM) + ' m</td><td>' + Math.round(trip.fast.distM) + ' m</td></tr>' +
-    '<tr><td>Zonas cruzadas</td><td>' + trip.safe.risks.length + '</td><td>' + trip.fast.risks.length + '</td></tr>' +
-    '</tbody></table>' +
-    '<div class="code">h_seg(n) = d(n,B)·[1 + α·Φ(n,B)] − β·S(n)\nh_rap(n) = [d(n,B)/v_max]·[1 + γ·Φ(n)]\nα = ' + ALPHA + '   β = ' + BETA + '   v_max = ' + V_MAX + ' m/s   γ = ' + GAMMA + '</div>' +
-    '<button class="row" type="button" role="switch" aria-checked="' + (state.showExplored ? 'true' : 'false') + '" data-action="explored">' +
-    '<span class="row-ico">' + icon('layers') + '</span><span class="row-txt"><span class="row-t">Ver nodos explorados</span><span class="row-s">De la ruta seleccionada</span></span><span class="switch" aria-hidden="true"></span></button>' +
-    '</details>';
 }
 
 function selectRoute(kind) {
@@ -1758,7 +1756,7 @@ function sendReport() {
     const nav = state.nav;
     const here = positionAt(nav.p);
     const from = { lat: here[0], lng: here[1], name: nameAt(here[0], here[1]) };
-    const fresh = runAStar(nav.kind === 'fast' ? 'fast' : 'safe', from, nav.to);
+    const fresh = routeFor(nav.kind === 'fast' ? 'fast' : 'safe', from, nav.to);
     if (fresh) {
       const restOld = nav.coords.slice(1);
       if (!sameCoords(fresh.coords.slice(1), restOld)) rerouted = true;
@@ -1777,7 +1775,7 @@ function viewReportSent() {
   const type = reportTypeOf(lr.report.type);
   let html = '<div class="bar"><span class="wordmark">GoIA</span></div><div class="view">' +
     '<h1 class="vh" tabindex="-1">Gracias. Tu reporte ya cuenta.</h1>' +
-    '<p class="lead">Marcamos “' + esc(type.label) + '” ' + esc(atPlace(lr.report.place)) + '. GoIA lo toma en cuenta desde ahora al trazar rutas por esa zona.</p>';
+    '<p class="lead">Marcamos “' + esc(type.label) + '” ' + esc(atPlace(lr.report.place)) + '. GoIA lo toma en cuenta durante los próximos ' + REPORT_TTL_DAYS + ' días al trazar rutas por esa zona.</p>';
   if (lr.returnTo === 'caminar') {
     html += '<p class="lead">' + (lr.rerouted ? 'Ajustamos tu ruta para rodear el tramo que reportaste.' : 'Tu ruta actual ya rodea ese tramo, así que no cambia.') + '</p>' +
       '<div class="stack"><button class="btn block" type="button" data-action="resume">' + icon('walk') + 'Seguir caminando</button></div>';
@@ -1794,7 +1792,7 @@ function viewReports() {
     html += '<p class="lead">Aún no has enviado reportes. Cuando veas algo en la calle, repórtalo desde el inicio o durante tu caminata.</p>' +
       '<button class="btn secondary block" type="button" data-action="report-here">' + icon('flag') + 'Reportar algo cerca de mí</button>';
   } else {
-    html += '<p class="lead">GoIA rodea estas zonas al trazar tus rutas.</p><ul class="list">';
+    html += '<p class="lead">GoIA toma en cuenta cada reporte durante ' + REPORT_TTL_DAYS + ' días al trazar tus rutas.</p><ul class="list">';
     for (const r of reports) {
       const type = reportTypeOf(r.type);
       html += '<li><div class="row static"><span class="row-ico zone">' + icon(type.icon) + '</span>' +
@@ -1804,61 +1802,15 @@ function viewReports() {
     }
     html += '</ul>';
   }
-  html += '<h2 class="sh">Reportes de ejemplo en la zona.</h2><ul class="list">';
-  for (const z of SAMPLE_ZONES) {
-    html += row({ icon: 'alert', zone: true, title: z.title, sub: z.description });
-  }
-  return html + '</ul></div>';
+  return html + '</div>';
 }
 
 function viewMenu() {
   return bar('Más opciones') + '<div class="view"><h1 class="vh" tabindex="-1">Más opciones.</h1><ul class="list">' +
     row({ action: 'go-reports', icon: 'file', title: 'Mis reportes', sub: reports.length === 1 ? '1 reporte enviado' : reports.length + ' reportes enviados', end: icon('chev') }) +
-    row({ action: 'go-business', icon: 'store', title: 'Comercios patrocinados', sub: 'Administrar los comercios que aparecen en las rutas', end: icon('chev') }) +
-    '<li><button class="row" type="button" role="switch" aria-checked="' + (state.tech ? 'true' : 'false') + '" data-action="tech">' +
-    '<span class="row-ico">' + icon('code') + '</span><span class="row-txt"><span class="row-t">Modo técnico</span><span class="row-s">Muestra el detalle de la búsqueda A* en cada ruta</span></span><span class="switch" aria-hidden="true"></span></button></li>' +
-    row({ action: 'reset', icon: 'reset', title: 'Restablecer datos de ejemplo', sub: 'Borra tus reportes, destinos recientes y cambios a comercios' }) +
-    '<li><a class="row" href="/"><span class="row-ico">' + icon('info') + '</span><span class="row-txt"><span class="row-t">Conoce GoIA</span><span class="row-s">Cómo funciona y pre-registro para la versión de prueba</span></span><span class="row-end">' + icon('chev') + '</span></a></li>' +
+    row({ action: 'reset', icon: 'reset', title: 'Restablecer datos de ejemplo', sub: 'Borra tus reportes y destinos recientes' }) +
     '</ul><h2 class="sh">Sobre estos datos.</h2>' +
-    '<p class="lead">Este prototipo cubre la colonia Cuauhtémoc con un grafo de ' + graph.nodes.size + ' esquinas. Las zonas, los puntos vigilados y los comercios son datos de ejemplo. Tu ubicación y la caminata son simuladas.</p></div>';
-}
-
-function viewBusinesses() {
-  let html = bar('Comercios') + '<div class="view"><h1 class="vh" tabindex="-1">Comercios patrocinados.</h1>' +
-    '<p class="lead">Un comercio aparece en una ruta cuando el camino pasa dentro de su radio: 120 m en el plan Oro y 65 m en el Básico.</p><ul class="list">';
-  for (let i = 0; i < businesses.length; i++) {
-    const b = businesses[i];
-    html += row({ action: 'edit-biz', id: i, icon: categoryOf(b.category).icon, title: b.name, sub: 'Plan ' + tierOf(b.tier).label + ' · ' + b.promo, end: icon('chev') });
-  }
-  return html + '</ul><button class="btn block" type="button" data-action="new-biz" style="margin-top:18px">Agregar comercio</button></div>';
-}
-
-function viewBusinessEdit() {
-  const d = state.bizDraft;
-  let html = bar(d.index === null ? 'Nuevo comercio' : 'Editar comercio') + '<div class="view">' +
-    '<h1 class="vh" tabindex="-1">' + (d.index === null ? 'Nuevo comercio.' : esc(d.name || 'Comercio') + '.') + '</h1>' +
-    '<div class="field"><label for="b-name">Nombre</label><input class="input" id="b-name" maxlength="60" value="' + esc(d.name) + '" aria-describedby="b-name-err"><div class="err" id="b-name-err">' + (d.tried && !d.name ? 'Escribe el nombre del comercio.' : '') + '</div></div>' +
-    '<div class="field"><label for="b-cat">Giro</label><select class="input" id="b-cat">';
-  for (const c of BIZ_CATEGORIES) html += '<option value="' + c.id + '"' + (d.category === c.id ? ' selected' : '') + '>' + esc(c.label) + '</option>';
-  html += '</select></div><div class="field"><span class="legend" id="b-tier-l">Plan</span><div class="seg" role="radiogroup" aria-labelledby="b-tier-l">';
-  for (const t of BIZ_TIERS) html += '<button type="button" role="radio" data-action="btier" data-id="' + t.id + '" aria-checked="' + (d.tier === t.id ? 'true' : 'false') + '">' + esc(t.label) + ' · ' + t.radius + ' m</button>';
-  html += '</div></div><div class="field"><label for="b-promo">Promoción</label><input class="input" id="b-promo" maxlength="80" value="' + esc(d.promo) + '"></div>' +
-    '<div class="field"><span class="legend">Ubicación</span><div class="where"><span class="row-ico">' + icon('pin') + '</span><span class="row-txt">' + (d.lat ? esc(nameAt(d.lat, d.lng)) : '<span class="muted">Sin ubicación</span>') + '</span>' +
-    '<button class="link-btn" type="button" data-action="biz-pick">' + (d.lat ? 'Cambiar' : 'Elegir en el mapa') + '</button></div>' +
-    '<div class="err">' + (d.tried && !d.lat ? 'Elige dónde está el comercio.' : '') + '</div></div>' +
-    '<button class="btn block" type="button" data-action="save-biz" style="margin-top:22px">Guardar comercio</button>';
-  if (d.index !== null) html += '<div class="stack"><button class="btn secondary block" type="button" data-action="delete-biz">' + icon('trash') + 'Quitar comercio</button></div>';
-  return html + '</div>';
-}
-
-function readBizForm() {
-  const d = state.bizDraft;
-  if (!d) return;
-  const name = document.getElementById('b-name');
-  if (!name) return;
-  d.name = name.value.trim();
-  d.category = document.getElementById('b-cat').value;
-  d.promo = document.getElementById('b-promo').value.trim();
+    '<p class="lead">GoIA cubre la alcaldía Cuauhtémoc con ' + graph.nodes.size + ' esquinas de OpenStreetMap. El riesgo base de cada calle viene de los robos a transeúnte denunciados ante la Fiscalía de la CDMX entre 2021 y 2024, publicados por Hoyo de Crimen. Tus reportes y los de la comunidad se suman durante ' + REPORT_TTL_DAYS + ' días: los violetas son tuyos y los blancos, de otras personas, agrupados por zona. Los reportes de la comunidad y los comercios son de ejemplo, y tu ubicación y la caminata son simuladas.</p></div>';
 }
 
 function render() {
@@ -1869,7 +1821,6 @@ function render() {
   if (view === 'caminar' && !state.nav) view = redirect('inicio');
   if (view === 'llegada' && !state.lastTrip) view = redirect('inicio');
   if (view === 'reporte-enviado' && !state.lastReport) view = redirect('inicio');
-  if (view === 'comercio' && !state.bizDraft) view = redirect('comercios');
   if (view === 'reportar' && !state.report) {
     state.report = { lat: USER_LOCATION.lat, lng: USER_LOCATION.lng, place: nameAt(USER_LOCATION.lat, USER_LOCATION.lng), type: null, when: 'ahora', returnTo: 'inicio', tried: false };
   }
@@ -1892,8 +1843,6 @@ function render() {
   else if (view === 'reporte-enviado') html = viewReportSent();
   else if (view === 'reportes') html = viewReports();
   else if (view === 'menu') html = viewMenu();
-  else if (view === 'comercios') html = viewBusinesses();
-  else if (view === 'comercio') html = viewBusinessEdit();
 
   const sameView = panel.dataset.view === view;
   const scroll = panel.scrollTop;
@@ -2099,71 +2048,17 @@ document.getElementById('panel').addEventListener('click', async function (e) {
       drawZones();
       render();
     });
-  } else if (action === 'tech') {
-    state.tech = !state.tech;
-    storeSet('goia.tech', state.tech);
-    render();
-  } else if (action === 'explored') {
-    state.showExplored = !state.showExplored;
-    state.techOpen = true;
-    render();
   } else if (action === 'reset') {
-    const ok = await confirmDialog('¿Restablecer los datos de ejemplo?', 'Se borrarán tus reportes, tus destinos recientes y los cambios a comercios.', 'Restablecer');
+    const ok = await confirmDialog('¿Restablecer los datos de ejemplo?', 'Se borrarán tus reportes y tus destinos recientes.', 'Restablecer');
     if (!ok) return;
     reports = [];
     recents = [];
-    businesses = SAMPLE_BUSINESSES.map(function (b) { return Object.assign({}, b); });
     storeSet('goia.reports', reports);
     storeSet('goia.recents', recents);
-    storeSet('goia.businesses', businesses);
     rebuildZones();
     drawZones();
     render();
     toast('Datos de ejemplo restablecidos.');
-  } else if (action === 'go-business') {
-    go('comercios');
-  } else if (action === 'edit-biz') {
-    const b = businesses[Number(id)];
-    state.bizDraft = Object.assign({ index: Number(id), tried: false }, b);
-    go('comercio');
-  } else if (action === 'new-biz') {
-    state.bizDraft = { index: null, name: '', category: 'cafe', tier: 'basic', promo: '', lat: null, lng: null, tried: false };
-    go('comercio');
-  } else if (action === 'btier') {
-    readBizForm();
-    state.bizDraft.tier = id;
-    render();
-  } else if (action === 'biz-pick') {
-    readBizForm();
-    const d = state.bizDraft;
-    startPick('¿Dónde está el comercio?', d.lat ? [d.lat, d.lng] : AREA.center, function (place) {
-      d.lat = place.lat;
-      d.lng = place.lng;
-      render();
-    });
-  } else if (action === 'save-biz') {
-    readBizForm();
-    const d = state.bizDraft;
-    if (!d.name || !d.lat) {
-      d.tried = true;
-      render();
-      return;
-    }
-    const clean = { id: d.id || 'biz-' + Date.now(), name: d.name, category: d.category, tier: d.tier, promo: d.promo || 'Visítanos en tu camino', lat: d.lat, lng: d.lng };
-    if (d.index === null) businesses.push(clean); else businesses[d.index] = clean;
-    storeSet('goia.businesses', businesses);
-    state.bizDraft = null;
-    toast('Comercio guardado.');
-    back();
-  } else if (action === 'delete-biz') {
-    const d = state.bizDraft;
-    const ok = await confirmDialog('¿Quitar ' + (d.name || 'este comercio') + '?', 'Dejará de aparecer en las rutas.', 'Quitar');
-    if (!ok) return;
-    businesses.splice(d.index, 1);
-    storeSet('goia.businesses', businesses);
-    state.bizDraft = null;
-    toast('Comercio quitado.');
-    back();
   }
 });
 
@@ -2212,10 +2107,6 @@ document.getElementById('panel').addEventListener('keydown', function (e) {
   }
 });
 
-document.getElementById('panel').addEventListener('toggle', function (e) {
-  if (e.target.matches && e.target.matches('details.tech')) state.techOpen = e.target.open;
-}, true);
-
 document.getElementById('pick-ok').addEventListener('click', function () { endPick(true); });
 document.getElementById('pick-cancel').addEventListener('click', function () { endPick(false); });
 
@@ -2232,15 +2123,35 @@ document.addEventListener('keydown', function (e) {
 });
 
 window.addEventListener('hashchange', function () {
+  if (!NET) return;
   if (state.pick) endPick(false);
   render();
 });
 
-rebuildZones();
-readColors();
-initMap();
-drawZones();
-render();
+function fetchJson(url) {
+  return fetch(url).then(function (response) {
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    return response.json();
+  });
+}
+
+Promise.all([fetchJson(NET_URL), fetchJson(COMMUNITY_URL)]).then(function (loaded) {
+  const net = loaded[0];
+  const now = Date.now();
+  for (const r of loaded[1]) {
+    communityReports.push({ lat: r.lat, lng: r.lon, type: r.tipo, createdAt: now - r.edad_dias * 86400000 });
+  }
+  NET = net;
+  AREA.boundary = net.boundary;
+  buildGraph(net);
+  rebuildZones();
+  readColors();
+  initMap();
+  drawZones();
+  render();
+}).catch(function () {
+  document.getElementById('panel').innerHTML = '<div class="view"><h1 class="vh">No pudimos cargar el mapa de calles.</h1><p class="lead">Revisa tu conexión y vuelve a cargar la página.</p></div>';
+});
 </script>
 </body>
 </html>
