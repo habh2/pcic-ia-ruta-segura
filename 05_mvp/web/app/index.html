@@ -31,7 +31,7 @@
   --map-ground: #e4e3dc;
   --fast-gray: #9c9d97;
   --fast-pill: #e6e5df;
-  --zone-clay: #a26650;
+  --zone-violet: #7b3294;
   --error-brick: #8a2c1f;
   --line: rgba(20, 65, 52, 0.16);
   --line-strong: rgba(20, 65, 52, 0.32);
@@ -156,7 +156,7 @@ a.row { text-decoration: none; }
 .row.static { cursor: default; }
 .row.static:hover { background: none; }
 .row-ico { width: 38px; height: 38px; border-radius: 50%; background: var(--ground-deep); color: var(--ink); display: grid; place-items: center; flex: none; }
-.row-ico.clay { color: var(--zone-clay); }
+.row-ico.zone { color: var(--zone-violet); }
 .row-txt { flex: 1; min-width: 0; }
 .row-t { display: block; font-weight: 500; line-height: 1.3; }
 .row-s { display: block; font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.35; margin-top: 2px; }
@@ -205,7 +205,7 @@ textarea.input { min-height: 96px; resize: vertical; line-height: 1.45; }
 .why svg { width: 18px; height: 18px; margin-top: 1px; }
 .why .ok { color: var(--ink); }
 .why .warn { color: var(--ink); }
-.why .warn svg { color: var(--zone-clay); }
+.why .warn svg { color: var(--zone-violet); }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 p { text-wrap: pretty; }
 .swatch-route { width: 30px; height: 8px; border-radius: 4px; background: var(--route); box-shadow: 0 0 0 1.5px var(--route-deep); flex: none; }
@@ -277,7 +277,7 @@ table.t td:not(:first-child), table.t th:not(:first-child) { text-align: right; 
 .m-me { width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 4px solid var(--ink); }
 .m-a { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); border: 4px solid var(--route); }
 .m-b { width: 26px; height: 26px; border-radius: 50%; background: var(--route); border: 4px solid var(--ink); }
-.m-pin { width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 4px solid var(--zone-clay); }
+.m-pin { width: 22px; height: 22px; border-radius: 50%; background: var(--paper); border: 4px solid var(--zone-violet); }
 .m-biz { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); color: var(--ink); display: grid; place-items: center; }
 .m-biz svg { width: 16px; height: 16px; }
 .m-biz.far { opacity: .55; }
@@ -944,7 +944,7 @@ function rebuildZones() {
   for (const z of SAMPLE_ZONES) zones.push(Object.assign({ sample: true }, z));
   for (const r of reports) {
     const type = reportTypeOf(r.type);
-    zones.push({ id: r.id, lat: r.lat, lng: r.lng, radius: REPORT_RADIUS_M, level: type.level, title: type.label, description: r.note, place: r.place, createdAt: r.createdAt, sample: false });
+    zones.push({ id: r.id, lat: r.lat, lng: r.lng, radius: REPORT_RADIUS_M, level: type.level, title: type.label, place: r.place, createdAt: r.createdAt, sample: false });
   }
 }
 
@@ -1048,7 +1048,7 @@ const COLORS = {};
 function readColors() {
   const css = getComputedStyle(document.documentElement);
   COLORS.ink = css.getPropertyValue('--ink').trim();
-  COLORS.clay = css.getPropertyValue('--zone-clay').trim();
+  COLORS.zone = css.getPropertyValue('--zone-violet').trim();
   COLORS.route = css.getPropertyValue('--route').trim();
   COLORS.routeDeep = css.getPropertyValue('--route-deep').trim();
   COLORS.paper = css.getPropertyValue('--paper').trim();
@@ -1117,11 +1117,12 @@ function drawZones() {
   for (const z of zones) {
     const circle = L.circle([z.lat, z.lng], {
       radius: z.radius,
-      color: COLORS.clay,
-      weight: 1.5,
-      dashArray: '4 5',
-      fillColor: COLORS.clay,
-      fillOpacity: z.level === 'high' ? 0.2 : 0.12,
+      color: COLORS.zone,
+      weight: 2.5,
+      opacity: 0.9,
+      dashArray: '6 4',
+      fillColor: COLORS.zone,
+      fillOpacity: z.level === 'high' ? 0.28 : 0.18,
       bubblingMouseEvents: false
     });
     let body = '<span class="pop-t">' + esc(z.sample ? z.title : z.title + ' · ' + (z.place || '')) + '</span>';
@@ -1221,7 +1222,7 @@ function drawMap(view) {
   }
   if (view === 'reportar' && state.report) {
     L.marker([state.report.lat, state.report.lng], { icon: divIcon('m-pin', 22), keyboard: false, title: 'Lugar del reporte' }).addTo(layers.marks);
-    L.circle([state.report.lat, state.report.lng], { radius: REPORT_RADIUS_M, color: COLORS.clay, weight: 1.5, dashArray: '4 5', fillOpacity: 0.08, interactive: false }).addTo(layers.marks);
+    L.circle([state.report.lat, state.report.lng], { radius: REPORT_RADIUS_M, color: COLORS.zone, weight: 2.5, opacity: 0.9, dashArray: '6 4', fillOpacity: 0.12, interactive: false }).addTo(layers.marks);
     centerOn([state.report.lat, state.report.lng], 17);
     return;
   }
@@ -1404,7 +1405,7 @@ function row(opts) {
   if (opts.role) attrs += ' role="' + opts.role + '" aria-checked="' + (opts.checked ? 'true' : 'false') + '"';
   const cls = 'row' + (opts.action ? '' : ' static');
   return '<li><' + tag + ' class="' + cls + '"' + attrs + '>' +
-    '<span class="row-ico' + (opts.clay ? ' clay' : '') + '">' + icon(opts.icon) + '</span>' +
+    '<span class="row-ico' + (opts.zone ? ' zone' : '') + '">' + icon(opts.icon) + '</span>' +
     '<span class="row-txt"><span class="row-t">' + esc(opts.title) + '</span>' + (opts.sub ? '<span class="row-s">' + esc(opts.sub) + '</span>' : '') + '</span>' +
     (opts.end ? '<span class="row-end">' + opts.end + '</span>' : '') +
     '</' + tag + '></li>';
@@ -1713,7 +1714,7 @@ function viewArrive() {
 }
 
 function openReport(point, returnTo) {
-  state.report = { lat: point.lat, lng: point.lng, place: point.name || nameAt(point.lat, point.lng), type: null, when: 'ahora', note: '', returnTo: returnTo, tried: false };
+  state.report = { lat: point.lat, lng: point.lng, place: point.name || nameAt(point.lat, point.lng), type: null, when: 'ahora', returnTo: returnTo, tried: false };
   go('reportar');
 }
 
@@ -1726,14 +1727,13 @@ function viewReport() {
     html += '<button class="tile" type="button" role="radio" data-action="rtype" data-id="' + t.id + '" aria-checked="' + (r.type === t.id ? 'true' : 'false') + '">' + icon(t.icon) + '<span>' + esc(t.label) + '</span></button>';
   }
   html += '</div><div class="err" id="type-err">' + (r.tried && !r.type ? 'Elige qué viste para poder enviar el reporte.' : '') + '</div>' +
-    '<div class="field"><span class="legend">¿Dónde?</span><div class="where"><span class="row-ico clay">' + icon('pin') + '</span><span class="row-txt">' + esc(r.place) + '</span>' +
+    '<div class="field"><span class="legend">¿Dónde?</span><div class="where"><span class="row-ico zone">' + icon('pin') + '</span><span class="row-txt">' + esc(r.place) + '</span>' +
     '<button class="link-btn" type="button" data-action="report-pick">Cambiar</button></div></div>' +
     '<div class="field"><span class="legend" id="when-l">¿Cuándo?</span><div class="seg" role="radiogroup" aria-labelledby="when-l">';
   for (const w of REPORT_WHEN) {
     html += '<button type="button" role="radio" data-action="rwhen" data-id="' + w.id + '" aria-checked="' + (r.when === w.id ? 'true' : 'false') + '">' + esc(w.label) + '</button>';
   }
-  html += '</div></div><div class="field"><label for="r-note">Detalles <span class="muted">(opcional)</span></label>' +
-    '<textarea class="input" id="r-note" maxlength="280" placeholder="Por ejemplo: la luminaria de la esquina no prende.">' + esc(r.note) + '</textarea></div>' +
+  html += '</div></div>' +
     '<button class="btn block" type="button" data-action="send-report" style="margin-top:22px">Enviar reporte</button>' +
     '<p class="note">Los reportes de este prototipo se guardan solo en este navegador.</p></div>';
   return html;
@@ -1741,8 +1741,6 @@ function viewReport() {
 
 function sendReport() {
   const r = state.report;
-  const note = document.getElementById('r-note');
-  if (note) r.note = note.value.trim();
   if (!r.type) {
     r.tried = true;
     render();
@@ -1750,7 +1748,7 @@ function sendReport() {
     if (first) first.focus();
     return;
   }
-  const saved = { id: 'rep-' + Date.now(), type: r.type, lat: r.lat, lng: r.lng, place: r.place, when: r.when, note: r.note, createdAt: Date.now() };
+  const saved = { id: 'rep-' + Date.now(), type: r.type, lat: r.lat, lng: r.lng, place: r.place, when: r.when, createdAt: Date.now() };
   reports.unshift(saved);
   storeSet('goia.reports', reports);
   rebuildZones();
@@ -1799,16 +1797,16 @@ function viewReports() {
     html += '<p class="lead">GoIA rodea estas zonas al trazar tus rutas.</p><ul class="list">';
     for (const r of reports) {
       const type = reportTypeOf(r.type);
-      html += '<li><div class="row static"><span class="row-ico clay">' + icon(type.icon) + '</span>' +
+      html += '<li><div class="row static"><span class="row-ico zone">' + icon(type.icon) + '</span>' +
         '<button type="button" class="row-txt link-plain" data-action="focus-report" data-id="' + esc(r.id) + '" style="border:0;background:none;text-align:left;padding:0;cursor:pointer">' +
-        '<span class="row-t">' + esc(type.label) + '</span><span class="row-s">' + esc(r.place) + ' · ' + esc(dateLabel(r.createdAt)) + (r.note ? ' · ' + esc(r.note) : '') + '</span></button>' +
+        '<span class="row-t">' + esc(type.label) + '</span><span class="row-s">' + esc(r.place) + ' · ' + esc(dateLabel(r.createdAt)) + '</span></button>' +
         '<button class="icon-btn" type="button" data-action="delete-report" data-id="' + esc(r.id) + '" aria-label="Borrar reporte ' + esc(type.label) + ' en ' + esc(r.place) + '">' + icon('trash') + '</button></div></li>';
     }
     html += '</ul>';
   }
   html += '<h2 class="sh">Reportes de ejemplo en la zona.</h2><ul class="list">';
   for (const z of SAMPLE_ZONES) {
-    html += row({ icon: 'alert', clay: true, title: z.title, sub: z.description });
+    html += row({ icon: 'alert', zone: true, title: z.title, sub: z.description });
   }
   return html + '</ul></div>';
 }
@@ -1873,7 +1871,7 @@ function render() {
   if (view === 'reporte-enviado' && !state.lastReport) view = redirect('inicio');
   if (view === 'comercio' && !state.bizDraft) view = redirect('comercios');
   if (view === 'reportar' && !state.report) {
-    state.report = { lat: USER_LOCATION.lat, lng: USER_LOCATION.lng, place: nameAt(USER_LOCATION.lat, USER_LOCATION.lng), type: null, when: 'ahora', note: '', returnTo: 'inicio', tried: false };
+    state.report = { lat: USER_LOCATION.lat, lng: USER_LOCATION.lng, place: nameAt(USER_LOCATION.lat, USER_LOCATION.lng), type: null, when: 'ahora', returnTo: 'inicio', tried: false };
   }
   if (view !== 'caminar') stopTimer();
   if (view === 'rutas') {
@@ -2052,20 +2050,17 @@ document.getElementById('panel').addEventListener('click', async function (e) {
   } else if (action === 'report-here') {
     openReport({ lat: USER_LOCATION.lat, lng: USER_LOCATION.lng }, currentView());
   } else if (action === 'rtype') {
-    state.report.note = document.getElementById('r-note').value;
     state.report.type = id;
     render();
     const again = document.querySelector('[data-action="rtype"][data-id="' + id + '"]');
     if (again) again.focus();
   } else if (action === 'rwhen') {
-    state.report.note = document.getElementById('r-note').value;
     state.report.when = id;
     render();
     const again = document.querySelector('[data-action="rwhen"][data-id="' + id + '"]');
     if (again) again.focus();
   } else if (action === 'report-pick') {
     const r = state.report;
-    r.note = document.getElementById('r-note').value;
     startPick('¿Dónde lo viste?', [r.lat, r.lng], function (place) {
       r.lat = place.lat;
       r.lng = place.lng;

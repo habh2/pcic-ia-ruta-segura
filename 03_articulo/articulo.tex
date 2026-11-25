@@ -1,0 +1,153 @@
+% Artículo del proyecto final. Formato NeurIPS, máximo 4 páginas de contenido.
+% Las referencias, la lista de verificación y los apéndices no cuentan.
+% El artículo se escribe en inglés.
+%
+% Los comentarios en español explican qué va en cada sección. Borrar el texto
+% gris (\todo{...}) y sustituirlo por el contenido del equipo.
+% Compilar con: pdflatex articulo; bibtex articulo; pdflatex articulo; pdflatex articulo
+\documentclass{article}
+\usepackage[preprint]{neurips_2025}  % preprint: muestra autores, sin números de línea
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref,url,booktabs,amsfonts,amsmath,nicefrac,microtype,graphicx,xcolor}
+\newcommand{\todo}[1]{\textcolor{gray}{\emph{#1}}}
+
+\title{\todo{A title that states the main finding}}
+
+\author{%
+  \todo{Author One} \\
+  \todo{Program, Institution} \\
+  \texttt{\todo{email}} \\
+  \And
+  \todo{Author Two} \\
+  \todo{Program, Institution} \\
+  \texttt{\todo{email}} \\
+}
+
+\begin{document}
+\maketitle
+
+% ---------------------------------------------------------------------------
+% RESUMEN. Se escribe primero, con la estructura Y, PERO, POR LO TANTO.
+% 1. Y: qué se sabe y por qué importa el problema.
+% 2. PERO ("However,"): qué queda sin resolver, como una pregunta concreta.
+% 3. POR LO TANTO ("In this work, we"): qué hace este trabajo y con qué datos.
+% 4. Resultados con números, uno por oración, contra la línea base.
+% 5. Qué significa el resultado.
+% ---------------------------------------------------------------------------
+\begin{abstract}
+  \todo{Context sentence. However, gap sentence. In this work, we ... We evaluated ... on ...
+  Our method achieved X on metric Y, compared with Z for the baseline. These results suggest ...}
+\end{abstract}
+
+% ---------------------------------------------------------------------------
+% INTRODUCCIÓN. Expande el resumen en el mismo orden, uno o dos párrafos por
+% movimiento. Termina con la lista de contribuciones y un párrafo que dice cómo
+% se organiza el resto del artículo.
+% ---------------------------------------------------------------------------
+\section{Introduction}
+\todo{Paragraph 1 (And): the problem, who has it, and what it costs. Cite evidence.}
+
+\todo{Paragraph 2 (But): what current approaches leave open, stated as a concrete question.}
+
+\todo{Paragraph 3 (Therefore): what this work does. Start with ``In this work, we''.}
+
+The contributions of this work are:
+\begin{itemize}
+  \item \todo{Contribution 1, one sentence.}
+  \item \todo{Contribution 2, one sentence.}
+\end{itemize}
+
+\todo{Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the method,
+Section~\ref{sec:experiments} reports the experiments, and Section~\ref{sec:limitations} discusses
+limitations.}
+
+% ---------------------------------------------------------------------------
+% TRABAJO RELACIONADO. Agrupar por enfoque y decir en qué se distingue este
+% trabajo de cada grupo. Cada referencia se verifica (DOI o enlace) antes de
+% citarla. Una referencia inventada descuenta puntos.
+% ---------------------------------------------------------------------------
+\section{Related work}
+\label{sec:related}
+\todo{Group 1 of approaches and how this work differs. Group 2 and how this work differs.}
+Clear structure helps readers follow the argument~\citep{mensh2017ten}.
+
+% ---------------------------------------------------------------------------
+% MÉTODO. Suficiente detalle para reproducir el trabajo: datos, preprocesamiento,
+% modelo, hiperparámetros y cómo se eligieron. Usar tiempo pasado.
+% ---------------------------------------------------------------------------
+\section{Method}
+\label{sec:method}
+\todo{Problem formulation with notation defined at first use.}
+
+\todo{Data: source, size, license, train/validation/test split.}
+
+\todo{Model and training procedure.}
+
+% ---------------------------------------------------------------------------
+% EXPERIMENTOS. La línea base es obligatoria. Reportar la variabilidad
+% (desviación estándar sobre varias ejecuciones independientes, cada una con
+% una semilla distinta, o intervalos de confianza).
+% Abrir cada subsección con el resultado principal.
+% ---------------------------------------------------------------------------
+\section{Experiments}
+\label{sec:experiments}
+\todo{Setup: baseline, metric, number of runs, hardware.}
+
+\begin{table}[t]
+  \caption{\todo{Self-contained caption: what the table shows, the metric, and whether higher is better.
+  Mean and standard deviation over five independent executions.}}
+  \label{tab:results}
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    Method & \todo{Metric} $\uparrow$ & \todo{Time (s)} $\downarrow$ \\
+    \midrule
+    \todo{Baseline} & \todo{0.00 $\pm$ 0.00} & \todo{0.0} \\
+    \todo{Ours}     & \todo{0.00 $\pm$ 0.00} & \todo{0.0} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\todo{Main result first. Table~\ref{tab:results} shows ...}
+
+% ---------------------------------------------------------------------------
+% LIMITACIONES E IMPACTO. Qué no funciona, en qué datos podría fallar, sesgos y
+% riesgos de uso. Un párrafo honesto vale más que una lista de promesas.
+% ---------------------------------------------------------------------------
+\section{Limitations and broader impact}
+\label{sec:limitations}
+\todo{Limitations of the data, the method, and the evaluation. Possible harms and mitigations.}
+
+\section{Conclusion}
+\todo{Principal finding, its implication, and the next step.}
+
+\bibliographystyle{plainnat}
+\bibliography{referencias}
+
+% ---------------------------------------------------------------------------
+% LISTA DE VERIFICACIÓN (versión breve de la NeurIPS Paper Checklist).
+% Responder Yes, No o NA y justificar en una oración. No cuenta en las 4 páginas.
+% ---------------------------------------------------------------------------
+\appendix
+\section*{Paper checklist}
+\begin{enumerate}
+  \item Do the abstract and introduction state the claims, and do the experiments support them?
+        \todo{Yes/No/NA. Justification.}
+  \item Does the paper compare against a baseline on the same data and metric?
+        \todo{Yes/No/NA. Justification.}
+  \item Does the paper report variability (standard deviation, confidence intervals)?
+        \todo{Yes/No/NA. Justification.}
+  \item Can the results be reproduced with the code and instructions in \texttt{05\_mvp/}?
+        \todo{Yes/No/NA. Justification.}
+  \item Are the data source, license, and preprocessing described?
+        \todo{Yes/No/NA. Justification.}
+  \item Does the paper discuss limitations and possible harms?
+        \todo{Yes/No/NA. Justification.}
+  \item Was every reference checked against its original source?
+        \todo{Yes/No/NA. Justification.}
+  \item Is the use of generative AI declared in \texttt{06\_ia/}?
+        \todo{Yes/No/NA. Justification.}
+\end{enumerate}
+
+\end{document}

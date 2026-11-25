@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GoIA · Camina por la banqueta que elegiría alguien de aquí</title>
-<meta name="description" content="GoIA te sugiere la ruta a pie que evita las calles de riesgo en la Ciudad de México y te dice cuántos minutos más te cuesta. Pre-regístrate gratis.">
+<title>GoIA · Llega a pie por las calles más tranquilas</title>
+<meta name="description" content="GoIA te sugiere la ruta a pie que evita las calles con reportes de riesgo en la Ciudad de México y te dice cuántos minutos más te cuesta. Pre-regístrate gratis.">
 <style>
 @font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/noticia-text-400-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 @font-face { font-family: "Noticia Text"; font-style: normal; font-weight: 400; font-display: swap; src: url("assets/fonts/noticia-text-400-latin-ext.woff2") format("woff2"); unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+20A0-20AB, U+20AD-20C4, U+2C60-2C7F, U+A720-A7FF; }
@@ -118,7 +118,7 @@ a { color: inherit; }
 .legend-row { display: flex; align-items: center; gap: 12px; font-size: 1.04rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .legend-swatch { width: 34px; height: 6px; border-radius: 999px; background: var(--route); }
 .legend-swatch.is-fast { background: var(--fast-gray); height: 4px; }
-.legend-swatch.is-zone { height: 14px; width: 14px; border-radius: 50%; background: rgba(176, 110, 84, 0.22); border: 1.5px dashed #a26650; }
+.legend-swatch.is-zone { height: 14px; width: 14px; border-radius: 50%; background: rgba(123, 50, 148, 0.24); border: 2px dashed #7b3294; }
 .legend-row b { font-weight: 600; color: var(--ink); }
 .map-stage { position: relative; width: 100%; aspect-ratio: 16 / 7; min-height: 380px; border-radius: 8px; overflow: hidden; background: #ebeae3; cursor: none; touch-action: pan-y; }
 .map-stage canvas { display: block; width: 100%; height: 100%; }
@@ -224,9 +224,9 @@ a { color: inherit; }
       </nav>
     </header>
     <div class="hero-copy">
-      <h1 id="hero-title">Por la banqueta que elegiría alguien de aquí.</h1>
+      <h1 id="hero-title">Llega a pie por las calles más tranquilas.</h1>
     </div>
-    <p class="hero-sub">GoIA te sugiere la ruta a pie que evita las calles de riesgo y te dice cuántos minutos más te cuesta.</p>
+    <p class="hero-sub">GoIA te sugiere la ruta a pie que evita las calles con reportes y te dice cuántos minutos más te cuesta.</p>
     <form class="signup" data-signup novalidate>
       <label class="visually-hidden" for="hero-email">Correo electrónico</label>
       <input id="hero-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="Tu correo electrónico" required>
@@ -247,12 +247,12 @@ a { color: inherit; }
         <img class="photo" src="assets/img/needs.jpg" alt="Una persona en una esquina arbolada mira la calle antes de decidir por dónde caminar." loading="lazy">
       </div>
       <div>
-        <h2 id="needs-title">Cuando no conoces la calle, el mapa no te lo dice.</h2>
-        <p class="lead">Acabas de mudarte, estás de visita o vas a una colonia que nunca caminas. Llegar es fácil. Saber por dónde conviene ir, no tanto.</p>
+        <h2 id="needs-title">Lo que pasa en la calle no sale en tu mapa.</h2>
+        <p class="lead">Vas al trabajo, a clase, de regreso a casa o a una colonia que no conoces. Llegar es fácil. Saber por dónde conviene ir hoy, no tanto.</p>
         <ul class="needs-list">
           <li><span class="mark" aria-hidden="true"></span><span><strong>Tu app de mapas busca lo más corto.</strong>Te manda por la calle que ahorra un minuto, aunque cualquier vecino te diría que mejor no.</span></li>
-          <li><span class="mark" aria-hidden="true"></span><span><strong>Lo que sabe la gente de la zona no está en internet.</strong>Qué cuadra está sola, cuál tiene poca luz. Te enteras cuando ya estás ahí.</span></li>
-          <li><span class="mark" aria-hidden="true"></span><span><strong>Preguntar en cada esquina no siempre se puede.</strong>Y no deberías tener que hacerlo para caminar tranquilo.</span></li>
+          <li><span class="mark" aria-hidden="true"></span><span><strong>Las calles cambian de un día a otro.</strong>Una lámpara que se fundió, una cuadra que se quedó sola. Te enteras cuando ya estás ahí.</span></li>
+          <li><span class="mark" aria-hidden="true"></span><span><strong>Los avisos se quedan en el chat de vecinos.</strong>Y no le llegan a quien pasa por esa calle mañana.</span></li>
         </ul>
       </div>
     </div>
@@ -260,7 +260,7 @@ a { color: inherit; }
 
   <section class="section how" id="como-funciona" aria-labelledby="how-title">
     <div class="wrap">
-      <h2 id="how-title">Tres pasos, y caminas como alguien de aquí.</h2>
+      <h2 id="how-title">Tres pasos, y sales sabiendo por dónde ir.</h2>
       <p class="lead">Sin configurar nada. Abres GoIA desde el navegador de tu celular y listo.</p>
       <div class="steps-wrap">
       <svg class="steps-line" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true"><path d="M 13 2 L 1000 2" data-draw></path></svg>
@@ -683,9 +683,9 @@ function drawZones(ctx, v, fill, stroke) {
     ctx.arc(p[0], p[1], r.radius * v.pxPerMeter, 0, Math.PI * 2);
     ctx.fillStyle = fill;
     ctx.fill();
-    ctx.setLineDash([5, 5]);
+    ctx.setLineDash([6, 4]);
     ctx.strokeStyle = stroke;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2.5;
     ctx.stroke();
     ctx.setLineDash([]);
   }
@@ -802,7 +802,7 @@ function drawMap(time) {
   ctx.fillStyle = PAL.mapGround;
   ctx.fillRect(0, 0, v.w, v.h);
   drawStreets(ctx, v.project, 7, 4.5, PAL.mapStreet, PAL.mapStreet);
-  drawZones(ctx, v, "rgba(176, 110, 84, 0.10)", "rgba(162, 102, 80, 0.55)");
+  drawZones(ctx, v, "rgba(123, 50, 148, 0.16)", "rgba(123, 50, 148, 0.8)");
   var pFast = Math.min(1, mapDraw.progress * 1.25);
   var pSafe = Math.max(0, Math.min(1, mapDraw.progress * 1.25 - 0.25));
   drawPath(ctx, v.project, MAPA.fast.nodes, PAL.fast, 4, [2, 8], pFast);
@@ -818,7 +818,7 @@ function drawMap(time) {
   ctx.fillRect(lens.x - radius, lens.y - radius, radius * 2, radius * 2);
   drawLeafLight(ctx, lens.x, lens.y, radius, time);
   drawStreets(ctx, v.project, 12, 8, "#ffffff", "#ffffff");
-  drawZones(ctx, v, "rgba(176, 110, 84, 0.16)", "rgba(162, 102, 80, 0.8)");
+  drawZones(ctx, v, "rgba(123, 50, 148, 0.24)", "rgba(123, 50, 148, 0.95)");
   drawPath(ctx, v.project, MAPA.fast.nodes, "#7c7d78", 4, [2, 8], pFast);
   drawPath(ctx, v.project, MAPA.safe.nodes, PAL.routeDeep, 11, null, pSafe);
   drawPath(ctx, v.project, MAPA.safe.nodes, PAL.route, 7, null, pSafe);
@@ -922,17 +922,31 @@ drawAll();
 window.addEventListener("resize", drawAll);
 if (document.fonts) { document.fonts.ready.then(drawAll); }
 startLoop();
+</script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { getFirestore, connectFirestoreEmulator, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 
-var forms = document.querySelectorAll("[data-signup]");
-for (var f = 0; f < forms.length; f++) {
-  forms[f].addEventListener("submit", function (event) {
+const firebaseApp = initializeApp({
+  apiKey: "AIzaSyD5Pl4la6fFi0aPCm2TfCfPRsvkn83uWkU",
+  authDomain: "rutasegura-d4afc.firebaseapp.com",
+  projectId: "rutasegura-d4afc",
+  appId: "1:203598325503:web:834409ebfea91e4ced0eca"
+});
+const db = getFirestore(firebaseApp);
+if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+  connectFirestoreEmulator(db, "127.0.0.1", 8080);
+}
+
+const forms = document.querySelectorAll("[data-signup]");
+for (const form of forms) {
+  form.addEventListener("submit", async function (event) {
     event.preventDefault();
-    var form = event.currentTarget;
-    var input = form.querySelector("input[type=email]");
-    var button = form.querySelector("button");
-    var status = form.parentNode.querySelector("[data-signup-status]");
-    var email = input.value.trim();
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+    const input = form.querySelector("input[type=email]");
+    const button = form.querySelector("button");
+    const status = form.parentNode.querySelector("[data-signup-status]");
+    const email = input.value.trim().toLowerCase();
+    if (email.length > 254 || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       status.dataset.state = "error";
       status.textContent = "Escribe un correo válido, por ejemplo nombre@correo.com.";
       input.focus();
@@ -941,33 +955,33 @@ for (var f = 0; f < forms.length; f++) {
     button.disabled = true;
     status.dataset.state = "";
     status.textContent = "Guardando tu lugar…";
-    fetch("/api/preregistro", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email }) })
-      .then(function (response) { return response.json().then(function (data) { return { ok: response.ok, data: data }; }); })
-      .then(function (result) {
-        if (!result.ok || !result.data.ok) {
-          status.dataset.state = "error";
-          status.textContent = "Ese correo no parece válido. Revísalo e inténtalo de nuevo.";
-          return;
-        }
-        form.reset();
-        status.dataset.state = "ok";
-        if (result.data.duplicate) {
-          status.textContent = "Ese correo ya estaba registrado. Te escribiremos cuando abra la prueba.";
-        } else {
-          status.textContent = "Listo. Te escribiremos cuando abra la versión de prueba.";
-        }
-        var demo = document.createElement("a");
-        demo.href = "/app/";
-        demo.className = "status-link";
-        demo.textContent = "Mientras, prueba el demo.";
-        status.appendChild(document.createTextNode(" "));
-        status.appendChild(demo);
-      })
-      .catch(function () {
+    let duplicate = false;
+    try {
+      await setDoc(doc(db, "preregistros", email), { correo: email, fecha: serverTimestamp() });
+    } catch (error) {
+      if (error.code === "permission-denied") {
+        duplicate = true;
+      } else {
         status.dataset.state = "error";
         status.textContent = "No pudimos guardar tu correo. Revisa tu conexión e inténtalo otra vez.";
-      })
-      .then(function () { button.disabled = false; });
+        button.disabled = false;
+        return;
+      }
+    }
+    form.reset();
+    status.dataset.state = "ok";
+    if (duplicate) {
+      status.textContent = "Ese correo ya estaba registrado. Te escribiremos cuando abra la prueba.";
+    } else {
+      status.textContent = "Listo. Te escribiremos cuando abra la versión de prueba.";
+    }
+    const demo = document.createElement("a");
+    demo.href = "/app/";
+    demo.className = "status-link";
+    demo.textContent = "Mientras, prueba el demo.";
+    status.appendChild(document.createTextNode(" "));
+    status.appendChild(demo);
+    button.disabled = false;
   });
 }
 </script>

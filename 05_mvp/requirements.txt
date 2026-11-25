@@ -1,0 +1,3 @@
+# Una dependencia por línea, con versión fija. Por ejemplo:
+# numpy==2.1.3
+# streamlit==1.40.2

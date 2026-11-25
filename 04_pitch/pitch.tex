@@ -1,0 +1,90 @@
+% Pitch del proyecto final. 5 minutos, 11 diapositivas, unos 30 segundos cada una.
+% Se puede usar otra herramienta si conserva este orden y se entrega como pitch.pdf.
+% Las cifras deben coincidir con 02_finanzas/modelo_financiero.xlsx y con el artículo.
+% Regla de diseño: una idea por diapositiva, poco texto, letra grande, una imagen.
+% Compilar con: pdflatex pitch.tex
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\decimalpoint
+\usetheme{metropolis}
+\usepackage{booktabs,xcolor}
+\newcommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+
+\title{\pendiente{Nombre de la empresa}}
+\subtitle{\pendiente{La empresa en una oración: qué hace y para quién}}
+\author{\pendiente{Integrantes}}
+\date{}
+
+\begin{document}
+
+% 1. Propósito
+\begin{frame}[plain]
+  \vspace*{-15.7pt}  % compensa el desfase vertical de la portada de metropolis
+  \titlepage
+\end{frame}
+
+% 2. Problema: una persona concreta y su dolor, con una cifra.
+\begin{frame}{\pendiente{El dolor del cliente, en una frase}}
+  \pendiente{Quién sufre el problema, cada cuánto y cuánto le cuesta. Una cita de entrevista.}
+\end{frame}
+
+% 3. Tamaño de mercado: TAM, SAM y SOM de la hoja Resultados (filas 22 a 25).
+\begin{frame}{\pendiente{Tamaño del mercado}}
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    & Clientes & MXN al año \\
+    \midrule
+    TAM & \pendiente{0} & \pendiente{0} \\
+    SAM & \pendiente{0} & \pendiente{0} \\
+    SOM & \pendiente{0} & \pendiente{0} \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{1em}
+  \pendiente{Fuente del número de clientes potenciales.}
+\end{frame}
+
+% 4. Solución: qué ofrece la empresa, sin tecnicismos.
+\begin{frame}{\pendiente{La solución}}
+  \pendiente{Qué recibe el cliente y qué deja de hacer.}
+\end{frame}
+
+% 5. Producto: demostración, arquitectura y el papel de la IA, con el resultado del artículo.
+\begin{frame}{\pendiente{El producto}}
+  \pendiente{Captura o video del MVP. Dónde entra la IA. Resultado principal contra la línea base.}
+\end{frame}
+
+% 6. Validación: entrevistas, hipótesis validadas e invalidadas, métricas de la landing.
+\begin{frame}{\pendiente{Lo que aprendimos de los clientes}}
+  \pendiente{Número de entrevistas, hipótesis validadas e invalidadas, visitas y registros.}
+\end{frame}
+
+% 7. Competencia: matriz con dos atributos que importan al cliente.
+\begin{frame}{\pendiente{Competencia}}
+  \pendiente{Matriz de dos ejes o tabla con competidores y la ventaja de la empresa.}
+\end{frame}
+
+% 8. Modelo de negocio: cómo se gana dinero.
+\begin{frame}{\pendiente{Modelo de negocio}}
+  \pendiente{Qué se cobra y cuánto. Canal de adquisición. CAC, LTV y LTV/CAC.}
+\end{frame}
+
+% 9. Finanzas: corrida a 24 meses, capital necesario y retorno.
+\begin{frame}{\pendiente{Finanzas a 24 meses}}
+  \pendiente{Gráfica del flujo acumulado. Capital necesario, mes de equilibrio, VPN. Supuestos principales.}
+\end{frame}
+
+% 10. Equipo: nombres, fotos y roles.
+\begin{frame}{\pendiente{Equipo}}
+  \pendiente{Foto, nombre y rol de cada integrante.}
+\end{frame}
+
+% 11. Cierre: lo que la empresa pide (capital, piloto, contactos) y la frase de la portada.
+\begin{frame}{\pendiente{Lo que necesitamos}}
+  \pendiente{Monto o recurso que se pide y para qué. Repetir la frase de la empresa.}
+\end{frame}
+
+\end{document}

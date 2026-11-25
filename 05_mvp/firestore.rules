@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /preregistros/{email} {
+      allow create: if request.resource.data.keys().hasOnly(['correo', 'fecha'])
+        && request.resource.data.correo == email
+        && email.size() <= 254
+        && email.matches('^[^@\\sA-Z]+@[^@\\sA-Z]+\\.[^@\\sA-Z]+$')
+        && request.resource.data.fecha == request.time;
+    }
+  }
+}

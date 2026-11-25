@@ -1,0 +1,272 @@
+% Propuesta de proyecto. Máximo 4 páginas, sin contar las referencias.
+% Sustituir cada texto gris (\pendiente{...}) por el contenido del equipo.
+% No cambiar los títulos ni el orden de las secciones.
+% Las tablas llevan frases cortas, y la prosa va en los párrafos.
+% Cada concepto se define una sola vez y las secciones posteriores lo citan:
+% la métrica es una medida de rendimiento de la sección 3, y la entrada y la
+% salida del MVP son los sensores y los actuadores de esa misma sección.
+% Compilar con: pdflatex propuesta.tex
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noindentfirst,es-nodecimaldot,es-tabla]{babel}
+\usepackage[letterpaper,margin=2.2cm,top=1.6cm]{geometry}
+\usepackage{xcolor}
+\usepackage{booktabs,tabularx,array,titling,enumitem,float}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{unamAzul}{HTML}{003D79}
+\definecolor{unamOro}{HTML}{D59F0F}
+\newcommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+\setlist{nosep,leftmargin=*}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% ---------- Encabezado institucional ----------
+\pretitle{%
+  \begin{center}\small
+    Universidad Nacional Autónoma de México\\
+    Posgrado en \pendiente{nombre del programa}\\[2pt]
+    \pendiente{Nombre del curso}, semestre \pendiente{2027-1}
+  \end{center}
+  \vspace{-4pt}{\color{unamOro}\rule{\textwidth}{1.2pt}}\par\vspace{14pt}
+  \begin{center}{\small\scshape Propuesta de proyecto}\\[6pt]\LARGE\bfseries\color{unamAzul}}
+\posttitle{\par\end{center}\vspace{-4pt}}
+\preauthor{\begin{center}\large\begin{tabular}[t]{c}}
+\newcommand{\otrorenglon}{\end{tabular}\par\vspace{8pt}\begin{tabular}[t]{c}}
+\postauthor{\end{tabular}\par\end{center}}
+\predate{\begin{center}\small}
+\postdate{\par\end{center}}
+
+\title{\pendiente{Nombre de la empresa: el proyecto en una frase}}
+% Entre 1 y 6 integrantes, tres por renglón. Borrar los integrantes que sobren,
+% junto con su \and. \otrorenglon inicia el segundo renglón de nombres.
+\author{%
+  \pendiente{Integrante 1}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 2}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 3}\\ {\small\texttt{\pendiente{correo}}}
+  \otrorenglon
+  \pendiente{Integrante 4}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 5}\\ {\small\texttt{\pendiente{correo}}}
+  \and
+  \pendiente{Integrante 6}\\ {\small\texttt{\pendiente{correo}}}
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+% ---------------------------------------------------------------------------
+% EL PROBLEMA. Cinco párrafos, cada uno con su idea central en la primera
+% oración. El primero, el segundo y el cuarto responden las seis preguntas del
+% diagnóstico: qué no está sucediendo, quién está interesado, por qué le interesa
+% al equipo, qué impide resolverlo, qué pasa si no se resuelve y cómo luce el
+% éxito. El tercero presenta los trabajos en que se basa el proyecto, y el quinto
+% dice quién paga por la solución. Usar cifras con su fuente cuando existan.
+% ---------------------------------------------------------------------------
+\section{El problema}
+\label{sec:problema}
+
+\pendiente{Primer párrafo. Quién tiene el problema, qué no está sucediendo y cuánto le
+cuesta, en tiempo o dinero.}
+
+\pendiente{Segundo párrafo. Qué impide resolverlo hoy, qué soluciones existen y por qué no
+bastan.}
+
+\pendiente{Tercer párrafo. Los trabajos en que se basa el proyecto (artículos, libros,
+reportes o repositorios de código) y qué toma el equipo de cada uno, con su
+cita~\cite{base}.}
+
+\pendiente{Cuarto párrafo. Qué pasa si nadie lo resuelve y cómo luce el éxito, con un
+resultado medible.}
+
+\pendiente{Quinto párrafo. Quién pagaría por la solución, que puede ser una persona distinta
+de quien usa el producto, y qué valor recibe a cambio.}
+
+% ---------------------------------------------------------------------------
+% SELECCIÓN DE LA IDEA. Puntuar de 1 (bajo) a 5 (alto) la idea elegida y las dos
+% mejores alternativas. El total es la suma de los cuatro criterios. Justificar
+% con evidencia el puntaje de la idea elegida, porque los puntajes propios
+% tienden a inflarse.
+% ---------------------------------------------------------------------------
+\section{Selección de la idea}
+\label{sec:seleccion}
+
+La Tabla~\ref{tab:seleccion} compara la idea elegida con las dos mejores alternativas.
+\pendiente{Una o dos oraciones que nombran la operación SCAMPER que generó la idea
+(sustituir, combinar, adaptar, modificar, poner en otros usos, eliminar o revertir) y
+justifican con evidencia por qué la idea elegida supera a las alternativas.}
+
+\begin{table}[H]
+  \caption{Puntaje de 1 (bajo) a 5 (alto) de la idea elegida y de las dos mejores
+    alternativas en cuatro criterios: dolor del cliente, datos disponibles, IA necesaria y
+    factibilidad en 6 semanas. El total suma los cuatro criterios, y un total mayor es mejor.}
+  \label{tab:seleccion}
+  \begin{tabularx}{\textwidth}{@{}Xccccc@{}}
+    \toprule
+    Idea & Dolor & Datos & IA necesaria & Factible & Total \\
+    \midrule
+    \pendiente{Idea elegida}  & & & & & \\
+    \pendiente{Alternativa 1} & & & & & \\
+    \pendiente{Alternativa 2} & & & & & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% AGENTE Y ENTORNO DE LA TAREA. Russell y Norvig, cap. 2. El agente es el sistema
+% junto con la decisión que apoya. En un modelo de predicción, la decisión es lo
+% que el usuario hace con la predicción, por ejemplo a qué paciente llamar
+% primero. Así las propiedades del entorno describen la decisión real, además del
+% entrenamiento del modelo.
+% La tabla REAS define una sola vez el rendimiento, la entrada y la salida. La
+% hipótesis y el MVP las citan después.
+% ---------------------------------------------------------------------------
+\section{Agente y entorno de la tarea}
+\label{sec:agente}
+
+\pendiente{Una oración que dice qué es el agente del proyecto y qué decisión apoya.} La
+Tabla~\ref{tab:reas} describe la tarea con REAS, y la Tabla~\ref{tab:propiedades} clasifica
+su entorno, según la caracterización de Russell y Norvig~\cite{russell2021}.
+
+\begin{table}[H]
+  \caption{Descripción REAS de la tarea: medidas de rendimiento, entorno, actuadores y
+    sensores del agente.}
+  \label{tab:reas}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
+    \toprule
+    Rendimiento & \pendiente{Medidas con las que se juzga al agente, por ejemplo citas
+                  recuperadas por semana o error de predicción. La métrica de la hipótesis es
+                  una de ellas.} \\
+    Entorno & \pendiente{Dónde actúa el agente y con qué interactúa.} \\
+    Actuadores & \pendiente{Cómo actúa el agente sobre el entorno, por ejemplo enviar un
+                 mensaje o mostrar una recomendación. Son la salida del MVP.} \\
+    Sensores & \pendiente{Qué percibe el agente, por ejemplo registros de una base de datos,
+               imágenes o texto. Son la entrada del MVP.} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\begin{table}[H]
+  \caption{Propiedades del entorno de la tarea, con el valor elegido para el proyecto y su
+    justificación.}
+  \label{tab:propiedades}
+  \small
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabularx}{\textwidth}{@{}p{0.36\textwidth}p{0.13\textwidth}X@{}}
+    \toprule
+    Propiedad & Valor & Justificación \\
+    \midrule
+    Totalmente o parcialmente observable & & \\
+    Un agente o multiagente & & \\
+    Determinista o estocástico & & \\
+    Episódico o secuencial & & \\
+    Estático, semidinámico o dinámico & & \\
+    Discreto o continuo & & \\
+    Conocido o desconocido & & \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% HIPÓTESIS Y EVALUACIÓN. Una oración con la forma: el método X mejora la métrica
+% Y respecto de la línea base Z en los datos W. La tabla detalla cada elemento y
+% el párrafo final dice cómo se pondrá a prueba.
+% ---------------------------------------------------------------------------
+\section{Hipótesis y evaluación}
+\label{sec:hipotesis}
+
+\pendiente{El método X mejora la métrica Y respecto de la línea base Z en los datos W.} La
+Tabla~\ref{tab:hipotesis} detalla cada elemento de la hipótesis.
+
+\begin{table}[H]
+  \caption{Elementos de la hipótesis: método, métrica, línea base y datos.}
+  \label{tab:hipotesis}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
+    \toprule
+    Método & \pendiente{Clase de métodos de inteligencia artificial que se usarán.} \\
+    Métrica & \pendiente{Medida de rendimiento de la Tabla~\ref{tab:reas} que pone a prueba la
+              hipótesis, y si un valor mayor es mejor.} \\
+    Línea base & \pendiente{Método más simple que resuelve la misma tarea.} \\
+    Datos & \pendiente{Fuente, tamaño y licencia de los datos, del simulador o del sistema
+            real, y si el equipo ya tiene acceso a ellos. Si todavía no lo tiene, cuándo y
+            cómo lo obtendrá.} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\pendiente{Un párrafo que dice cómo se pondrá a prueba la hipótesis: división de los datos,
+número de repeticiones y comparación con dos o tres trabajos previos~\cite{ejemplo}. Incluir
+una evaluación cualitativa con usuarios si aplica.}
+
+% ---------------------------------------------------------------------------
+% PRODUCTO MÍNIMO VIABLE. Qué tipo de producto es, quién lo usa y qué hace. La
+% entrada y la salida son los sensores y los actuadores de la sección 3. Esta
+% sección dice en qué formato llegan y en qué formato se entregan.
+% ---------------------------------------------------------------------------
+\section{Producto mínimo viable}
+\label{sec:mvp}
+
+\pendiente{Una o dos oraciones que describen el MVP y a quién sirve.} La
+Tabla~\ref{tab:mvp} describe el producto.
+
+\begin{table}[H]
+  \caption{Descripción del producto mínimo viable: tipo, usuario, entrada, proceso y salida.}
+  \label{tab:mvp}
+  \renewcommand{\arraystretch}{1.3}
+  \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
+    \toprule
+    Tipo & \pendiente{Aplicación web, herramienta de línea de comandos, aplicación móvil,
+           API, extensión de otra herramienta u otro formato.} \\
+    Usuario & \pendiente{Quién lo usa y en qué momento de su trabajo.} \\
+    Entrada & \pendiente{Formato en que llega lo que perciben los sensores de la
+              Tabla~\ref{tab:reas}, por ejemplo un archivo CSV, una imagen o un texto.} \\
+    Proceso & \pendiente{Qué hace el sistema con la entrada y dónde interviene el modelo de
+              inteligencia artificial.} \\
+    Salida & \pendiente{Formato en que el usuario recibe la acción de los actuadores, por
+             ejemplo una lista priorizada, una alerta o un reporte.} \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+% ---------------------------------------------------------------------------
+% PLAN DE TRABAJO. Solo las actividades propias del proyecto, en orden. Los
+% entregables del curso (canvas, modelo financiero, artículo y pitch) ya tienen
+% fecha y no se listan. Cada actividad dice sus semanas, su responsable y el
+% producto que deja. Por ejemplo: "Etiquetar 2,000 radiografías con apoyo de un
+% dentista aliado (semanas 1 y 2, Ana). El producto es el conjunto etiquetado."
+% ---------------------------------------------------------------------------
+\section{Plan de trabajo}
+\label{sec:plan}
+
+\pendiente{Un párrafo que presenta el plan: cuántas semanas dura, cómo se reparte el trabajo
+entre los integrantes y cuál es el hito principal, por ejemplo el MVP funcionando en la
+semana 4. La lista siguiente ordena las actividades.}
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
+  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
+  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
+  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
+\end{enumerate}
+
+% ---------------------------------------------------------------------------
+% REFERENCIAS. Cada referencia de esta lista se cita en el texto con \cite, y
+% cada cita del texto aparece en esta lista. Incluir el DOI o el enlace cuando
+% exista y verificar cada entrada contra su fuente original.
+% ---------------------------------------------------------------------------
+\begin{thebibliography}{9}
+  \bibitem{russell2021} S. Russell y P. Norvig (2021). \emph{Artificial Intelligence: A Modern
+    Approach}, 4.ª ed. Pearson. ISBN 978-0134610993. \url{https://aima.cs.berkeley.edu}.
+  \bibitem{base} \pendiente{Autores (año). Título. Revista, libro o repositorio. DOI o enlace.
+    Cada referencia de esta lista se cita en el texto.}
+  \bibitem{ejemplo} \pendiente{Autores (año). Título. Revista o conferencia. DOI.}
+\end{thebibliography}
+
+\end{document}
