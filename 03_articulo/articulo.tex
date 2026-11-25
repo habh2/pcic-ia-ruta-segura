@@ -34,19 +34,8 @@
 \maketitle
 
 \begin{abstract}
-  Walking route planners minimize travel time, yet street robbery in Mexico City is concentrated
-  on a small share of streets, and walkers have no way to trade a few minutes for a route that
-  avoids them. However, it is unclear how much exposure to robbery such a trade removes, and
-  whether a planner can also react to reports from its own users. In this work, we estimate the
-  risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the
-  prosecutor's office in 2021--2024, and we search for the least risky route whose walking time
-  stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps
-  the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in
-  January--September 2026, the route under a 10\% budget passed 9.0 incidents on average,
-  compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the
-  budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports,
-  routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports,
-  fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
+ Walking route planners minimize travel time, yet pedestrians in unfamiliar areas often lack information about the safety of the streets they traverse, and a slightly longer route may substantially reduce their exposure to crime. However, current navigation systems do not explicitly account for local crime patterns or citizen-reported incidents, making it unclear how much risk can be reduced without imposing excessive detours. 
+ In this work, we estimate the risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the prosecutor's office in 2021--2024, and we search for the least risky route whose walking time stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in January--September 2026, the route under a 10\% budget passed 9.0 incidents on average, compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports, routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports, fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
   time budget already captures most of the available reduction in exposure.
 \end{abstract}
 
