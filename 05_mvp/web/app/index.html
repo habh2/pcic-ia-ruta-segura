@@ -288,6 +288,27 @@ table.t td:not(:first-child), table.t th:not(:first-child) { text-align: right; 
 .m-biz { width: 30px; height: 30px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); color: var(--ink); display: grid; place-items: center; }
 .m-biz svg { width: 16px; height: 16px; }
 .m-biz.far { opacity: .55; }
+.leaflet-tooltip.biz-peek { background: var(--paper); border: 1px solid var(--line-strong); border-radius: 8px; box-shadow: none; padding: 4px; color: var(--ink); cursor: pointer; white-space: nowrap; animation: peek-in .5s cubic-bezier(.16, 1, .3, 1) .45s both; }
+.leaflet-tooltip.biz-peek::before { display: none; }
+.leaflet-tooltip.biz-peek:hover { border-color: var(--ink); }
+.peek-off .biz-peek, .leaflet-tooltip.biz-peek.peek-hidden { display: none; }
+.peek-in { display: flex; gap: 4px; }
+.peek-item { position: relative; display: block; width: 44px; height: 44px; }
+.peek-item img { display: block; width: 44px; height: 44px; border-radius: 5px; object-fit: cover; }
+.peek-p { position: absolute; left: 3px; bottom: 3px; padding: 0 4px; border-radius: 3px; background: var(--paper); font: 600 10.5px/15px var(--sans); color: var(--ink); font-variant-numeric: tabular-nums; }
+@keyframes peek-in { from { opacity: 0; } to { opacity: 1; } }
+.pop-promo { display: block; }
+.pop-prods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0 8px; }
+.pop-prods .prod img { display: block; width: 100%; height: auto; aspect-ratio: 1; border-radius: 6px; object-fit: cover; background: var(--ground-deep); }
+.pop-prods .prod-n { display: block; margin-top: 5px; font-size: var(--fs-caption); line-height: 1.3; }
+.pop-prods .prod-p { display: block; font-weight: 600; font-variant-numeric: tabular-nums; }
+.pop-meta { display: block; font-size: var(--fs-caption); }
+.biz-row { align-items: flex-start; }
+.row-prods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0 4px; }
+.row-prods .prod { display: grid; grid-template-columns: 52px 1fr; column-gap: 10px; align-items: center; }
+.row-prods .prod img { grid-row: span 2; width: 52px; height: 52px; border-radius: 6px; object-fit: cover; background: var(--ground-deep); }
+.row-prods .prod-n { align-self: end; font-size: var(--fs-caption); line-height: 1.3; color: var(--ink-soft); }
+.row-prods .prod-p { align-self: start; font-size: var(--fs-small); font-weight: 600; font-variant-numeric: tabular-nums; }
 
 .leaflet-container { font-family: var(--sans); background: var(--map-ground); }
 .leaflet-tile-pane { filter: saturate(.28) sepia(.12) contrast(.92) brightness(1.04); }
@@ -393,11 +414,11 @@ const AREA = {
 const USER_LOCATION = { id: 'me', name: 'Tu ubicación', sub: 'Río Pánuco y Río Tiber (simulada)', lat: 19.4299, lng: -99.1679, kind: 'me' };
 
 const SAMPLE_BUSINESSES = [
-  { id: 'biz-1', name: 'Café Río Lerma', category: 'cafe', tier: 'gold', promo: '2×1 en espresso americano', lat: 19.4287, lng: -99.1674 },
-  { id: 'biz-2', name: 'Farmacia Guadalquivir 24 h', category: 'pharmacy', tier: 'gold', promo: '15% en vitaminas y cuidado personal', lat: 19.4274, lng: -99.1695 },
-  { id: 'biz-3', name: 'Bistró Río Tiber', category: 'restaurant', tier: 'gold', promo: 'Bebida de cortesía con el menú del día', lat: 19.4301, lng: -99.1677 },
-  { id: 'biz-4', name: 'Panadería Villalongín', category: 'restaurant', tier: 'basic', promo: 'Café americano gratis con tu pan', lat: 19.4326, lng: -99.1613 },
-  { id: 'biz-5', name: 'Express Reforma 24 h', category: 'store24', tier: 'basic', promo: '10% en bebidas y snacks', lat: 19.4294, lng: -99.1631 }
+  { id: 'biz-1', name: 'Café Río Lerma', category: 'cafe', tier: 'gold', promo: '2×1 en espresso americano', products: [{ name: 'Americano', price: 38, img: 'americano' }, { name: 'Croissant de mantequilla', price: 42, img: 'croissant' }], lat: 19.4287, lng: -99.1674 },
+  { id: 'biz-2', name: 'Farmacia Guadalquivir 24 h', category: 'pharmacy', tier: 'gold', promo: '15% en vitaminas y cuidado personal', products: [{ name: 'Vitamina C, 30 tabletas', price: 129, img: 'vitamina-c' }, { name: 'Protector solar FPS 50', price: 289, img: 'protector-solar' }], lat: 19.4274, lng: -99.1695 },
+  { id: 'biz-3', name: 'Bistró Río Tiber', category: 'restaurant', tier: 'gold', promo: 'Bebida de cortesía con el menú del día', products: [{ name: 'Menú del día', price: 165, img: 'menu-del-dia' }, { name: 'Agua de jamaica', price: 35, img: 'agua-jamaica' }], lat: 19.4301, lng: -99.1677 },
+  { id: 'biz-4', name: 'Panadería Villalongín', category: 'restaurant', tier: 'basic', promo: 'Café americano gratis con tu pan', products: [{ name: 'Concha de vainilla', price: 18, img: 'concha' }, { name: 'Cuernito', price: 22, img: 'cuernito' }], lat: 19.4326, lng: -99.1613 },
+  { id: 'biz-5', name: 'Express Reforma 24 h', category: 'store24', tier: 'basic', promo: '10% en bebidas y snacks', products: [{ name: 'Sándwich de jamón', price: 49, img: 'sandwich' }, { name: 'Agua mineral 600 ml', price: 24, img: 'agua-mineral' }], lat: 19.4294, lng: -99.1631 }
 ];
 
 const BIZ_CATEGORIES = [
@@ -407,6 +428,8 @@ const BIZ_CATEGORIES = [
   { id: 'store24', label: 'Tienda 24 h', icon: 'store' },
   { id: 'bank', label: 'Banco', icon: 'bank' }
 ];
+
+const PEEK_MIN_ZOOM = 15;
 
 const BIZ_TIERS = [
   { id: 'gold', label: 'Oro', radius: 120 },
@@ -513,6 +536,8 @@ function pointToRoute(lat, lng, coords) {
   const mLng = 111320 * Math.cos(lat * Math.PI / 180);
   let best = Infinity;
   let bestProgress = 0;
+  let bestX = 0;
+  let bestY = 0;
   let cumulative = 0;
   for (let i = 0; i < coords.length - 1; i++) {
     const ax = (coords[i][1] - lng) * mLng;
@@ -530,10 +555,12 @@ function pointToRoute(lat, lng, coords) {
     if (d < best) {
       best = d;
       bestProgress = cumulative + t * Math.sqrt(lenSq);
+      bestX = qx;
+      bestY = qy;
     }
     cumulative += Math.sqrt(lenSq);
   }
-  return { distance: Math.round(best), progress: bestProgress };
+  return { distance: Math.round(best), progress: bestProgress, toRouteX: bestX, toRouteY: bestY };
 }
 
 function insideArea(lat, lng) {
@@ -981,7 +1008,7 @@ function matchedBusinesses(coords) {
   for (const b of businesses) {
     const tier = tierOf(b.tier);
     const prox = pointToRoute(b.lat, b.lng, coords);
-    if (prox.distance <= tier.radius) list.push({ biz: b, distance: prox.distance, progress: prox.progress });
+    if (prox.distance <= tier.radius) list.push({ biz: b, distance: prox.distance, progress: prox.progress, toRouteX: prox.toRouteX, toRouteY: prox.toRouteY });
   }
   list.sort(function (a, b) { return a.progress - b.progress; });
   return list;
@@ -1065,6 +1092,7 @@ function initMap() {
   layers.community = L.layerGroup().addTo(map);
   layers.zones = L.layerGroup().addTo(map);
   map.on('zoomend', drawCommunity);
+  map.on('moveend', updatePeekZoom);
   layers.routes = L.layerGroup().addTo(map);
   layers.biz = L.layerGroup().addTo(map);
   layers.marks = L.layerGroup().addTo(map);
@@ -1187,14 +1215,76 @@ function drawEndpoints(from, to) {
   if (to) L.marker([to.lat, to.lng], { icon: divIcon('m-b', 26), keyboard: false, title: 'Destino' }).addTo(layers.marks);
 }
 
-function drawBusinesses(list) {
+function productImg(p) {
+  return '/assets/img/biz/' + p.img + '.jpg';
+}
+
+function formatPrice(n) {
+  return '$' + n;
+}
+
+function productTiles(b, cls) {
+  let html = '<span class="' + cls + '">';
+  for (const p of b.products || []) {
+    html += '<span class="prod"><img src="' + productImg(p) + '" alt="" width="120" height="120" loading="lazy" decoding="async">' +
+      '<span class="prod-n">' + esc(p.name) + '</span><span class="prod-p">' + formatPrice(p.price) + '</span></span>';
+  }
+  return html + '</span>';
+}
+
+function peekDirection(item) {
+  const ax = -item.toRouteX;
+  const ay = -item.toRouteY;
+  if (Math.abs(ax) >= Math.abs(ay)) return ax >= 0 ? 'right' : 'left';
+  return ay >= 0 ? 'top' : 'bottom';
+}
+
+function drawBusinesses(list, peek) {
   layers.biz.clearLayers();
   for (const item of list) {
     const b = item.biz;
     const cat = categoryOf(b.category);
     const m = L.marker([b.lat, b.lng], { icon: divIcon('m-biz', 30, icon(cat.icon)), title: b.name + ', ' + cat.label, keyboard: true, bubblingMouseEvents: false });
-    m.bindPopup('<span class="pop-t">' + esc(b.name) + '</span>' + esc(b.promo) + '<br><span class="muted">' + esc(cat.label) + ' · Patrocinado</span>');
+    m.bindPopup('<span class="pop-t">' + esc(b.name) + '</span><span class="pop-promo">' + esc(b.promo) + '</span>' +
+      productTiles(b, 'pop-prods') +
+      '<span class="muted pop-meta">' + esc(cat.label) + ' · a ' + formatDist(item.distance) + ' de tu ruta · Patrocinado</span>',
+      { minWidth: 248, maxWidth: 248, autoPanPadding: [24, 24] });
     m.addTo(layers.biz);
+    if (peek && b.products && b.products.length) {
+      let thumbs = '';
+      for (const p of b.products.slice(0, 2)) {
+        thumbs += '<span class="peek-item"><img src="' + productImg(p) + '" alt="" width="44" height="44" decoding="async"><span class="peek-p">' + formatPrice(p.price) + '</span></span>';
+      }
+      const dir = peekDirection(item);
+      const gap = 19;
+      let offset = [gap, 0];
+      if (dir === 'left') offset = [-gap, 0];
+      if (dir === 'top') offset = [0, -gap];
+      if (dir === 'bottom') offset = [0, gap];
+      m.bindTooltip('<span class="peek-in" aria-hidden="true">' + thumbs + '</span>', { permanent: true, interactive: true, direction: dir, offset: offset, className: 'biz-peek', opacity: 1 });
+      m.getTooltip().on('click', function () { m.openPopup(); });
+    }
+  }
+  updatePeekZoom();
+}
+
+function overlaps(a, b) {
+  return a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+}
+
+function updatePeekZoom() {
+  const box = map.getContainer();
+  box.classList.toggle('peek-off', map.getZoom() < PEEK_MIN_ZOOM);
+  const kept = [];
+  for (const el of box.querySelectorAll('.m-a, .m-b')) kept.push(el.getBoundingClientRect());
+  for (const el of box.querySelectorAll('.biz-peek')) {
+    el.classList.remove('peek-hidden');
+    const r = el.getBoundingClientRect();
+    let clash = false;
+    for (const k of kept) {
+      if (overlaps(r, k)) clash = true;
+    }
+    if (clash) el.classList.add('peek-hidden'); else kept.push(r);
   }
 }
 
@@ -1215,7 +1305,7 @@ function drawMap(view) {
     drawRoute(trip.safe, 'safe', state.choice === 'safe' || trip.same);
     drawEndpoints(state.plan.from, state.plan.to);
     const chosen = state.choice === 'fast' ? trip.fast : trip.safe;
-    drawBusinesses(matchedBusinesses(chosen.coords));
+    drawBusinesses(matchedBusinesses(chosen.coords), true);
     fitTo(trip.safe.coords.concat(trip.fast.coords));
     return;
   }
@@ -1540,7 +1630,10 @@ function viewRoutes() {
     html += '<h2 class="sh">En el camino.</h2><ul class="list">';
     for (const item of along) {
       const cat = categoryOf(item.biz.category);
-      html += row({ icon: cat.icon, title: item.biz.name, sub: item.biz.promo + ' · a ' + formatDist(item.distance) + ' de tu ruta', end: '<span class="ad">Patrocinado</span>' });
+      html += '<li><div class="row static biz-row"><span class="row-ico">' + icon(cat.icon) + '</span>' +
+        '<span class="row-txt"><span class="row-t">' + esc(item.biz.name) + '<span class="ad">Patrocinado</span></span>' +
+        '<span class="row-s">' + esc(item.biz.promo) + ' · a ' + formatDist(item.distance) + ' de tu ruta</span>' +
+        productTiles(item.biz, 'row-prods') + '</span></div></li>';
     }
     html += '</ul>';
   }

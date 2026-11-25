@@ -52,14 +52,14 @@
 
 \section{Introduction}
 
-In 2025, 1,132 pedestrian robberies (robo a transeúnte) were reported in the alcaldía Cuauhtémoc
-of Mexico City alone, about three per day~\cite{hoyodecrimen,fgj2026victimas}, and Mexico's
+In 2025, 1,132 pedestrian robberies were reported in the alcaldía Cuauhtémoc
+of Mexico City alone, about three per day~\cite{hoyodecrimen}, and Mexico's
 national victimization survey estimates that 93.2\% of crimes in 2024 were not reported or did not
 lead to an investigation~\cite{inegi2025envipe}. Crime is also concentrated: a small share of
 streets accounts for most incidents~\cite{weisburd2015law}. A walker who knew which streets
-concentrate robberies could avoid them at a small cost in time. The planners people use do not
-help with this choice. Waze is built for driving only~\cite{waze2023footpaths}, and general
-planners rank walking routes by time.
+concentrate robberies could avoid them at a small cost in time. The route planners people use do not
+help with this choice: Waze is built for driving only~\cite{waze2023footpaths}, and general
+planners rank walking routes by fastest time of arrival.
 
 Safety-aware planners exist in other cities~\cite{streetwise2026} and in the
 literature~\cite{galbrun2016urban,theron2024safest}, but none covers Mexico City, and published
@@ -108,11 +108,12 @@ choose its bandwidth by likelihood on a held-out year rather than by eye.
 \textbf{Graph.} The walking network of Cuauhtémoc is a directed graph $G=(V,E)$ downloaded from
 OpenStreetMap~\cite{osm2026} with OSMnx~\cite{boeing2017osmnx}. It has 10,463 nodes (corners and
 street ends) and 31,872 directed edges, 871~km of street. Each edge $e$ has its length $\ell(e)$
-along its geometry and a walking time $t(e)=\ell(e)/v$, with $v=1.4$~m/s.
+along its geometry and a walking time $t(e)=\ell(e)/v$, where $v$ is a constant walking speed.
 
-\textbf{Data.} The incidents are the two categories of robo a transeúnte, with and without
-violence, from the victims dataset of the prosecutor's office of Mexico City~\cite{fgj2026victimas}
-in the cleaned version distributed by Hoyo de Crimen~\cite{hoyodecrimen} under CC~BY~4.0. We kept
+\textbf{Data.} The incidents are the two categories of pedestrian robberies, with and without
+violence, from Hoyo de Crimen~\cite{hoyodecrimen}, which distributes under CC~BY~4.0 a cleaned and
+updated version of the victims dataset of the prosecutor's office of Mexico City. The office's own
+portal publishes that dataset only up to September 2024~\cite{fgj2026victimas}. We kept
 the 10,710 incidents from January 2019 to September 2026 inside the alcaldía, merging rows that
 describe several victims of one incident. The split is by time: 2021--2024 (5,235 incidents) to
 fit the risk model, 2025 (1,132) to choose its bandwidth, and January--September 2026 (718) to
