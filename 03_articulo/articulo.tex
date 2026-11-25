@@ -1,153 +1,302 @@
 % Artículo del proyecto final. Formato NeurIPS, máximo 4 páginas de contenido.
 % Las referencias, la lista de verificación y los apéndices no cuentan.
 % El artículo se escribe en inglés.
-%
-% Los comentarios en español explican qué va en cada sección. Borrar el texto
-% gris (\todo{...}) y sustituirlo por el contenido del equipo.
 % Compilar con: pdflatex articulo; bibtex articulo; pdflatex articulo; pdflatex articulo
 \documentclass{article}
-\usepackage[preprint]{neurips_2025}  % preprint: muestra autores, sin números de línea
+\PassOptionsToPackage{numbers,compress,sort}{natbib}
+\usepackage[preprint]{neurips_2025}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{hyperref,url,booktabs,amsfonts,amsmath,nicefrac,microtype,graphicx,xcolor}
 \newcommand{\todo}[1]{\textcolor{gray}{\emph{#1}}}
 
-\title{\todo{A title that states the main finding}}
+\title{Risk-Aware A* Search for Walking Routes in Mexico City: 41\% Less Exposure to Future Robberies for a 5\% Longer Walk}
 
 \author{%
-  \todo{Author One} \\
-  \todo{Program, Institution} \\
-  \texttt{\todo{email}} \\
+  Héctor Antonio Belmont Hernández \\
+  Posgrado en Ciencia e Ingeniería de la Computación, UNAM \\
+  \texttt{habelmont2@gmail.com} \\
   \And
-  \todo{Author Two} \\
-  \todo{Program, Institution} \\
-  \texttt{\todo{email}} \\
+  Luis Ángel Hernández González \\
+  Posgrado en Ciencia e Ingeniería de la Computación, UNAM \\
+  \texttt{luiss.angel92@gmail.com} \\
+  \And
+  Yeni Yuzelmi Núñez Laces \\
+  Posgrado en Ciencia e Ingeniería de la Computación, UNAM \\
+  \texttt{yenilaces@gmail.com} \\
+  \And
+  Gerardo Erick Villa Aguilar \\
+  Posgrado en Ciencia e Ingeniería de la Computación, UNAM \\
+  \texttt{gerardoerickv@gmail.com} \\
 }
 
 \begin{document}
 \maketitle
 
-% ---------------------------------------------------------------------------
-% RESUMEN. Se escribe primero, con la estructura Y, PERO, POR LO TANTO.
-% 1. Y: qué se sabe y por qué importa el problema.
-% 2. PERO ("However,"): qué queda sin resolver, como una pregunta concreta.
-% 3. POR LO TANTO ("In this work, we"): qué hace este trabajo y con qué datos.
-% 4. Resultados con números, uno por oración, contra la línea base.
-% 5. Qué significa el resultado.
-% ---------------------------------------------------------------------------
 \begin{abstract}
-  \todo{Context sentence. However, gap sentence. In this work, we ... We evaluated ... on ...
-  Our method achieved X on metric Y, compared with Z for the baseline. These results suggest ...}
+  Walking route planners minimize travel time, yet street robbery in Mexico City is concentrated
+  on a small share of streets, and walkers have no way to trade a few minutes for a route that
+  avoids them. However, it is unclear how much exposure to robbery such a trade removes, and
+  whether a planner can also react to reports from its own users. In this work, we estimate the
+  risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the
+  prosecutor's office in 2021--2024, and we search for the least risky route whose walking time
+  stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps
+  the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in
+  January--September 2026, the route under a 10\% budget passed 9.0 incidents on average,
+  compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the
+  budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports,
+  routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports,
+  fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
+  time budget already captures most of the available reduction in exposure.
 \end{abstract}
 
-% ---------------------------------------------------------------------------
-% INTRODUCCIÓN. Expande el resumen en el mismo orden, uno o dos párrafos por
-% movimiento. Termina con la lista de contribuciones y un párrafo que dice cómo
-% se organiza el resto del artículo.
-% ---------------------------------------------------------------------------
 \section{Introduction}
-\todo{Paragraph 1 (And): the problem, who has it, and what it costs. Cite evidence.}
 
-\todo{Paragraph 2 (But): what current approaches leave open, stated as a concrete question.}
+In 2025, 1,132 pedestrian robberies (robo a transeúnte) were reported in the alcaldía Cuauhtémoc
+of Mexico City alone, about three per day~\cite{hoyodecrimen,fgj2026victimas}, and Mexico's
+national victimization survey estimates that 93.2\% of crimes in 2024 were not reported or did not
+lead to an investigation~\cite{inegi2025envipe}. Crime is also concentrated: a small share of
+streets accounts for most incidents~\cite{weisburd2015law}. A walker who knew which streets
+concentrate robberies could avoid them at a small cost in time. The planners people use do not
+help with this choice. Waze is built for driving only~\cite{waze2023footpaths}, and general
+planners rank walking routes by time.
 
-\todo{Paragraph 3 (Therefore): what this work does. Start with ``In this work, we''.}
+Safety-aware planners exist in other cities~\cite{streetwise2026} and in the
+literature~\cite{galbrun2016urban,theron2024safest}, but none covers Mexico City, and published
+evaluations rarely test routes against incidents that happen after the risk was estimated. The
+question we address is concrete: for a walk of 1 to 4 km in Cuauhtémoc, how many future
+robberies does a risk-aware route pass compared with the fastest route, for a bounded increase
+in walking time?
+
+In this work, we model the walking network of Cuauhtémoc from OpenStreetMap, estimate the risk of
+each street with a kernel density estimate of past reported robberies, and run A* with a cost that
+adds risk to walking time. A single parameter $\lambda$ sets how much risk weighs, and we choose it
+per trip so that the route stays within a time budget. We test the routes on robberies reported
+in 2026, which the model never saw, and we test how they respond to synthetic user reports.
 
 The contributions of this work are:
 \begin{itemize}
-  \item \todo{Contribution 1, one sentence.}
-  \item \todo{Contribution 2, one sentence.}
+  \item A cost function and heuristic for which A* stays optimal when risk is added to walking
+        time, with a time budget enforced by a search over $\lambda$.
+  \item An evaluation of route safety against robberies reported after the risk was estimated.
+  \item An open web application that uses the same model and data.
 \end{itemize}
 
-\todo{Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the method,
+Section~\ref{sec:related} reviews related work, Section~\ref{sec:method} describes the method,
 Section~\ref{sec:experiments} reports the experiments, and Section~\ref{sec:limitations} discusses
-limitations.}
+limitations.
 
-% ---------------------------------------------------------------------------
-% TRABAJO RELACIONADO. Agrupar por enfoque y decir en qué se distingue este
-% trabajo de cada grupo. Cada referencia se verifica (DOI o enlace) antes de
-% citarla. Una referencia inventada descuenta puntos.
-% ---------------------------------------------------------------------------
 \section{Related work}
 \label{sec:related}
-\todo{Group 1 of approaches and how this work differs. Group 2 and how this work differs.}
-Clear structure helps readers follow the argument~\citep{mensh2017ten}.
 
-% ---------------------------------------------------------------------------
-% MÉTODO. Suficiente detalle para reproducir el trabajo: datos, preprocesamiento,
-% modelo, hiperparámetros y cómo se eligieron. Usar tiempo pasado.
-% ---------------------------------------------------------------------------
+\textbf{Safe routing.} Galbrun et al.~\cite{galbrun2016urban} model a city as a graph whose edges
+carry length and crime risk, and they compute the set of routes that are not worse in both, from
+which a user chooses. Theron and Breetzke~\cite{theron2024safest} compare safe walking routes in
+South Africa built with and without crime data. Commercial applications such as
+Streetwise~\cite{streetwise2026} reroute pedestrians around areas their models mark as risky. We
+differ in returning one route per trip, chosen by an explicit time budget, and in evaluating it
+against incidents from a later period.
+
+\textbf{Crime hotspot estimation.} Kernel density estimation is a standard way to map crime
+hotspots, and Chainey et al.~\cite{chainey2008utility} found it among the most accurate hotspot
+methods for predicting where future crime occurs. We use it to give each street a risk value and
+choose its bandwidth by likelihood on a held-out year rather than by eye.
+
 \section{Method}
 \label{sec:method}
-\todo{Problem formulation with notation defined at first use.}
 
-\todo{Data: source, size, license, train/validation/test split.}
+\textbf{Graph.} The walking network of Cuauhtémoc is a directed graph $G=(V,E)$ downloaded from
+OpenStreetMap~\cite{osm2026} with OSMnx~\cite{boeing2017osmnx}. It has 10,463 nodes (corners and
+street ends) and 31,872 directed edges, 871~km of street. Each edge $e$ has its length $\ell(e)$
+along its geometry and a walking time $t(e)=\ell(e)/v$, with $v=1.4$~m/s.
 
-\todo{Model and training procedure.}
+\textbf{Data.} The incidents are the two categories of robo a transeúnte, with and without
+violence, from the victims dataset of the prosecutor's office of Mexico City~\cite{fgj2026victimas}
+in the cleaned version distributed by Hoyo de Crimen~\cite{hoyodecrimen} under CC~BY~4.0. We kept
+the 10,710 incidents from January 2019 to September 2026 inside the alcaldía, merging rows that
+describe several victims of one incident. The split is by time: 2021--2024 (5,235 incidents) to
+fit the risk model, 2025 (1,132) to choose its bandwidth, and January--September 2026 (718) to
+test the routes. We left out 2019 and 2020 because 2019 has almost twice the incidents of later
+years and 2020 falls in the pandemic.
 
-% ---------------------------------------------------------------------------
-% EXPERIMENTOS. La línea base es obligatoria. Reportar la variabilidad
-% (desviación estándar sobre varias ejecuciones independientes, cada una con
-% una semilla distinta, o intervalos de confianza).
-% Abrir cada subsección con el resultado principal.
-% ---------------------------------------------------------------------------
+\textbf{Street risk.} A kernel density estimate places a Gaussian bump of width $h$ on each of
+the $N$ fit incidents $x_i$:
+$\hat f(x) = \frac{1}{N\,2\pi h^2}\sum_{i=1}^{N} \exp\!\big(-\lVert x-x_i\rVert^2/2h^2\big)$.
+For each edge we average $\hat f$ over points every 10~m along it, obtaining $d(e)$, and divide by
+the length-weighted mean over the network, so that the base risk $r_b(e)=1$ for an average street.
+We tried $h\in\{25,50,75,100,150,200,300,400\}$~m and kept the one with the highest mean
+log-likelihood of the 2025 incidents, $h=50$~m, about one city block. The estimate was computed
+with scikit-learn~\cite{pedregosa2011scikit}.
+
+\textbf{User reports.} A report at $y_j$ adds a bump of the same width whose peak equals $\rho$,
+the 90th percentile of $r_b$ over all edges ($\rho=2.59$). With $\bar k_j(e)$ the average of
+$\exp(-\lVert x-y_j\rVert^2/2h^2)$ along $e$, the risk becomes
+$r(e) = r_b(e) + \rho\sum_j \bar k_j(e)$. A single report thus makes its block as risky as the
+riskiest tenth of the network, and a cluster of reports exceeds every historical hotspot.
+
+\textbf{Search.} The cost of an edge is $c_\lambda(e) = t(e)\,\big(1+\lambda\, r(e)\big)$. For a
+route $P$, let $T(P)=\sum_{e\in P} t(e)$ be its walking time and $R(P)=\sum_{e\in P} t(e)\,r(e)$
+its accumulated risk, so its cost is $T(P)+\lambda R(P)$. We run A*~\cite{hart1968formal} with
+$h(n)=g(n,B)/v$, where $g(n,B)$ is the great-circle distance from $n$ to the destination $B$. This
+heuristic never overestimates: an edge is at least as long as the straight line between its ends,
+so $c_\lambda(e) \ge t(e) \ge g(n,m)/v$ for an edge from $n$ to $m$, because $r(e)\ge 0$. Adding
+the triangle inequality $g(n,B) \le g(n,m)+g(m,B)$ gives $h(n) \le c_\lambda(e) + h(m)$, so the
+heuristic is consistent and A* returns a route of minimum cost~\cite{russell2021}. With
+$\lambda=0$ the search returns the fastest route, our baseline.
+
+\textbf{Time budget.} For a trip with fastest time $T_0$ and budget $\varepsilon$, we return the
+route $P_\lambda$ for the largest $\lambda$ with $T(P_\lambda)\le(1+\varepsilon)T_0$. To justify
+searching over $\lambda$, take $\lambda_1<\lambda_2$ with optimal routes $P_1$ and $P_2$. Since
+each route is optimal for its own $\lambda$,
+$T_1+\lambda_1 R_1 \le T_2+\lambda_1 R_2$ and $T_2+\lambda_2 R_2 \le T_1+\lambda_2 R_1$. Adding
+the two inequalities gives $(\lambda_2-\lambda_1)(R_2-R_1)\le 0$, so $R_2\le R_1$, and then the
+first inequality gives $T_2 \ge T_1$. A larger $\lambda$ never increases risk and never decreases
+time, so the feasible values of $\lambda$ form an interval starting at 0, and bisection finds its
+end. We bisect $\log\lambda$ over $[10^{-2},10^{4}]$ in 16 steps.
+
 \section{Experiments}
 \label{sec:experiments}
-\todo{Setup: baseline, metric, number of runs, hardware.}
+
+\textbf{Setup.} For each of five seeds we drew 200 random origin and destination nodes between 1
+and 4~km apart, plus 50 trips whose fastest route passes within 150~m of each of the two report
+zones described below. We compare the fastest route with risk-aware routes under budgets
+$\varepsilon=0.1$ and $0.2$, using the base risk alone or the base risk plus synthetic reports.
+The main metric is the number of 2026 test incidents within 50~m of the route (lower is better).
+We also report the extra walking time and the nodes A* expanded, against uniform-cost search
+(the same search without the heuristic). Values are means over trips, then mean and standard
+deviation over the five seeds. Every route was checked to have the same cost as uniform-cost
+search and to stay within its budget. Runs used Python 3.10.5 on an Intel Core i7-9700 with 32~GB
+of RAM, and the full experiment takes about 35 minutes.
 
 \begin{table}[t]
-  \caption{\todo{Self-contained caption: what the table shows, the metric, and whether higher is better.
-  Mean and standard deviation over five independent executions.}}
+  \caption{Random trips (1,000 over five seeds). Test incidents: robberies reported in
+  January--September 2026 within 50~m of the route (lower is better). Extra time is relative to
+  the fastest route. Nodes: nodes expanded by A* and by uniform-cost search for the same route.
+  Mean $\pm$ standard deviation over five seeds.}
   \label{tab:results}
   \centering
-  \begin{tabular}{lcc}
+  \small
+  \begin{tabular}{lcccc}
     \toprule
-    Method & \todo{Metric} $\uparrow$ & \todo{Time (s)} $\downarrow$ \\
+    Method & Test incidents $\downarrow$ & Extra time (\%) & Nodes, A* & Nodes, uniform cost \\
     \midrule
-    \todo{Baseline} & \todo{0.00 $\pm$ 0.00} & \todo{0.0} \\
-    \todo{Ours}     & \todo{0.00 $\pm$ 0.00} & \todo{0.0} \\
+    Fastest route & 15.30 $\pm$ 0.82 & 0 & 760 $\pm$ 20 & 4,768 $\pm$ 167 \\
+    Base risk, $\varepsilon=0.1$ & 9.04 $\pm$ 0.29 & 5.42 $\pm$ 0.25 & 2,405 $\pm$ 94 & 4,971 $\pm$ 213 \\
+    Base risk, $\varepsilon=0.2$ & 7.81 $\pm$ 0.21 & 12.88 $\pm$ 0.29 & 3,230 $\pm$ 180 & 5,076 $\pm$ 255 \\
+    With reports, $\varepsilon=0.1$ & 9.03 $\pm$ 0.22 & 5.61 $\pm$ 0.31 & 2,414 $\pm$ 75 & 4,979 $\pm$ 200 \\
+    With reports, $\varepsilon=0.2$ & 7.84 $\pm$ 0.14 & 12.79 $\pm$ 0.32 & 3,195 $\pm$ 188 & 5,068 $\pm$ 250 \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\todo{Main result first. Table~\ref{tab:results} shows ...}
+\textbf{Exposure to future incidents.} Under a 10\% budget, the risk-aware route passed 41\% fewer
+test incidents than the fastest route (9.04 against 15.30) and took 5.4\% longer on average
+(Table~\ref{tab:results}). Doubling the budget to 20\% raised the reduction to 49\% and the extra
+time to 12.9\%, so most of the gain comes from short detours. The standard deviation across seeds
+is below 6\% of every mean. For the fastest route, the heuristic cut the nodes expanded by a factor
+of 6.3 compared with uniform-cost search. With risk in the cost the factor fell to 2.1 and 1.6,
+because the heuristic counts only walking time and underestimates the cost more as $\lambda$
+grows.
 
-% ---------------------------------------------------------------------------
-% LIMITACIONES E IMPACTO. Qué no funciona, en qué datos podría fallar, sesgos y
-% riesgos de uso. Un párrafo honesto vale más que una lista de promesas.
-% ---------------------------------------------------------------------------
+\textbf{Response to reports.} We placed 15 synthetic reports around a high-risk point on Calle
+Francisco I.\ Madero and 15 around a low-risk point on Calle Toluca in Roma Sur, each spread with
+a standard deviation of 60~m, plus 30 fake reports scattered over the network in proportion to
+street length. The reports do not come from the incident data, so this scenario tests how the
+routes respond, not whether reports predict crime. Near Roma Sur, the base risk alone left the
+routes almost as exposed to the reports as the fastest route (3.51 against 3.75 reports passed),
+because the history gives no reason to avoid that area. With reports, the routes passed 1.20, a
+68\% reduction, for 0.15 more percentage points of walking time (Table~\ref{tab:reports}). Almost
+all remaining reports came from the 85 of 250 trips that start or end within 200~m of the cluster
+and cannot avoid it. Near Madero, the base risk already steered routes away (0.39 reports against
+8.41), and the reports added little. On random trips the reports, fake ones included, left the
+exposure to real incidents and the walking time unchanged within one standard deviation
+(Table~\ref{tab:results}).
+
+\begin{table}[t]
+  \caption{Trips whose fastest route passes within 150~m of a report zone (250 per zone over five
+  seeds), with budget $\varepsilon=0.2$. Zone and fake reports: synthetic reports within 50~m of
+  the route (lower is better). Mean $\pm$ standard deviation over five seeds.}
+  \label{tab:reports}
+  \centering
+  \small
+  \begin{tabular}{llccc}
+    \toprule
+    Zone & Method & Zone reports $\downarrow$ & Fake reports $\downarrow$ & Extra time (\%) \\
+    \midrule
+    Low risk (Roma Sur) & Fastest route & 3.75 $\pm$ 0.49 & 0.66 $\pm$ 0.73 & 0 \\
+     & Base risk & 3.51 $\pm$ 0.64 & 0.46 $\pm$ 0.18 & 14.01 $\pm$ 0.47 \\
+     & With reports & 1.20 $\pm$ 0.37 & 0.14 $\pm$ 0.13 & 14.16 $\pm$ 0.31 \\
+    \midrule
+    High risk (Madero) & Fastest route & 8.41 $\pm$ 1.49 & 0.27 $\pm$ 0.11 & 0 \\
+     & Base risk & 0.39 $\pm$ 0.15 & 0.32 $\pm$ 0.10 & 11.95 $\pm$ 0.74 \\
+     & With reports & 0.27 $\pm$ 0.18 & 0.15 $\pm$ 0.09 & 12.46 $\pm$ 0.98 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
 \section{Limitations and broader impact}
 \label{sec:limitations}
-\todo{Limitations of the data, the method, and the evaluation. Possible harms and mitigations.}
+
+The risk model estimates where robberies are reported, not how likely a given walker is to be
+robbed. A street with many pedestrians accumulates many reports even when the chance per walker is
+low, and no pedestrian counts exist for Cuauhtémoc to correct for this. The busiest streets of the
+Centro Histórico, such as Francisco I.\ Madero and Eje Central, therefore receive the highest risk,
+and the planner steers walkers away from them. Many people perceive busy, well-lit streets as safer,
+so a recommended route can feel less safe than the one it replaces, for instance when it trades a
+crowded avenue for an empty side street at night. Our metric measures exposure to future reported
+incidents and cannot settle which of the two is actually safer. Dividing by pedestrian flow, or
+weighting by time of day, would be needed before the routes can be called safer in the per-walker
+sense.
+
+The data have further limits. Incidents come from complaints filed with the prosecutor's office,
+and most crimes in Mexico are never reported~\cite{inegi2025envipe}, so reporting rates may differ
+across neighborhoods and hours. The kernel density estimate assumes that the spatial pattern of
+2021--2024 still holds in 2026, ignores the hour of the incident, and smooths in the plane rather
+than along streets. The evaluation covers one alcaldía and one crime type, and OpenStreetMap may
+miss footpaths or include closed ones. The synthetic reports test one scenario, and the weight
+$\rho$ of a report is a design choice that no data in this study can validate.
+
+Labeling streets as risky can stigmatize neighborhoods and divert customers from businesses on
+them. The application limits this in three ways. It never shows a risk map or the
+prosecutor's individual incidents. User reports appear as pins that merge nearby reports, and each
+report counts for 30 days and then expires, so a street is not labeled permanently. And the time budget
+caps every detour, so walkers sidestep a few blocks rather than whole areas. Collaborative reports
+can also be false or malicious, which the fake reports above only begin to measure. The street
+network with risk attached is a derived OpenStreetMap database and is shared under the Open
+Database License.
 
 \section{Conclusion}
-\todo{Principal finding, its implication, and the next step.}
 
-\bibliographystyle{plainnat}
+On walking trips in Cuauhtémoc, a risk-aware A* route that is at most 10\% slower than the
+fastest one passed 41\% fewer of the robberies reported in January--September 2026, and doubling
+the budget added only 8 percentage points. A walker can therefore avoid a large share of exposure
+for a few minutes, and a planner can respond to fresh reports without losing that gain. The next
+step is to divide reported incidents by pedestrian flow, so that risk reflects the chance per
+walker rather than the number of walkers.
+
+\bibliographystyle{IEEEtran}
 \bibliography{referencias}
 
-% ---------------------------------------------------------------------------
-% LISTA DE VERIFICACIÓN (versión breve de la NeurIPS Paper Checklist).
-% Responder Yes, No o NA y justificar en una oración. No cuenta en las 4 páginas.
-% ---------------------------------------------------------------------------
 \appendix
 \section*{Paper checklist}
 \begin{enumerate}
   \item Do the abstract and introduction state the claims, and do the experiments support them?
-        \todo{Yes/No/NA. Justification.}
+        Yes. Each number in the abstract appears in Table~\ref{tab:results} or
+        Table~\ref{tab:reports}.
   \item Does the paper compare against a baseline on the same data and metric?
-        \todo{Yes/No/NA. Justification.}
+        Yes. The fastest route is computed on the same graph and scored on the same test incidents.
   \item Does the paper report variability (standard deviation, confidence intervals)?
-        \todo{Yes/No/NA. Justification.}
+        Yes. Both tables report the standard deviation over five seeds.
   \item Can the results be reproduced with the code and instructions in \texttt{05\_mvp/}?
-        \todo{Yes/No/NA. Justification.}
+        Yes. \texttt{05\_mvp/README.md} gives the commands, and the data are included.
   \item Are the data source, license, and preprocessing described?
-        \todo{Yes/No/NA. Justification.}
+        Yes. Section~\ref{sec:method} and \texttt{05\_mvp/DATA\_CARD.md} describe them.
   \item Does the paper discuss limitations and possible harms?
-        \todo{Yes/No/NA. Justification.}
+        Yes. Section~\ref{sec:limitations} covers the data, the method, the evaluation and the harms.
   \item Was every reference checked against its original source?
-        \todo{Yes/No/NA. Justification.}
+        Yes. Entries with a DOI were checked against Crossref and the rest against the publisher's page.
   \item Is the use of generative AI declared in \texttt{06\_ia/}?
-        \todo{Yes/No/NA. Justification.}
+        Yes. The conversations are listed in \texttt{06\_ia/bitacoras.csv}.
 \end{enumerate}
 
 \end{document}

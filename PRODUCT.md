@@ -18,7 +18,7 @@ Primary: anyone in Mexico City who wants to get from A to B on foot and take oth
 
 Reference archetype (fictional, from the business model): a graduate student who walks from the metro to campus every day and wants to know which blocks have had recent reports.
 
-Secondary (pays, not addressed by the landing page): businesses in safe zones that want more foot traffic.
+Secondary (pays, not addressed by the landing page): businesses along walking routes that want more foot traffic. Never pitched as "businesses in safe zones", which would label whole neighborhoods.
 
 ## Product Purpose
 

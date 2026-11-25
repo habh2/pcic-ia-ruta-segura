@@ -1,13 +1,136 @@
-% Cada entrada lleva DOI cuando existe. Verificar cada entrada contra la fuente
-% original (sitio de la revista, arXiv, Semantic Scholar o Crossref) antes de citarla.
+% Cada entrada se verificó contra su fuente original el 25 de noviembre de 2026:
+% las que tienen DOI contra Crossref, las demás contra la página del editor.
 
-@article{mensh2017ten,
-  author  = {Mensh, Brett and Kording, Konrad},
-  title   = {Ten simple rules for structuring papers},
-  journal = {PLoS Computational Biology},
-  volume  = {13},
-  number  = {9},
-  pages   = {e1005619},
+@article{hart1968formal,
+  author  = {Hart, Peter E. and Nilsson, Nils J. and Raphael, Bertram},
+  title   = {A Formal Basis for the Heuristic Determination of Minimum Cost Paths},
+  journal = {IEEE Transactions on Systems Science and Cybernetics},
+  volume  = {4},
+  number  = {2},
+  pages   = {100--107},
+  year    = {1968},
+  doi     = {10.1109/TSSC.1968.300136}
+}
+
+@book{russell2021,
+  author    = {Russell, Stuart and Norvig, Peter},
+  title     = {Artificial Intelligence: A Modern Approach},
+  edition   = {4th},
+  publisher = {Pearson},
+  year      = {2021},
+  isbn      = {978-0134610993}
+}
+
+@article{galbrun2016urban,
+  author  = {Galbrun, Esther and Pelechrinis, Konstantinos and Terzi, Evimaria},
+  title   = {Urban navigation beyond shortest route: The case of safe paths},
+  journal = {Information Systems},
+  volume  = {57},
+  pages   = {160--171},
+  year    = {2016},
+  doi     = {10.1016/j.is.2015.10.005}
+}
+
+@article{theron2024safest,
+  author  = {Theron, K. and Breetzke, Gregory},
+  title   = {What's the safest way home? {M}apping safe transport routes in {S}outh {A}frica with (and without) crime data},
+  journal = {Journal of Transportation Security},
+  volume  = {17},
+  number  = {1},
+  pages   = {10},
+  year    = {2024},
+  doi     = {10.1007/s12198-024-00278-4}
+}
+
+@article{chainey2008utility,
+  author  = {Chainey, Spencer and Tompson, Lisa and Uhlig, Sebastian},
+  title   = {The Utility of Hotspot Mapping for Predicting Spatial Patterns of Crime},
+  journal = {Security Journal},
+  volume  = {21},
+  number  = {1--2},
+  pages   = {4--28},
+  year    = {2008},
+  doi     = {10.1057/palgrave.sj.8350066}
+}
+
+@article{weisburd2015law,
+  author  = {Weisburd, David},
+  title   = {The Law of Crime Concentration and the Criminology of Place},
+  journal = {Criminology},
+  volume  = {53},
+  number  = {2},
+  pages   = {133--157},
+  year    = {2015},
+  doi     = {10.1111/1745-9125.12070}
+}
+
+@article{boeing2017osmnx,
+  author  = {Boeing, Geoff},
+  title   = {{OSMnx}: New methods for acquiring, constructing, analyzing, and visualizing complex street networks},
+  journal = {Computers, Environment and Urban Systems},
+  volume  = {65},
+  pages   = {126--139},
   year    = {2017},
-  doi     = {10.1371/journal.pcbi.1005619}
+  doi     = {10.1016/j.compenvurbsys.2017.05.004}
+}
+
+@article{pedregosa2011scikit,
+  author  = {Pedregosa, Fabian and Varoquaux, Ga{\"e}l and Gramfort, Alexandre and Michel, Vincent and Thirion, Bertrand and Grisel, Olivier and Blondel, Mathieu and Prettenhofer, Peter and Weiss, Ron and Dubourg, Vincent and Vanderplas, Jake and Passos, Alexandre and Cournapeau, David and Brucher, Matthieu and Perrot, Matthieu and Duchesnay, {\'E}douard},
+  title   = {Scikit-learn: Machine Learning in {P}ython},
+  journal = {Journal of Machine Learning Research},
+  volume  = {12},
+  number  = {85},
+  pages   = {2825--2830},
+  year    = {2011},
+  url     = {https://jmlr.org/papers/v12/pedregosa11a.html}
+}
+
+@techreport{inegi2025envipe,
+  author      = {{Instituto Nacional de Estad{\'i}stica y Geograf{\'i}a}},
+  title       = {Encuesta Nacional de Victimizaci{\'o}n y Percepci{\'o}n sobre Seguridad P{\'u}blica ({ENVIPE}) 2025},
+  type        = {Reporte de resultados},
+  number      = {33/25},
+  institution = {INEGI},
+  year        = {2025},
+  month       = sep,
+  url         = {https://inegi.org.mx/contenidos/saladeprensa/boletines/2025/ENVIPE/ENVIPE_25_RR.pdf}
+}
+
+@misc{hoyodecrimen,
+  author       = {Valle-Jones, Diego},
+  title        = {{HoyoDeCrimen} {API}},
+  howpublished = {\url{https://api.hoyodecrimen.com/}},
+  note         = {Data under CC BY 4.0. Accessed 2026-11-25},
+  year         = {2026}
+}
+
+@misc{fgj2026victimas,
+  author       = {{Fiscal{\'i}a General de Justicia de la Ciudad de M{\'e}xico}},
+  title        = {V{\'i}ctimas en carpetas de investigaci{\'o}n {FGJ}},
+  howpublished = {Portal de Datos Abiertos de la Ciudad de M{\'e}xico, \url{https://datos.cdmx.gob.mx/dataset/victimas-en-carpetas-de-investigacion-fgj}},
+  note         = {CC-BY-4.0. Accessed 2026-11-25},
+  year         = {2026}
+}
+
+@misc{osm2026,
+  author       = {{OpenStreetMap contributors}},
+  title        = {{OpenStreetMap}},
+  howpublished = {\url{https://www.openstreetmap.org}},
+  note         = {Open Database License 1.0. Extracted 2026-11-25},
+  year         = {2026}
+}
+
+@misc{waze2023footpaths,
+  author       = {{Waze Community}},
+  title        = {Footpaths/Walking Segments},
+  howpublished = {Waze Discuss, Map Editing Guides, \url{https://www.waze.com/discuss/t/footpaths-walking-segments/375447}},
+  year         = {2023}
+}
+
+@misc{streetwise2026,
+  author       = {{Streetwise}},
+  title        = {Streetwise for Cities},
+  howpublished = {\url{https://www.street-wise.app/en/cities}},
+  note         = {Accessed 2026-11-25},
+  year         = {2026}
 }
