@@ -1,0 +1,162 @@
+{
+ "regions": [
+  {
+   "id": "hero-photo",
+   "kind": "plate",
+   "pixelBox": {
+    "x": 0,
+    "y": 78,
+    "w": 1312,
+    "h": 738
+   },
+   "bleed": true,
+   "note": "eye-level daylight photograph of a wide tree-lined CDMX sidewalk, sun through leaves, white wall on the left washed toward white, people walking, green lamp post on the right; no text, no route line"
+  },
+  {
+   "id": "brand",
+   "kind": "text",
+   "pixelBox": {
+    "x": 58,
+    "y": 16,
+    "w": 120,
+    "h": 44
+   },
+   "note": "GoIA wordmark in deep green serif"
+  },
+  {
+   "id": "nav-como",
+   "kind": "control",
+   "pixelBox": {
+    "x": 890,
+    "y": 26,
+    "w": 120,
+    "h": 24
+   },
+   "note": "nav link Cómo funciona"
+  },
+  {
+   "id": "nav-mapa",
+   "kind": "control",
+   "pixelBox": {
+    "x": 1038,
+    "y": 26,
+    "w": 66,
+    "h": 24
+   },
+   "note": "nav link El mapa"
+  },
+  {
+   "id": "nav-cta",
+   "kind": "control",
+   "pixelBox": {
+    "x": 1133,
+    "y": 18,
+    "w": 120,
+    "h": 38
+   },
+   "note": "Pre-registro button, deep green fill, white text"
+  },
+  {
+   "id": "headline",
+   "kind": "text",
+   "pixelBox": {
+    "x": 118,
+    "y": 142,
+    "w": 556,
+    "h": 110
+   },
+   "note": "headline Por la banqueta que elegiría alguien de aquí. in deep green serif, two lines"
+  },
+  {
+   "id": "subcopy",
+   "kind": "text",
+   "pixelBox": {
+    "x": 118,
+    "y": 260,
+    "w": 456,
+    "h": 52
+   },
+   "note": "one line of copy, two lines, dark green sans"
+  },
+  {
+   "id": "email-input",
+   "kind": "control",
+   "pixelBox": {
+    "x": 120,
+    "y": 331,
+    "w": 257,
+    "h": 44
+   },
+   "note": "email input, white, green outline, placeholder Tu correo electrónico"
+  },
+  {
+   "id": "email-submit",
+   "kind": "control",
+   "pixelBox": {
+    "x": 381,
+    "y": 331,
+    "w": 184,
+    "h": 44
+   },
+   "note": "submit button Pre-regístrate gratis, deep green fill, white text"
+  },
+  {
+   "id": "route-line",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 100,
+    "y": 455,
+    "w": 760,
+    "h": 361
+   },
+   "note": "the yellow route stroke drawn by code as one SVG line in perspective along the pavement, continuing into the map",
+   "codeDrawn": true,
+   "container": true
+  },
+  {
+   "id": "map",
+   "kind": "chrome",
+   "pixelBox": {
+    "x": 330,
+    "y": 608,
+    "w": 982,
+    "h": 208
+   },
+   "note": "interactive light street map of colonia Juárez drawn at runtime by the page, diagonal left edge",
+   "codeDrawn": true
+  },
+  {
+   "id": "pill-goia",
+   "kind": "text",
+   "pixelBox": {
+    "x": 760,
+    "y": 668,
+    "w": 146,
+    "h": 32
+   },
+   "note": "yellow pill label Ruta GoIA · 14 min"
+  },
+  {
+   "id": "pill-fast",
+   "kind": "text",
+   "pixelBox": {
+    "x": 764,
+    "y": 722,
+    "w": 148,
+    "h": 30
+   },
+   "note": "grey pill label Más rápida · 11 min"
+  },
+  {
+   "id": "map-colonia",
+   "kind": "text",
+   "pixelBox": {
+    "x": 1074,
+    "y": 660,
+    "w": 80,
+    "h": 32
+   },
+   "note": "map label COLONIA JUÁREZ in grey caps"
+  }
+ ]
+}

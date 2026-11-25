@@ -20,7 +20,7 @@ colors:
   map-street: "#f1f0ea"
   fast-gray: "#9c9d97"
   fast-pill: "#e6e5df"
-  zone-clay: "#a26650"
+  zone-violet: "#7b3294"
   error-brick: "#8a2c1f"
   fast-gray-deep: "#6f706a"
   ink-mist-dim: "#aebdb3"
@@ -224,7 +224,7 @@ A daylight palette: pale paper ground, deep leaf-green ink, and a single warm ye
 - **Ink Mist** (ink-mist): secondary text on Forest Ink bands. **Dim Ink Mist** (ink-mist-dim) is the quieter fine print in the footer base row.
 - **Map Ground** (map-ground) and **Map Street** (map-street): the sample map's blocks and streets, quiet so the routes carry it.
 - **Fast Gray** (fast-gray) and **Fast Pill** (fast-pill): the "Más rápida" comparison route (dotted) and its time pill. The fastest route is always gray, never a second accent. **Deep Fast Gray** (fast-gray-deep) draws the dotted route when the person has selected it in the app, so the choice reads without a new hue.
-- **Zone Clay** (zone-clay): dashed outline of "zona con reportes" circles, filled at 10 to 22% alpha. A muted clay, never alarm red. Clay is for shapes and icons only: at body sizes it is under 4.5:1 on paper, so warning text stays in Forest Ink beside a clay icon.
+- **Zone Violet** (zone-violet): dashed 2.5px outline of "zona con reportes" circles, filled at 18 to 28% alpha. Chosen over the earlier muted clay, which blended into the OpenStreetMap tiles. Violet stays distinct from the yellow route and the OSM tile colors under protanopia, deuteranopia and tritanopia, and it is never alarm red. It is 7.4:1 on paper, but it stays a shape and icon color: warning text stays in Forest Ink beside a violet icon.
 - **Error Brick** (error-brick): form error messages only.
 
 ### Named Rules
@@ -316,7 +316,7 @@ A list of short needs, each led by a 14px yellow dot with an ochre rim, a bold F
 Photo plus serif title plus one short paragraph, alternating sides. Photos ease to scale 1.025 on hover over 900ms (cubic-bezier(0.16, 1, 0.3, 1)) inside their 6px frame.
 
 ### Map stage and leaf-light lens (signature)
-A real-street sample map on Map Ground, 16:7 (4:3 on mobile), 8px corners, with a "Datos de ejemplo" tag at top left and a legend beside the heading. The GoIA route is solid yellow, the fastest route dotted gray, report zones are dashed clay circles. A circular lens follows the pointer or finger (eased at 0.14 per frame): inside it the streets widen to white, a leaf-light texture is multiplied in, street names appear in small sans with a paper halo, and the route is drawn with an ochre casing so it lifts out of the grid. With no pointer, the lens drifts slowly along the route. A paper-white walker dot with a Forest Ink rim travels the route on a 9 second loop. Reduced motion holds the lens still at mid-route and removes the walker.
+A real-street sample map on Map Ground, 16:7 (4:3 on mobile), 8px corners, with a "Datos de ejemplo" tag at top left and a legend beside the heading. The GoIA route is solid yellow, the fastest route dotted gray, report zones are dashed violet circles. A circular lens follows the pointer or finger (eased at 0.14 per frame): inside it the streets widen to white, a leaf-light texture is multiplied in, street names appear in small sans with a paper halo, and the route is drawn with an ochre casing so it lifts out of the grid. With no pointer, the lens drifts slowly along the route. A paper-white walker dot with a Forest Ink rim travels the route on a 9 second loop. Reduced motion holds the lens still at mid-route and removes the walker.
 
 ### Hero route
 The yellow route enters as a tapered band painted over the hero sidewalk, then continues as the line on a clipped hero map strip with the two time pills, so the route visibly starts in the photo and continues into the map.
@@ -337,7 +337,7 @@ A Forest Ink band with the serif wordmark, a one-line tagline in Ink Mist, plain
 
 ### Don't:
 - **Don't** use drop shadows or floating cards. Depth is light, washes and ink bands.
-- **Don't** show night streets, crime-news imagery, sirens, shields or alarm red. Report zones are muted clay.
+- **Don't** show night streets, crime-news imagery, sirens, shields or alarm red. Report zones are violet.
 - **Don't** introduce a second accent color. The fast route stays gray.
 - **Don't** start content hidden or draw routes in on scroll. Static views must show every route complete.
 - **Don't** put a phone mockup over a map as the hero.

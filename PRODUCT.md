@@ -8,15 +8,15 @@ web
 
 ## Stack
 
-- One web application in `web/`, served by a small local Python (Flask) backend (`web/server.py`). Self-hosted by the team. Chosen by the user over a hosted Artifact database.
-- Landing page at `/` (`web/index.html`): static HTML/CSS/JS. The backend writes pre-registration emails to a CSV. A secondary "Probar el demo" link leads to the app.
+- One static web application in `web/`, deployed to Firebase Hosting (project `rutasegura-d4afc`). No server code.
+- Landing page at `/` (`web/index.html`): static HTML/CSS/JS. Pre-registration emails are written from the browser to Firestore (collection `preregistros`, region `northamerica-south1`), and `firestore.rules` only allows creating a new, valid, lowercase email. A secondary "Probar el demo" link leads to the app.
 - Product app at `/app/` (`web/app/index.html`): single file, Leaflet 1.9.4 with OpenStreetMap tiles, Noticia Text and Vend Sans from the shared `web/assets/fonts/`. It must be served over http, because OpenStreetMap rejects tile requests without a referer.
 
 ## Users
 
-Primary: people who move around Mexico City on foot or by public transport through areas they do not know. Typical cases are someone who just moved to the city, a visitor, or a local entering a part of the city they don't usually walk. Their job is getting from A to B without walking into a street where they could be robbed, while still arriving in reasonable time. Today they use Google Maps (which only minimizes time) and ask classmates or neighbors.
+Primary: anyone in Mexico City who wants to get from A to B on foot and take other people's safety reports into account: the daily walk to work, school or the metro, the way home at night, or a part of the city they don't usually walk. Someone who just moved to the city or is visiting is one valid case among these, not the defining one, and the landing page must not read as if the product were only for newcomers. Walking is the main mode. Driving is a possible later mode, not built yet, so public surfaces do not promise it. Their job is getting from A to B without walking into a street where they could be robbed, while still arriving in reasonable time. Today they use Google Maps (which only minimizes time) and ask friends, coworkers or neighbors.
 
-Reference archetype (fictional, from the business model): a graduate student new to CDMX who walks from the metro to campus through colonias she doesn't know yet.
+Reference archetype (fictional, from the business model): a graduate student who walks from the metro to campus every day and wants to know which blocks have had recent reports.
 
 Secondary (pays, not addressed by the landing page): businesses in safe zones that want more foot traffic.
 

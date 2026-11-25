@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Scaffold reference: r2-pick.png</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noticia+Text:wght@700&family=Vend+Sans:wght@300&display=swap">
+  <link rel="stylesheet" href="layout.css">
+  <style>html,body{margin:0}body{background:#f6f5ee}.region{box-sizing:border-box}.region.text p{white-space:pre-wrap}</style>
+</head>
+<body>
+<!-- Reference only. Every region sits at its measured box inside a comp-aspect frame. Take the boxes (layout.css), keep your own semantic structure. -->
+<main class="comp-frame" style="max-width:1312px">
+  <figure class="r-hero-photo region plate" data-region="hero-photo"><img src="../../../landing/assets/plates/hero-photo.png" alt="" style="width:100%;height:100%;object-fit:contain;object-position:top left"></figure>
+  <div class="r-brand region text" data-region="brand"><!-- GoIA wordmark in deep green serif --><p style="font-size:var(--r-brand-font);line-height:1.05;margin:0">brand</p></div>
+  <div class="r-nav-como region control" data-region="nav-como"><!-- nav link Cómo funciona: match the control's lettering and visible shape to the crop (comp-spec.mjs --crop nav-como); a control need not have button chrome --></div>
+  <div class="r-nav-mapa region control" data-region="nav-mapa"><!-- nav link El mapa: match the control's lettering and visible shape to the crop (comp-spec.mjs --crop nav-mapa); a control need not have button chrome --></div>
+  <div class="r-nav-cta region control" data-region="nav-cta"><!-- Pre-registro button, deep green fill, white text: match the control's lettering and visible shape to the crop (comp-spec.mjs --crop nav-cta); a control need not have button chrome --></div>
+  <div class="r-headline region text" data-region="headline"><!-- headline Por la banqueta que elegiría alguien de aquí. in deep green serif, two lines --><p style="font-size:var(--r-headline-font);font-family:var(--r-headline-family),sans-serif;font-weight:var(--r-headline-weight);line-height:1.05;margin:0">headline</p></div>
+  <div class="r-subcopy region text" data-region="subcopy"><!-- one line of copy, two lines, dark green sans --><p style="font-size:var(--r-subcopy-font);font-family:var(--r-subcopy-family),sans-serif;font-weight:var(--r-subcopy-weight);line-height:1.05;margin:0">subcopy</p></div>
+  <div class="r-email-input region control" data-region="email-input"><!-- email input, white, green outline, placeholder Tu correo electrónico: match the control's lettering and visible shape to the crop (comp-spec.mjs --crop email-input); a control need not have button chrome --></div>
+  <div class="r-email-submit region control" data-region="email-submit"><!-- submit button Pre-regístrate gratis, deep green fill, white text: match the control's lettering and visible shape to the crop (comp-spec.mjs --crop email-submit); a control need not have button chrome --></div>
+  <div class="r-route-line region chrome" data-region="route-line"><!-- the yellow route stroke drawn by code as one SVG line in perspective along the pavement, continuing into the map --></div>
+  <div class="r-map region chrome" data-region="map"><!-- interactive light street map of colonia Juárez drawn at runtime by the page, diagonal left edge --></div>
+  <div class="r-pill-goia region text" data-region="pill-goia"><!-- yellow pill label Ruta GoIA · 14 min --><p style="font-size:var(--r-pill-goia-font);line-height:1.05;margin:0">pill-goia</p></div>
+  <div class="r-pill-fast region text" data-region="pill-fast"><!-- grey pill label Más rápida · 11 min --><p style="font-size:var(--r-pill-fast-font);line-height:1.05;margin:0">pill-fast</p></div>
+  <div class="r-map-colonia region text" data-region="map-colonia"><!-- map label COLONIA JUÁREZ in grey caps --><p style="font-size:var(--r-map-colonia-font);line-height:1.05;margin:0">map-colonia</p></div>
+</main>
+</body>
+</html>

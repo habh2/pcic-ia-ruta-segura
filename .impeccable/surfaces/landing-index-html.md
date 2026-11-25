@@ -9,7 +9,7 @@ related_targets: []
 
 Scope: public pre-launch landing page, `landing/index.html`, served with a small Flask backend that stores emails. Visitor mode: Persuade.
 
-Audience and action: pedestrians in parts of CDMX they don't know. One action: pre-register for the free trial with an email.
+Audience and action: anyone walking from A to B in CDMX who wants to weigh other people's safety reports (daily routes as much as unfamiliar areas; never framed as newcomers only). One action: pre-register for the free trial with an email.
 
 Proof and content: demo only. A sample route in colonia Cuauhtémoc on the real street graph from app/index.html, labeled as a sample (stated decision after the hero: the comp said Juárez). No crime statistics, no invented users, testimonials or counters. No algorithm or technical vocabulary.
 
@@ -19,7 +19,7 @@ Tone: daylight streets and safety, lamps as a detail. Not transit, not market or
 
 ## Direction contract
 
-THESIS: Safety looks like an ordinary sunny sidewalk that a local would pick: shaded, kept up, with people walking on it. GoIA's yellow route walks you along it. The page refuses the category default (a phone mockup over a map with shield icons) and the night or crime register.
+THESIS: Safety looks like an ordinary sunny sidewalk you would happily pick: shaded, kept up, with people walking on it. GoIA's yellow route walks you along it. The page refuses the category default (a phone mockup over a map with shield icons) and the night or crime register.
 
 OWN-WORLD: Fresh off-white ground, deep forest-green ink, morning daylight photography with leaf shadows, and one sun-yellow route line as the only accent. A confident serif for headlines and a plain sans for copy. Square-shouldered controls in green ink. Leaf-shadow light is the texture.
 
