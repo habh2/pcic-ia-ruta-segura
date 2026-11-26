@@ -2246,5 +2246,20 @@ Promise.all([fetchJson(NET_URL), fetchJson(COMMUNITY_URL)]).then(function (loade
   document.getElementById('panel').innerHTML = '<div class="view"><h1 class="vh">No pudimos cargar el mapa de calles.</h1><p class="lead">Revisa tu conexión y vuelve a cargar la página.</p></div>';
 });
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-analytics.js";
+
+if (location.hostname !== "localhost" && location.hostname !== "127.0.0.1") {
+  const firebaseApp = initializeApp({
+    apiKey: "AIzaSyD5Pl4la6fFi0aPCm2TfCfPRsvkn83uWkU",
+    authDomain: "rutasegura-d4afc.firebaseapp.com",
+    projectId: "rutasegura-d4afc",
+    appId: "1:203598325503:web:834409ebfea91e4ced0eca",
+    measurementId: "G-P20BVBVR5N"
+  });
+  getAnalytics(firebaseApp);
+}
+</script>
 </body>
 </html>
