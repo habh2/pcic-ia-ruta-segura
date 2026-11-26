@@ -1,22 +1,21 @@
 % !TEX program = lualatex
-% Pitch del proyecto final. 5 minutos, 11 diapositivas, unos 30 segundos cada una.
-% Se puede usar otra herramienta si conserva este orden y se entrega como pitch.pdf.
-% Las cifras deben coincidir con 02_finanzas/modelo_financiero.xlsx y con el artículo.
-% Regla de diseño: una idea por diapositiva, poco texto, letra grande, una imagen.
-% Diseño tomado de la landing page (DESIGN.md): fondo claro, tinta verde, Noticia Text en
-% títulos, Vend Sans en el texto y el amarillo reservado para la ruta.
-% Compilar con: lualatex pitch.tex (dos veces). Usa las fuentes de fuentes/ y las fotos de
+% Final project pitch. 5 minutes, 11 slides, about 30 seconds each.
+% Another tool can be used if it keeps this order and is delivered as pitch.pdf.
+% Figures must match 02_finanzas/modelo_financiero.xlsx and the paper.
+% Design rule: one idea per slide, little text, large type, one image.
+% Design taken from the landing page (DESIGN.md): light background, green ink, Noticia Text
+% for titles, Vend Sans for body text, and yellow reserved for the route.
+% Compile with: lualatex pitch.tex (twice). Uses the fonts in fuentes/ and the photos in
 % 05_mvp/web/assets/.
 \documentclass[aspectratio=169,11pt]{beamer}
-\usepackage[spanish]{babel}
-\decimalpoint
+\usepackage[english]{babel}
 \usepackage{fontspec}
 \usepackage{booktabs,xcolor,colortbl,tikz,pgfplots}
 \usetikzlibrary{babel,calc,fadings}
 \pgfplotsset{compat=1.18}
 \graphicspath{{img/}{../05_mvp/web/assets/img/}{../05_mvp/web/assets/plates/}}
 
-% Colores de la landing page
+% Landing page colors
 \definecolor{route}{HTML}{F2C94C}
 \definecolor{routedeep}{HTML}{D9A92A}
 \definecolor{routepill}{HTML}{F7D75C}
@@ -30,7 +29,7 @@
 \definecolor{fastgray}{HTML}{9C9D97}
 \definecolor{fastpill}{HTML}{E6E5DF}
 
-% Fuentes de la landing page
+% Landing page fonts
 \usefonttheme{professionalfonts}
 \setsansfont{VendSans-Light.ttf}[Path=fuentes/, BoldFont=VendSans-SemiBold.ttf,
   Ligatures=TeX, Numbers={Lining,Monospaced}]
@@ -40,7 +39,7 @@
   Numbers={Lining,Monospaced}]
 \newfontfamily\serif{NoticiaText-Bold.ttf}[Path=fuentes/, Ligatures=TeX]
 
-% Tema
+% Theme
 \setbeamercolor{background canvas}{bg=ground}
 \setbeamercolor{normal text}{fg=inksoft}
 \setbeamercolor{frametitle}{fg=ink}
@@ -65,10 +64,10 @@
 \newcommand{\pastilla}[2]{\tikz[baseline=(p.base)]\node[fill=#1, rounded corners=2.4mm,
   inner xsep=3mm, inner ysep=1.6mm, text=ink, font=\sansmedium\fontsize{9}{10}\selectfont]
   (p) {#2};}
-\newcommand{\pastillagoia}[1]{\pastilla{routepill}{Ruta GoIA · #1}}
-\newcommand{\pastillarapida}[1]{\pastilla{fastpill}{Más rápida · #1}}
+\newcommand{\pastillagoia}[1]{\pastilla{routepill}{GoIA route · #1}}
+\newcommand{\pastillarapida}[1]{\pastilla{fastpill}{Fastest · #1}}
 
-% Foto a sangre en una franja vertical de la diapositiva: archivo, x inicial y x final en mm.
+% Full-bleed photo in a vertical strip of the slide: file, start x and end x in mm.
 \newcommand{\fotofranja}[3]{%
   \begin{tikzpicture}[remember picture, overlay]
     \begin{scope}
@@ -80,15 +79,14 @@
   \end{tikzpicture}}
 
 \title{GoIA}
-\subtitle{Rutas a pie que evitan las calles con reportes, para quien camina en la Ciudad de
-  México.}
+\subtitle{Walking routes that avoid streets with reports, for people on foot in Mexico City.}
 \author{Héctor Antonio Belmont Hernández · Luis Ángel Hernández González ·
   Yeni Yuzelmi Núñez Laces · Gerardo Erick Villa Aguilar}
 \date{}
 
 \begin{document}
 
-% 1. Propósito
+% 1. Purpose
 \begin{frame}[plain]
   \begin{tikzpicture}[remember picture, overlay]
     \node[inner sep=0] at (current page.center)
@@ -102,7 +100,7 @@
     \node[anchor=north west, inner sep=0, text width=80mm, align=left, text=ink,
       font=\serif\fontsize{26}{29}\selectfont] (h)
       at ([xshift=12mm, yshift=-21mm]current page.north west)
-      {Llega a pie por las calles más tranquilas.};
+      {Walk there on the calmest streets.};
     \node[anchor=north west, inner sep=0, text width=78mm, align=left, text=inksoft,
       font=\fontsize{11.5}{15}\selectfont]
       at ([yshift=-4mm]h.south west) {\insertsubtitle};
@@ -112,76 +110,77 @@
   \end{tikzpicture}
 \end{frame}
 
-% 2. Problema: una persona concreta y su dolor, con una cifra.
-% Cifra: introducción del artículo (Hoyo de Crimen y FGJ CDMX). Daniela: perfil de usuario del
-% modelo de negocio.
+% 2. Problem: one concrete person and their pain, with one figure.
+% Figure: paper introduction (Hoyo de Crimen and FGJ CDMX). Daniela: user profile from the
+% business model.
 \begin{frame}[plain]
   \fotofranja{needs.jpg}{92}{160}
   \begin{minipage}[c][\paperheight][c]{72mm}\raggedright
-    {\serif\color{ink}\fontsize{19}{22}\selectfont Tu mapa busca lo más corto, no lo más
-      tranquilo.\par}
+    {\serif\color{ink}\fontsize{19}{22}\selectfont Your map looks for the shortest way, not
+      the calmest.\par}
     \vskip4mm
-    \cifra{3 al día}\par\vskip1.5mm
-    \etiqueta{robos a transeúnte denunciados en la alcaldía Cuauhtémoc en 2025, 1,132 en el
-      año.}
+    \cifra{3 a day}\par\vskip1.5mm
+    \etiqueta{pedestrian robberies reported in the Cuauhtémoc borough in 2025, 1,132 in the
+      year.}
     \vskip4mm
-    {\fontsize{10.5}{14}\selectfont Daniela camina del metro a clase por calles que no conoce. Google Maps le ahorra
-      un minuto y no le dice por dónde conviene ir.\par}
+    {\fontsize{10.5}{14}\selectfont Daniela walks from the metro to class on streets she
+      doesn't know. Google Maps saves her a minute and doesn't tell her which way is better
+      to go.\par}
     \vskip3mm
     {\serif\color{ink}\fontsize{10.5}{13}\selectfont
-      “\pendiente{Cita de una entrevista con una persona que camina}.”\par}
+      “\pendiente{Quote from an interview with someone who walks}.”\par}
   \end{minipage}
 \end{frame}
 
-% 3. Tamaño de mercado: TAM, SAM y SOM de la hoja Resultados (filas 22 a 25).
-% Negocios: Supuestos!B21, B21*B22 y Resultados!B25. Montos: Resultados!B22 a B24.
-\begin{frame}{Negocios que quieren que la gente pase frente a ellos.}
+% 3. Market size: TAM, SAM and SOM from the Resultados sheet (rows 22 to 25).
+% Businesses: Supuestos!B21, B21*B22 and Resultados!B25. Amounts: Resultados!B22 to B24.
+\begin{frame}{Businesses that want people to walk past them.}
   \vskip4mm
   \renewcommand{\arraystretch}{1.6}
   \setlength{\tabcolsep}{7mm}
   \arrayrulecolor{inkmist}
   \begin{tabular}{@{}l r r@{}}
-    & \etiqueta{Negocios} & \etiqueta{MXN al año} \\
+    & \etiqueta{Businesses} & \etiqueta{MXN per year} \\
     \midrule
-    {\serif\color{ink}\fontsize{15}{15}\selectfont TAM} \etiqueta{\quad CDMX}
+    {\serif\color{ink}\fontsize{15}{15}\selectfont TAM} \etiqueta{\quad Mexico City}
       & {\serif\color{ink}\fontsize{18}{18}\selectfont 91,220}
-      & {\serif\color{ink}\fontsize{18}{18}\selectfont 383.1 millones} \\
-    {\serif\color{ink}\fontsize{15}{15}\selectfont SAM} \etiqueta{\quad al alcance de los canales}
+      & {\serif\color{ink}\fontsize{18}{18}\selectfont 383.1 million} \\
+    {\serif\color{ink}\fontsize{15}{15}\selectfont SAM} \etiqueta{\quad reachable by our channels}
       & {\serif\color{ink}\fontsize{18}{18}\selectfont 2,527}
-      & {\serif\color{ink}\fontsize{18}{18}\selectfont 10.6 millones} \\
-    {\serif\color{ink}\fontsize{15}{15}\selectfont SOM} \etiqueta{\quad meta a 24 meses}
+      & {\serif\color{ink}\fontsize{18}{18}\selectfont 10.6 million} \\
+    {\serif\color{ink}\fontsize{15}{15}\selectfont SOM} \etiqueta{\quad 24-month target}
       & {\serif\color{ink}\fontsize{18}{18}\selectfont 4.5}
       & {\serif\color{ink}\fontsize{18}{18}\selectfont 19,103} \\
     \midrule
   \end{tabular}
   \vskip5mm
-  \nota{Unidades económicas de la CDMX, Censos Económicos 2024 (INEGI). Precio supuesto de
-    350 MXN al mes por negocio. SAM: 2.77\% del TAM. SOM: 0.18\% del SAM.\\
-    Arrancamos en la alcaldía Cuauhtémoc, la de más negocios por habitante.}
+  \nota{Business establishments in Mexico City, 2024 Economic Census (INEGI). Assumed price of
+    350 MXN per month per business. SAM: 2.77\% of TAM. SOM: 0.18\% of SAM.\\
+    We start in the Cuauhtémoc borough, the one with the most businesses per resident.}
 \end{frame}
 
-% 4. Solución: qué ofrece la empresa, sin tecnicismos.
-% Minutos: ejemplo del mapa de la landing page.
+% 4. Solution: what the company offers, without jargon.
+% Minutes: example from the landing page map.
 \begin{frame}[plain]
   \fotofranja{compare.jpg}{0}{70}
   \hspace*{65mm}%
   \begin{minipage}[c][\paperheight][c]{80mm}\raggedright
-    \titulo{Dos caminos lado a lado, con los minutos de diferencia.}
+    \titulo{Two routes side by side, with the difference in minutes.}
     \vskip5mm
     \pastillagoia{14 min}\hspace{2mm}\pastillarapida{11 min}
     \vskip6mm
     {\cuerpo
-      \textbf{Dices a dónde vas.} GoIA parte de donde estás.\par\vskip2.5mm
-      \textbf{Comparas.} La ruta que rodea las calles con reportes contra la más rápida.
-        Tú eliges.\par\vskip2.5mm
-      \textbf{Caminas y avisas.} Si ves algo raro, lo reportas en dos toques.\par}
+      \textbf{Say where you're going.} GoIA starts from where you are.\par\vskip2.5mm
+      \textbf{Compare.} The route around streets with reports against the fastest one.
+        You choose.\par\vskip2.5mm
+      \textbf{Walk and report.} If you see something off, report it in two taps.\par}
     \vskip5mm
-    \etiqueta{Gratis para quien camina, desde el navegador del celular.}
+    \etiqueta{Free for people on foot, from the phone's browser.}
   \end{minipage}
 \end{frame}
 
-% 5. Producto: demostración, arquitectura y el papel de la IA, con el resultado del artículo.
-% Cifras: tabla 1 del artículo y 05_mvp/resultados/resumen.csv (riesgo_eps_0.1 contra base).
+% 5. Product: demo, architecture and the role of AI, with the paper's result.
+% Figures: table 1 of the paper and 05_mvp/resultados/resumen.csv (riesgo_eps_0.1 vs. base).
 \begin{frame}[plain]
   \begin{tikzpicture}[remember picture, overlay]
     \begin{scope}
@@ -194,110 +193,110 @@
     \node[anchor=north west, inner sep=0, text=inkmuted,
       font=\sansregular\fontsize{7}{8}\selectfont]
       at ([xshift=10mm, yshift=-71mm]current page.north west)
-      {La app en rutasegura-d4afc.web.app/app con datos reales de la colonia Cuauhtémoc.};
+      {The app at rutasegura-d4afc.web.app/app with real data from colonia Cuauhtémoc.};
     \node[anchor=north west, text width=40mm, align=left, inner sep=0]
       at ([xshift=112mm, yshift=-12mm]current page.north west) {\raggedright
       \cifra{41\%}\par\vskip1.5mm
-      \etiqueta{menos robos en el camino, por 5.4\% más de tiempo}\par\vskip5mm
-      {\fontsize{9}{12}\selectfont 9.0 robos por viaje contra 15.3 de la ruta más rápida, en
-        1,000 viajes y con robos de 2026 que el modelo no vio.\par}\vskip4mm
-      {\fontsize{9}{12}\selectfont \textbf{La IA:} búsqueda A* con el riesgo de cada calle,
-        aprendido de 5,235 robos denunciados.\par}};
+      \etiqueta{fewer robberies along the way, for 5.4\% more time}\par\vskip5mm
+      {\fontsize{9}{12}\selectfont 9.0 robberies per trip against 15.3 on the fastest route,
+        over 1,000 trips and with 2026 robberies the model never saw.\par}\vskip4mm
+      {\fontsize{9}{12}\selectfont \textbf{The AI:} A* search with each street's risk,
+        learned from 5,235 reported robberies.\par}};
   \end{tikzpicture}
 \end{frame}
 
-% 6. Validación: entrevistas, hipótesis validadas e invalidadas, métricas de la landing.
-% Cifras: 01_negocio/entrevistas.csv, hipotesis.csv y metricas_landing.csv.
-\begin{frame}{Lo que aprendimos de los clientes.}
+% 6. Validation: interviews, validated and invalidated hypotheses, landing page metrics.
+% Figures: 01_negocio/entrevistas.csv, hipotesis.csv and metricas_landing.csv.
+\begin{frame}{What we learned from customers.}
   \vskip3mm
   \begin{columns}[T, onlytextwidth]
     \column{0.3\textwidth}\raggedright
-      \cifra{1 de 10}\par\vskip1.5mm\etiqueta{entrevistas hechas, a un negocio}
+      \cifra{1 of 10}\par\vskip1.5mm\etiqueta{interviews done, with one business}
     \column{0.3\textwidth}\raggedright
-      \cifra{0 de 12}\par\vskip1.5mm\etiqueta{hipótesis validadas, ninguna invalidada}
+      \cifra{0 of 12}\par\vskip1.5mm\etiqueta{hypotheses validated, none invalidated}
     \column{0.3\textwidth}\raggedright
-      \cifra{\pendiente{0\%}}\par\vskip1.5mm\etiqueta{registros en la landing,
-        \pendiente{0} de \pendiente{0} visitas (meta: 3\%)}
+      \cifra{\pendiente{0\%}}\par\vskip1.5mm\etiqueta{landing page sign-ups,
+        \pendiente{0} of \pendiente{0} visits (target: 3\%)}
   \end{columns}
   \vskip8mm
-  {\serif\color{ink}\fontsize{15}{19}\selectfont “Estoy un poco escondido para los ojos del
-    público.”\par}
+  {\serif\color{ink}\fontsize{15}{19}\selectfont “I'm somewhat hidden from the public's
+    eye.”\par}
   \vskip1.5mm
-  \etiqueta{Encargado de una sala de videojuegos. Hoy paga por atraer gente.}
+  \etiqueta{Manager of a video game arcade. Pays today to bring people in.}
   \vskip6mm
-  {\fontsize{10}{13}\selectfont Los datos cambiaron dos bloques del canvas: paga el negocio
-    sobre la ruta, no el de una “zona segura”, y el riesgo parte de los robos denunciados, no
-    solo de los reportes.\par}
+  {\fontsize{10}{13}\selectfont The data changed two blocks of the canvas: the business on
+    the route pays, not one in a “safe zone”, and risk starts from reported robberies, not
+    only from user reports.\par}
 \end{frame}
 
-% 7. Competencia: matriz con dos atributos que importan al cliente.
-% Calificaciones: tabla de competencia de 01_negocio/modelo_negocio.tex. El precio es 5 en todos.
-\begin{frame}{La única que pone la seguridad dentro de la ruta.}
+% 7. Competition: matrix with two attributes that matter to the customer.
+% Scores: competition table in 01_negocio/modelo_negocio.tex. Price is 5 for all.
+\begin{frame}{The only one that puts safety inside the route.}
   \begin{columns}[c, onlytextwidth]
     \column{0.56\textwidth}
       \begin{tikzpicture}[x=12mm, y=10mm, font=\sansregular\fontsize{9}{10}\selectfont]
         \fill[grounddeep, rounded corners=1mm] (3.4,4.4) rectangle (5.4,5.5);
         \draw[inkmist, line width=0.6pt] (0.6,0.6) -- (5.4,0.6);
         \draw[inkmist, line width=0.6pt] (0.6,0.6) -- (0.6,5.5);
-        \node[text=inkmuted, anchor=north] at (3,0.45) {Facilidad de uso $\rightarrow$};
-        \node[text=inkmuted, rotate=90, anchor=south] at (0.45,3) {Seguridad $\rightarrow$};
+        \node[text=inkmuted, anchor=north] at (3,0.45) {Ease of use $\rightarrow$};
+        \node[text=inkmuted, rotate=90, anchor=south] at (0.45,3) {Safety $\rightarrow$};
         \fill[fastgray] (5,2) circle (1.1mm);
         \fill[fastgray] (4,3) circle (1.1mm);
         \fill[fastgray] (3,3) circle (1.1mm);
         \node[anchor=north, text=inksoft] at (5,1.85) {Google Maps};
         \node[anchor=west, text=inksoft] at (4.12,3) {Waze};
-        \node[anchor=east, text=inksoft, align=right] at (2.85,3) {Conocimiento\\propio};
+        \node[anchor=east, text=inksoft, align=right] at (2.85,3) {Local\\knowledge};
         \draw[routedeep, fill=route, line width=1pt] (4,5) circle (1.6mm);
         \node[anchor=east, text=ink, font=\serif\fontsize{12}{12}\selectfont] at (3.85,5) {GoIA};
       \end{tikzpicture}
     \column{0.4\textwidth}\raggedright
-      {\cuerpo Google Maps y Waze buscan el menor tiempo. Preguntarle a un vecino no escala ni
-        se actualiza.\par}
+      {\cuerpo Google Maps and Waze look for the shortest time. Asking a neighbor doesn't
+        scale or stay up to date.\par}
       \vskip4mm
-      {\cuerpo Hay planificadores seguros en Europa y Turquía, pero ninguno para México.\par}
+      {\cuerpo There are safe route planners in Europe and Turkey, but none for Mexico.\par}
       \vskip4mm
-      \etiqueta{Calificación de 1 a 5. Todas las opciones son gratuitas.}
+      \etiqueta{Scores from 1 to 5. All options are free.}
   \end{columns}
 \end{frame}
 
-% 8. Modelo de negocio: cómo se gana dinero.
-% Precio por impresión: canvas. Precio mensual, CAC y LTV: Supuestos!B6, B11 y Resultados!B14 a
-% B16.
-\begin{frame}{Gratis para quien camina. Pagan los negocios del camino.}
+% 8. Business model: how money is made.
+% Price per impression: canvas. Monthly price, CAC and LTV: Supuestos!B6, B11 and
+% Resultados!B14 to B16.
+\begin{frame}{Free for people on foot. Businesses on the way pay.}
   \begin{tikzpicture}[font=\fontsize{10}{12}\selectfont,
       caja/.style={draw=inkmist, line width=0.6pt, fill=paper, rounded corners=1mm,
         text width=28mm, align=center, inner sep=2.5mm, text=ink},
       rotulo/.style={text=inkmuted, align=center, font=\sansregular\fontsize{8}{9.5}\selectfont}]
-    \node[caja] (p) at (16.5mm,0) {\textbf{Persona que camina}\\ \etiqueta{ruta y reportes}};
+    \node[caja] (p) at (16.5mm,0) {\textbf{Person on foot}\\ \etiqueta{route and reports}};
     \node[caja, fill=ink, draw=ink, text=paper, text width=16mm] (g) at (68mm,0)
       {\serif\fontsize{14}{14}\selectfont GoIA};
-    \node[caja] (n) at (119.5mm,0) {\textbf{Negocio sobre la ruta}\\
-      \etiqueta{ubicación destacada}};
+    \node[caja] (n) at (119.5mm,0) {\textbf{Business on the route}\\
+      \etiqueta{featured placement}};
     \draw[route, line width=2.5pt, line cap=round] (p.east) -- (g.west)
-      node[midway, above=1mm, rotulo] {gratis};
+      node[midway, above=1mm, rotulo] {free};
     \draw[fastgray, line width=1pt, <-, >=stealth] (g.east) -- (n.west)
-      node[midway, above=1mm, rotulo] {100 MXN por\\1,000 impresiones};
+      node[midway, above=1mm, rotulo] {100 MXN per\\1,000 impressions};
   \end{tikzpicture}
   \vskip3mm
   \begin{columns}[T, onlytextwidth]
     \column{0.24\textwidth}\raggedright
-      \cifra{350}\par\vskip1.5mm\etiqueta{MXN al mes por negocio, tras 2,000 impresiones
-        gratis}
+      \cifra{350}\par\vskip1.5mm\etiqueta{MXN per month per business, after 2,000 free
+        impressions}
     \column{0.24\textwidth}\raggedright
-      \cifra{922}\par\vskip1.5mm\etiqueta{MXN de CAC por negocio}
+      \cifra{922}\par\vskip1.5mm\etiqueta{MXN CAC per business}
     \column{0.24\textwidth}\raggedright
-      \cifra{6,900}\par\vskip1.5mm\etiqueta{MXN de LTV por negocio}
+      \cifra{6,900}\par\vskip1.5mm\etiqueta{MXN LTV per business}
     \column{0.24\textwidth}\raggedright
-      \cifra{7.5×}\par\vskip1.5mm\etiqueta{LTV/CAC. El CAC se recupera en 2.7 meses.}
+      \cifra{7.5×}\par\vskip1.5mm\etiqueta{LTV/CAC. CAC is recovered in 2.7 months.}
   \end{columns}
   \vskip1mm
-  \nota{Canal: redes sociales, radio y anuncios en vía pública para los negocios.}
+  \nota{Channel: social media, radio and outdoor ads aimed at businesses.}
 \end{frame}
 
-% 9. Finanzas: corrida a 24 meses, capital necesario y retorno.
-% Serie: Flujo!B22:Y22 en millones. Cifras: Resultados!B5, B6, B9, B18, Flujo!C21 y Y21, y
-% Supuestos.
-\begin{frame}{Finanzas a 24 meses.}
+% 9. Financials: 24-month projection, capital required and return.
+% Series: Flujo!B22:Y22 in millions. Figures: Resultados!B5, B6, B9, B18, Flujo!C21 and Y21,
+% and Supuestos.
+\begin{frame}{Financials over 24 months.}
   \begin{columns}[c, onlytextwidth]
     \column{0.58\textwidth}
       \begin{tikzpicture}
@@ -306,7 +305,7 @@
             xmin=1, xmax=24, ymin=-4.2, ymax=0.2, xtick={1,6,12,18,24},
             ytick={0,-1,-2,-3,-4}, yticklabels={0,−1,−2,−3,−4}, xticklabels={1,6,12,18,24}, tick style={draw=none},
             ticklabel style={font=\sansregular\fontsize{8}{9}\selectfont, text=inkmuted},
-            xlabel={Mes}, ylabel={Flujo acumulado, millones de MXN},
+            xlabel={Month}, ylabel={Cumulative cash flow, MXN millions},
             label style={font=\sansregular\fontsize{8}{9}\selectfont, text=inkmuted},
             ymajorgrids, grid style={inkmist, line width=0.4pt}, clip=false]
           \addplot[ink, line width=1.6pt, mark=none] coordinates {
@@ -317,24 +316,24 @@
         \end{axis}
       \end{tikzpicture}
     \column{0.38\textwidth}\raggedright
-      \cifra{3.87 M}\par\vskip1.5mm\etiqueta{MXN de capital necesario}\par\vskip4mm
-      {\fontsize{9.5}{12.5}\selectfont El equilibrio no llega en 24 meses, pero la pérdida
-        mensual baja de 181 mil a 81 mil MXN, con 659 negocios activos en el mes 24.
-        VPN de $-$2.79 millones de MXN.\par}
+      \cifra{3.87 M}\par\vskip1.5mm\etiqueta{MXN of capital required}\par\vskip4mm
+      {\fontsize{9.5}{12.5}\selectfont No break-even within 24 months, but the monthly loss
+        falls from 181k to 81k MXN, with 659 active businesses in month 24. NPV of $-$2.79
+        million MXN.\par}
       \vskip3mm
-      \nota{Supuestos: lanzamiento en el mes 3, 3 negocios nuevos que crecen 20\% al mes,
-        5\% de cancelación, cuatro personas a 40,000 MXN, descuento de 45\%.}
+      \nota{Assumptions: launch in month 3, 3 new businesses growing 20\% a month, 5\% churn,
+        four people at 40,000 MXN, 45\% discount rate.}
   \end{columns}
 \end{frame}
 
-% 10. Equipo: nombres, fotos y roles.
-% Foto de grupo: img/equipo.jpg, completa y sin recortar. Sin archivo queda un marco vacío.
-% Nombres en el orden en que aparecen en la foto, de izquierda a derecha.
+% 10. Team: names, photos and roles.
+% Group photo: img/equipo.jpg, whole and uncropped. Without the file an empty frame remains.
+% Names in the order they appear in the photo, left to right.
 \newsavebox{\fotoequipo}
 \newcommand{\integrante}[2]{%
   {\serif\color{ink}\fontsize{10}{12}\selectfont #1\par}\vskip0.3mm
   \etiqueta{#2}\par\vskip2.5mm}
-\begin{frame}{Equipo.}
+\begin{frame}{Team.}
   \begin{columns}[T, onlytextwidth]
     \column{0.58\textwidth}
       \IfFileExists{img/equipo.jpg}{%
@@ -346,18 +345,18 @@
         \end{tikzpicture}}{%
         \begin{tikzpicture}
           \fill[grounddeep, rounded corners=1.5mm] (0,0) rectangle (\linewidth, 52mm);
-          \node at (0.5\linewidth, 26mm) {\pendiente{Foto del equipo}};
+          \node at (0.5\linewidth, 26mm) {\pendiente{Team photo}};
         \end{tikzpicture}}
     \column{0.38\textwidth}\raggedright
-      \integrante{Héctor Antonio Belmont Hernández}{\pendiente{Rol}}
-      \integrante{Luis Ángel Hernández González}{\pendiente{Rol}}
-      \integrante{Yeni Yuzelmi Núñez Laces}{\pendiente{Rol}}
-      \integrante{Gerardo Erick Villa Aguilar}{\pendiente{Rol}}
+      \integrante{Héctor Antonio Belmont Hernández}{\pendiente{Role}}
+      \integrante{Luis Ángel Hernández González}{\pendiente{Role}}
+      \integrante{Yeni Yuzelmi Núñez Laces}{\pendiente{Role}}
+      \integrante{Gerardo Erick Villa Aguilar}{\pendiente{Role}}
   \end{columns}
 \end{frame}
 
-% 11. Cierre: lo que la empresa pide (capital, piloto, contactos) y la frase de la portada.
-% Capital: Resultados!B5. Piloto: H4. Datos de incidentes: H9.
+% 11. Close: what the company asks for (capital, pilot, contacts) and the cover line.
+% Capital: Resultados!B5. Pilot: H4. Incident data: H9.
 \newcommand{\pedido}[2]{%
   \begin{tabular}{@{}p{4mm}p{66mm}@{}}\punto & \raggedright\textbf{#1} #2\end{tabular}\par
   \vskip3mm}
@@ -368,15 +367,15 @@
   \end{tikzpicture}
   \begin{minipage}[c][\paperheight][c]{76mm}\raggedright
     \color{paper}
-    {\serif\fontsize{21}{24}\selectfont Lo que necesitamos.\par}
+    {\serif\fontsize{21}{24}\selectfont What we need.\par}
     \vskip6mm
     {\fontsize{11}{14.5}\selectfont
-      \pedido{3.87 millones de MXN}{para los primeros 24 meses.}
-      \pedido{Tres negocios}{para un piloto de cuatro semanas con ubicación destacada.}
-      \pedido{Un contacto en el gobierno de la CDMX}{para recibir datos de incidentes más
-        seguido.}}
+      \pedido{3.87 million MXN}{for the first 24 months.}
+      \pedido{Three businesses}{for a four-week pilot with featured placement.}
+      \pedido{A contact in the Mexico City government}{to receive incident data more
+        often.}}
     \vskip5mm
-    {\serif\fontsize{14}{17}\selectfont GoIA. Llega a pie por las calles más tranquilas.\par}
+    {\serif\fontsize{14}{17}\selectfont GoIA. Walk there on the calmest streets.\par}
     \vskip2mm
     {\sansregular\fontsize{9}{11}\selectfont\color{inkmist} rutasegura-d4afc.web.app\par}
   \end{minipage}
