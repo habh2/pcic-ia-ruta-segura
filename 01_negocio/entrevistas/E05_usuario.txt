@@ -1,0 +1,70 @@
+[00:01] Hola, este buenas tardes. Soy estudiante de posgrado de la UNAM y estamos estudiando cómo se mueven las personas por la ciudad.
+[00:12] Entonces me gustaría preguntarte cómo es un día normal para ti, para ir y regresar a los sitios a donde frecuentas,
+[00:22] quizá alguna reunión a tu escuela o alguna responsabilidad que tengas.
+[00:27] Caminas, usas transporte público y si nos puedes indicar a qué hora sucede este tipo de cosas.
+[00:35] Hola, buenos días.
+[00:39] Pues básicamente trato de usar el transporte público que es el metro y metrobús y si hay necesidad de caminar, camino.
+[00:50] Regularmente, los lugares en los que me muevo son zonas donde el metrobús está disponible, entonces no sé qué más podría decir.
+[01:09] Sí, perfecto. Y en este punto donde si nos acabas de comentar que si caminas y utilizas transporte público para movilizarte,
+[01:20] ¿recuerdas cuándo fue la última vez que cambiaste tu ruta o tu horario, porque alguna calle o zona te parecía insegura?
+[01:32] Sí, por ejemplo, por las noches no me gusta tomar el metro revolución, porque ahí sí, como que se pone un poquito,
+[01:48] hay personas como que me hacen sentirles confianza, entonces busco otras formas de moverme alternas.
+[01:58] Incluso a veces ya cuando es muy tarde, prefiero mejor utilizar Uber.
+[02:04] Claro, ok. Sí, en estas ocasiones donde has cambiado de ruta,
+[02:14] ¿recuerdas cuánto tiempo más te tomó llegar por una ruta alterna?
+[02:20] Y bueno, ya nos compartiste que utilizas Uber como aplicación de transporte,
+[02:24] pero también a lo mejor taxi para no caminar precisamente para llegar a tu sitio, ¿no?
+[02:33] Bueno, los taxis la verdad es que me generan bastante desconfianza.
+[02:37] Suelo utilizar solamente medios de transporte de aplicaciones.
+[02:42] Me voy a lugares, por ejemplo, a una estación en específica o a algún lugar donde hay más personas
+[02:49] para evitar estar en la calle, porque bueno, la verdad, ya también me han robado,
+[02:58] así que no quiero volver a tener esas malas experiencias.
+[03:03] Claro. Y ¿recuerdas cuánto tiempo te tomó cambiar de ruta?
+[03:10] Sí, bueno, lo que esperaba, mínimo 15-20 minutos.
+[03:14] Ok, pero lo prefieres, ¿no? A estar como pasando por estos incidentes.
+[03:20] Sí, sí, prefiero esperar media hora, incluso por ejemplo, hay veces en las que hay mucho movimiento de personas,
+[03:29] puede pasar hasta 40 a una hora de que no encuentras transporte o que se vino la lluvia
+[03:36] y no quiere decir por ciertas zonas por lo mismo, entonces es bastante variado, pero el rango es de 20 a una hora.
+[03:44] Perfecto. Y podrías mencionarnos si utilizabas alguna aplicación o utilizas alguna aplicación para planear tu ruta
+[03:54] y cómo decides cuál ruta toma, o sea, si una ruta te parece más segura que otra.
+[04:02] ¿Cómo lo decides en esta aplicación que utilizas?
+[04:04] Ok, pues uso Google Maps, entonces me dio mucho principalmente en las líneas del metro.
+[04:15] Ok. Entonces, por ejemplo, siempre antes de ir a algún lugar, me gusta verificar primero la ruta
+[04:23] para ver por dónde me tengo que mover y si, por ejemplo, veo que hay una zona que puede ser un poco más densa,
+[04:31] vamos a poner el ejemplo de cerca del aeropuerto, ¿cómo se llama?
+[04:41] La estación de Pantitlán es mucho más densa que la estación que está por insurgentes.
+[04:54] Ok, sí, claro.
+[04:57] Entonces, sí.
+[05:00] En relación a eso, ¿has utilizado algún sumado a lo que nos dices? ¿Has utilizado alguna página o grupo para saber qué zonas son inseguras?
+[05:14] Porque luego suben mucha información a los grupos o cuentas de Facebook.
+[05:20] Sí, tengo conocimiento, pero no suelo utilizarlas.
+[05:27] Ok, está bien.
+[05:30] ¿Cuándo fue la última vez que tú particularmente avisaste de algún incidente o de alguna zona insegura?
+[05:40] Ya sea en un grupo, en redes o inclusive a la policía, ¿no?
+[05:45] Y si nos puedes mencionar. Bueno, primero eso.
+[05:48] La última vez que lo hice fue porque varios amigos que vinieron de turistas tenían que regresarse, pero hubo varias situaciones como de inseguridad,
+[06:04] pero eso fue como a nivel nacional, entonces sí, utilicé los grupos de WhatsApp pero con mis amigos para avisarles que ciertas rutas eran más inseguras,
+[06:13] que mejor no salieran en los transportes porque incluso algunas corridas de autobuses las cancelaron.
+[06:23] Fue por ahí por febrero, más o menos.
+[06:26] Ok, si tuvieras, por ejemplo, una aplicación donde pudieras reportar de manera más simple o fácil por así decirlo,
+[06:36] algún incidente o alguna zona insegura en la que tú te precataras, ¿lo harías? O sea, ¿te animarías a hacerlo?
+[06:46] Y si no, ¿por qué no?
+[06:49] Sí lo haría, pero no sería mi prioridad, porque es tedioso por sí estarte moviendo dentro de la ciudad,
+[06:59] necesitas estar atento y regularmente vas contra tiempo, o que ya se te hizo tarde por el tráfico,
+[07:08] entonces la prioridad es llegar, no reportar en las aplicaciones, ese tipo de situaciones,
+[07:15] que a veces podemos decir, nos lleva a que será dos, tres minutos, pero en lo que te enfocas en hacerlo, en lo que lo haces,
+[07:23] pues igual es ese tiempo que incluso a veces es complicado, no digo que sea imposible,
+[07:34] pero creo que se necesita cierto compromiso para nutrir esa base de conocimientos.
+[07:42] Y creo que la mayoría de personas, ese tipo de cosas se les hace compleja si no lo harían.
+[07:50] Ok, está bien. Bueno, estamos buscando la idea de crear una aplicación que sugiere rutas
+[07:59] según la seguridad de las calles con reportes de otros usuarios.
+[08:04] Si el detalle de lo pesado que es cargar la información y todo esto no fuera un inconveniente,
+[08:14] ¿qué te gustaría a ti ver, por ejemplo, en ese tipo de aplicaciones?
+[08:19] ¿O qué te preocuparía o qué faltaría para que tú la usaras, por ejemplo?
+[08:28] Lo primero es que sea muy fácil, porque bueno, en mi caso tengo conocimientos tecnológicos,
+[08:36] pero hay muchas personas que no saben, así que creo que lo más esencial sería una interfaz
+[08:45] que muy amigable y que te permita con dos o tres tabs poder levantar el reporte
+[08:56] inclusive que tenga la opción de que no puedas escribirlo directamente, o sea,
+[09:03] que sea un audio y ya sea como que la transcripción, algo que sea muy rápido.
+[09:07] Claro. Ok, me parece perfecto. Pues muchísimas gracias por el tiempo
+[09:11] y bueno, finalizamos con la entrevista.
