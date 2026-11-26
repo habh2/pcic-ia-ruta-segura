@@ -34,32 +34,21 @@
 \maketitle
 
 \begin{abstract}
-  Walking route planners minimize travel time, yet street robbery in Mexico City is concentrated
-  on a small share of streets, and walkers have no way to trade a few minutes for a route that
-  avoids them. However, it is unclear how much exposure to robbery such a trade removes, and
-  whether a planner can also react to reports from its own users. In this work, we estimate the
-  risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the
-  prosecutor's office in 2021--2024, and we search for the least risky route whose walking time
-  stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps
-  the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in
-  January--September 2026, the route under a 10\% budget passed 9.0 incidents on average,
-  compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the
-  budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports,
-  routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports,
-  fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
+ Walking route planners minimize travel time, yet pedestrians in unfamiliar areas often lack information about the safety of the streets they traverse, and a slightly longer route may substantially reduce their exposure to crime. However, current navigation systems do not explicitly account for local crime patterns or citizen-reported incidents, making it unclear how much risk can be reduced without imposing excessive detours. 
+ In this work, we estimate the risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the Fiscalía General de Justicia de la Ciudad de México (FGJ) in 2021--2024, and we search for the least risky route whose walking time stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in January--September 2026, the route under a 10\% budget passed 9.0 incidents on average, compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports, routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports, fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
   time budget already captures most of the available reduction in exposure.
 \end{abstract}
 
 \section{Introduction}
 
-In 2025, 1,132 pedestrian robberies (robo a transeúnte) were reported in the alcaldía Cuauhtémoc
-of Mexico City alone, about three per day~\cite{hoyodecrimen,fgj2026victimas}, and Mexico's
+In 2025, 1,132 pedestrian robberies were reported in the alcaldía Cuauhtémoc
+of Mexico City alone, about three per day~\cite{hoyodecrimen}, and Mexico's
 national victimization survey estimates that 93.2\% of crimes in 2024 were not reported or did not
 lead to an investigation~\cite{inegi2025envipe}. Crime is also concentrated: a small share of
 streets accounts for most incidents~\cite{weisburd2015law}. A walker who knew which streets
-concentrate robberies could avoid them at a small cost in time. The planners people use do not
-help with this choice. Waze is built for driving only~\cite{waze2023footpaths}, and general
-planners rank walking routes by time.
+concentrate robberies could avoid them at a small cost in time. The route planners people use do not
+help with this choice: Waze is built for driving only~\cite{waze2023footpaths}, and general
+planners rank walking routes by fastest time of arrival.
 
 Safety-aware planners exist in other cities~\cite{streetwise2026} and in the
 literature~\cite{galbrun2016urban,theron2024safest}, but none covers Mexico City, and published
@@ -108,11 +97,11 @@ choose its bandwidth by likelihood on a held-out year rather than by eye.
 \textbf{Graph.} The walking network of Cuauhtémoc is a directed graph $G=(V,E)$ downloaded from
 OpenStreetMap~\cite{osm2026} with OSMnx~\cite{boeing2017osmnx}. It has 10,463 nodes (corners and
 street ends) and 31,872 directed edges, 871~km of street. Each edge $e$ has its length $\ell(e)$
-along its geometry and a walking time $t(e)=\ell(e)/v$, with $v=1.4$~m/s.
+along its geometry and a walking time $t(e)=\ell(e)/v$, where $v$ is a constant walking speed.
 
-\textbf{Data.} The incidents are the two categories of robo a transeúnte, with and without
-violence, from the victims dataset of the prosecutor's office of Mexico City~\cite{fgj2026victimas}
-in the cleaned version distributed by Hoyo de Crimen~\cite{hoyodecrimen} under CC~BY~4.0. We kept
+\textbf{Data.} The incidents are the two categories of pedestrian robberies, with and without
+violence, from Hoyo de Crimen~\cite{hoyodecrimen}, which distributes under CC~BY~4.0 a cleaned and
+updated version of the victims dataset of the Fiscalía General de Justicia de la Ciudad de México (FGJ). We kept
 the 10,710 incidents from January 2019 to September 2026 inside the alcaldía, merging rows that
 describe several victims of one incident. The split is by time: 2021--2024 (5,235 incidents) to
 fit the risk model, 2025 (1,132) to choose its bandwidth, and January--September 2026 (718) to
@@ -125,8 +114,7 @@ $\hat f(x) = \frac{1}{N\,2\pi h^2}\sum_{i=1}^{N} \exp\!\big(-\lVert x-x_i\rVert^
 For each edge we average $\hat f$ over points every 10~m along it, obtaining $d(e)$, and divide by
 the length-weighted mean over the network, so that the base risk $r_b(e)=1$ for an average street.
 We tried $h\in\{25,50,75,100,150,200,300,400\}$~m and kept the one with the highest mean
-log-likelihood of the 2025 incidents, $h=50$~m, about one city block. The estimate was computed
-with scikit-learn~\cite{pedregosa2011scikit}.
+log-likelihood of the 2025 incidents, $h=50$~m, about one city block.
 
 \textbf{User reports.} A report at $y_j$ adds a bump of the same width whose peak equals $\rho$,
 the 90th percentile of $r_b$ over all edges ($\rho=2.59$). With $\bar k_j(e)$ the average of
@@ -165,8 +153,7 @@ The main metric is the number of 2026 test incidents within 50~m of the route (l
 We also report the extra walking time and the nodes A* expanded, against uniform-cost search
 (the same search without the heuristic). Values are means over trips, then mean and standard
 deviation over the five seeds. Every route was checked to have the same cost as uniform-cost
-search and to stay within its budget. Runs used Python 3.10.5 on an Intel Core i7-9700 with 32~GB
-of RAM, and the full experiment takes about 35 minutes.
+search and to stay within its budget.
 
 \begin{table}[t]
   \caption{Random trips (1,000 over five seeds). Test incidents: robberies reported in
@@ -248,7 +235,7 @@ incidents and cannot settle which of the two is actually safer. Dividing by pede
 weighting by time of day, would be needed before the routes can be called safer in the per-walker
 sense.
 
-The data have further limits. Incidents come from complaints filed with the prosecutor's office,
+The data have further limits. Incidents come from complaints filed with the FGJ,
 and most crimes in Mexico are never reported~\cite{inegi2025envipe}, so reporting rates may differ
 across neighborhoods and hours. The kernel density estimate assumes that the spatial pattern of
 2021--2024 still holds in 2026, ignores the hour of the incident, and smooths in the plane rather
@@ -258,12 +245,10 @@ $\rho$ of a report is a design choice that no data in this study can validate.
 
 Labeling streets as risky can stigmatize neighborhoods and divert customers from businesses on
 them. The application limits this in three ways. It never shows a risk map or the
-prosecutor's individual incidents. User reports appear as pins that merge nearby reports, and each
+individual incidents of the FGJ. User reports appear as pins that merge nearby reports, and each
 report counts for 30 days and then expires, so a street is not labeled permanently. And the time budget
 caps every detour, so walkers sidestep a few blocks rather than whole areas. Collaborative reports
-can also be false or malicious, which the fake reports above only begin to measure. The street
-network with risk attached is a derived OpenStreetMap database and is shared under the Open
-Database License.
+can also be false or malicious, which the fake reports above only begin to measure. 
 
 \section{Conclusion}
 
