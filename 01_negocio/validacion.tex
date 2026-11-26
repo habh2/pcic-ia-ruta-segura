@@ -39,7 +39,7 @@
 \newcounter{nent}\newcounter{ndolor}\newcounter{npaga}\newcounter{npagaria}
 \newcounter{nval}\newcounter{ninval}\newcounter{npend}
 % Indicadores de la landing page
-\newcounter{nsem}\def\totVis{0}\def\totReg{0}
+\newcounter{nsem}\newcounter{nlan}\def\totVis{0}\def\totReg{0}
 
 % ---------- Encabezado institucional ----------
 \pretitle{%
@@ -94,20 +94,23 @@
 \section{Resumen de la evidencia}
 \label{sec:resumen}
 
-Pendiente:
-
 El equipo hizo \thenent{} entrevistas con clientes potenciales. En \thendolor{} de ellas la
 persona describió un dolor de 4 o 5 en una escala de 1 a 5, en \thenpaga{} ya gasta tiempo o
 dinero en resolverlo y en \thenpagaria{} dio una señal concreta de compra. El
 Anexo~\ref{sec:anexo} registra cada entrevista. La landing page, publicada en
-% Sustituir por \url{https://...}
-\pendiente{dirección de la landing page}, recibió \totVis{} visitas y \totReg{} registros en
-\thensem{} semanas, una conversión de
+\url{https://rutasegura-d4afc.web.app}, recibió \totVis{} visitas y \totReg{} registros en la
+semana del 23 de noviembre de 2026, desde \thensem{} fuentes de tráfico, una conversión de
 \ifnum\totVis>0 \fpeval{round(100*\totReg/\totVis,1)}\else 0\fi\%. De las hipótesis del canvas,
 \thenval{} quedaron validadas, \theninval{} invalidadas y \thenpend{} siguen pendientes.
 
-\pendiente{Un párrafo que interpreta estos números: qué hipótesis quedaron validadas, cuál fue
-la sorpresa más importante y qué falta probar.}
+Del lado de los negocios, el problema existe: quieren clientes de paso y ya gastan en publicidad
+(H2). El precio propuesto no convenció a nadie (H11), y las cifras que dieron apuntan a otro
+esquema: E01 pagaría unos 30 pesos por cliente que llegue y E06 unos 300 pesos al mes según los
+resultados. Del lado de los usuarios, la sorpresa fue que pocos cambian de ruta por seguridad
+(H1). Solo dos de seis lo hicieron en el último mes, y los demás cambian por calles cerradas o en
+reparación, o resuelven el riesgo con un auto de aplicación. Falta probar lo que requiere el
+producto en uso: la comparación de rutas con usuarios (H3), el piloto con negocios (H4), la prueba
+gratuita (H7) y los reportes en la versión de prueba (H8).
 
 % ---------------------------------------------------------------------------
 % HIPÓTESIS. Estado y evidencia de cada hipótesis de modelo_negocio.tex. E indica
@@ -117,10 +120,15 @@ la sorpresa más importante y qué falta probar.}
 \label{sec:hipotesis}
 
 La Tabla~\ref{tab:hipotesis} muestra el resultado de cada hipótesis frente al criterio de
-éxito fijado antes de probarla. Las excepciones son H3, H4, H6 y H7, que se reformularon después
-de la primera entrega para que coincidieran con lo que se preguntó en las entrevistas. Su texto y su
-criterio de éxito se fijaron después de las entrevistas, y la columna de cambios de
-\texttt{hipotesis.csv} dice qué medía cada una antes.
+éxito fijado antes de probarla. Los criterios suponían diez entrevistas por segmento, y se hicieron
+seis con usuarios y cuatro con negocios, así que cada criterio se aplicó como proporción de su
+segmento. H2 se cumplió con dos de cuatro dueños que gastan hoy en publicidad (E01, E08), más uno
+que pagó un paquete hace tres meses (E06), contra 5 de 10. H1 no se cumplió: 2 de 6 usuarios
+cambiaron su ruta por seguridad en el último mes (E05, E10), contra 6 de 10. H5 tampoco: 1 de 4
+dueños conoció su última herramienta por un anuncio (E06), contra 4 de 10. Y H11 tampoco: ningún
+dueño dio una señal concreta de compra a 100 pesos por cada 1,000 impresiones, contra 4 de 10. H6
+lleva una semana de las cuatro que fija su criterio, con una conversión de 57.1\% (L1 a L3), así
+que sigue pendiente.
 
 \begin{table}[H]
   \caption{Hipótesis del canvas, con su criterio de éxito, su estado y la evidencia que la
@@ -146,13 +154,15 @@ criterio de éxito se fijaron después de las entrevistas, y la columna de cambi
 % ---------------------------------------------------------------------------
 \section{Landing page}
 \label{sec:landing}
-Landing page pendiente
-
-\pendiente{Una o dos oraciones que dicen qué cambio en la página produjo el mayor aumento en la
-conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
+La página se difundió durante una sola semana, la del 23 de noviembre de 2026, y no cambió en
+ese periodo, así que cada fila de la Tabla~\ref{tab:landing} es una fuente de tráfico de esa
+semana y no una semana distinta. El enlace compartido con personas conocidas trajo 5 de las 7
+visitas y los 4 registros. Las publicaciones en los grupos de Facebook de dos colonias trajeron 2
+visitas y ningún registro.
 
 \begin{table}[H]
-  \caption{Métricas semanales de la landing page. La conversión es registros entre visitas.}
+  \caption{Métricas de la landing page por fuente de tráfico, todas de la semana del 23 de
+    noviembre de 2026. La conversión es registros entre visitas.}
   \label{tab:landing}
   \footnotesize
   \renewcommand{\arraystretch}{1.2}
@@ -164,7 +174,7 @@ conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
     \DTLforeach*{lan}{\lSem=semana,\lVis=visitas,\lReg=registros,\lFuente=fuente,%
                       \lCambio=cambio}{%
       \DTLiffirstrow{}{\\}%
-      L\DTLcurrentindex & \lSem & \lVis & \lReg &
+      \stepcounter{nlan}L\thenlan & \lSem & \lVis & \lReg &
       \DTLifint{\lVis}{\ifnum\lVis>0 \fpeval{round(100*\lReg/\lVis,1)}\%\else --\fi}{--}
       & \lFuente & \lCambio}\\
     \bottomrule
@@ -182,18 +192,19 @@ conversión.} La Tabla~\ref{tab:landing} muestra las métricas de cada semana.
 
 Desde la primera entrega cambiaron tres bloques del canvas. Dos de ellos no cambiaron por la prueba
 de su propia hipótesis: salieron del análisis de datos que se hizo para el artículo
-(\texttt{03\_articulo/}). En recursos clave (H7), el riesgo de cada calle ya no depende solo de
+(\texttt{03\_articulo/}). En recursos clave (H8), el riesgo de cada calle ya no depende solo de
 los reportes de los usuarios. Ahora parte de los robos a transeúnte denunciados ante la Fiscalía de
 la CDMX entre 2021 y 2024, y los reportes se suman a ese riesgo base, porque una app nueva no tiene
 reportes suficientes para cubrir una alcaldía. En segmentos de clientes (H2), el cliente que paga
 dejó de ser el negocio ubicado en una zona segura y pasó a ser el negocio ubicado sobre las rutas
 peatonales. El análisis mostró que el riesgo estimado se concentra en las calles con más paso de
 gente, donde están muchos comercios, y vender por zona segura habría etiquetado colonias
-completas. Con su nueva redacción, las dos quedaron validadas en las entrevistas. El tercer cambio,
+completas. H2 se probó en las entrevistas con su nueva redacción y quedó validada, y H8 sigue
+pendiente de la versión de prueba. El tercer cambio,
 en propuesta de valor (H4), salió de una sugerencia en la entrevista E04. La ubicación destacada ahora muestra sola en el mapa dos productos
 o servicios del negocio, con foto y precio, porque el usuario puede no tocar nunca el pin del
 negocio. La muestra aparece junto al pin y del lado contrario a la ruta para no tapar el camino.
-Con su nueva redacción, H4 quedó validada en las entrevistas. La Tabla~\ref{tab:cambios} lista los
+H4 sigue pendiente del piloto de cuatro semanas con tres negocios. La Tabla~\ref{tab:cambios} lista los
 cambios, y el canvas actualizado está en \texttt{modelo\_negocio.pdf}.
 
 \begin{table}[H]

@@ -5,18 +5,29 @@ Responder cada sección en uno o dos párrafos. El detalle de cada conversación
 
 ## Herramientas
 
-Herramientas usadas (por ejemplo, ChatGPT, Claude, Gemini, Copilot, Cursor) y para qué entregable
-se usó cada una.
+Durante el desarrollo del proyecto se utilizaron herramientas de inteligencia artificial generativa
+ como Claude, Gemini y ChatGPT. Estas herramientas se emplearon como apoyo en las distintas etapas 
+de elaboración de los entregables, principalmente para la consulta de información, revisión y mejora
+ de redacción, apoyo en tareas de programación, análisis y organización de contenidos. 
+Su utilización fue complementaria al trabajo realizado por los integrantes del equipo.
 
 ## Usos
 
-Qué tareas se hicieron con apoyo de IA generativa: búsqueda de ideas, código, redacción,
-traducción, análisis de datos, diseño de la landing page, práctica de entrevistas, entre otras.
+Las herramientas de IA generativa se utilizaron para apoyar actividades de búsqueda y organización 
+de información, redacción y corrección de textos, revisión de contenidos, resolución de dudas 
+técnicas y apoyo en el desarrollo del código y los componentes del proyecto. También se utilizaron 
+para explorar alternativas de implementación y mejorar la presentación de algunos entregables. 
+No se utilizaron para realizar las entrevistas, 
+ya que estas actividades fueron desarrolladas directamente por los integrantes del equipo.
 
 ## Verificación
 
-Cómo verificó el equipo lo que produjo la IA: pruebas del código, revisión de cada referencia
-contra su fuente, cálculo independiente de cifras, revisión de un integrante distinto.
+Los resultados proporcionados por las herramientas de IA fueron considerados como sugerencias y no
+ como información definitiva. El equipo realizó revisiones para comprobar la pertinencia y exactitud
+ de los contenidos, contrastando las referencias con sus fuentes originales, revisando los
+ procedimientos metodológicos. En el caso del código, se realizaron 
+pruebas para comprobar su funcionamiento y detectar posibles errores. Asimismo, los integrantes 
+revisaron los resultados antes de incorporarlos a los entregables finales.
 
 ## Errores encontrados
 
@@ -37,5 +48,5 @@ Ejemplos concretos de respuestas incorrectas, inventadas o descartadas, y cómo 
 
 ## Autocompletado en el editor
 
-Si se usó autocompletado (por ejemplo, Copilot en el editor), que no produce una conversación
-exportable, declarar en qué archivos y en qué medida.
+No se utilizó autocompletado mediante herramientas de IA integradas en los editores de código, 
+como GitHub Copilot o Cursor.

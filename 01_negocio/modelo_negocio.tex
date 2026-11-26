@@ -81,7 +81,7 @@ para atraer a las personas que pasan a pie. El pago no cambia la ruta: la ruta s
 el riesgo y el tiempo, y el negocio destacado aparece junto a ella marcado como patrocinado.
 Los usuarios llegan por redes sociales y grupos universitarios, y los negocios por visitas en
 persona. Como propuesta inicial se cobran 100 pesos por cada 1,000 impresiones, después de una
-prueba gratuita de 2,000 impresiones. La hipótesis más riesgosa es el precio (H10): ninguno de los negocios
+prueba gratuita de 2,000 impresiones. La hipótesis más riesgosa es el precio (H11): ninguno de los negocios
 entrevistados dio una señal concreta de compra.
 
 
@@ -176,11 +176,11 @@ Tablas~\ref{tab:canales} y~\ref{tab:relacion} describen los canales y la relaci�
     \toprule
     Fase & Canal & Tipo & Costo estimado & Hipótesis \\
     \midrule
-    Conocimiento & Redes sociales, grupos universitarios y grupos de vecinos & Directo & \$500 al inicio & \\
+    Conocimiento & Redes sociales, grupos universitarios y grupos de vecinos & Directo & \$500 al inicio & H6 \\
     Evaluación & Landing page que compara una ruta con la de Google Maps & Directo & \$0 a \$300 al mes & H1, H3 \\
-    Compra & Registro gratuito con correo o cuenta de Google & Directo & Sin costo & \\
+    Compra & Registro gratuito con correo o cuenta de Google & Directo & Sin costo & H6 \\
     Entrega & Aplicación web en el navegador del celular & Directo & En la infraestructura & H3 \\
-    Posventa & Notificaciones, comentarios y reportes de incidentes & Directo & Sin costo & H7 \\
+    Posventa & Notificaciones, comentarios y reportes de incidentes & Directo & Sin costo & H8 \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -196,8 +196,8 @@ Tablas~\ref{tab:canales} y~\ref{tab:relacion} describen los canales y la relaci�
     Segmento & Tipo & Cómo se hace & Hipótesis \\
     \midrule
     Usuarios & Autoservicio & Consulta rutas y su riesgo sin intervención del equipo & H1 \\
-    Usuarios & Comunidad & Los reportes de los usuarios actualizan el riesgo de las calles & H7 \\
-    Negocios & Servicio automatizado & Contratan la ubicación destacada y reciben un reporte de visitas & H4, H6 \\
+    Usuarios & Comunidad & Los reportes de los usuarios actualizan el riesgo de las calles & H8 \\
+    Negocios & Servicio automatizado & Contratan la ubicación destacada y reciben un reporte de visitas & H4, H7 \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -234,7 +234,7 @@ La Tabla~\ref{tab:competencia} compara las opciones que usan hoy las personas en
 \end{table}
 
 Google Maps, Waze y Moovit buscan el menor tiempo, y los grupos de vecinos suelen estar abandonados
-(E07). GoIA equilibra el tiempo con el riesgo de las calles, que los reportes mantienen al día (H7).
+(E07). GoIA equilibra el tiempo con el riesgo de las calles, que los reportes mantienen al día (H8).
 
 
 % ---------------------------------------------------------------------------
@@ -288,16 +288,18 @@ Además, un análisis de robo a transeúnte la coloca en primer lugar entre las 
 \section{Hipótesis y pruebas}
 \label{sec:hipotesis}
 
-Las hipótesis se probaron con diez entrevistas, seis con usuarios y cuatro con negocios, y cada
-criterio se aplicó como proporción de su segmento. Quedaron validadas H2 (3 de 4 negocios pagan
-publicidad), H3 (5 de 6 usuarios usarían la aplicación), H4 (a los 4 negocios les interesa la
-ubicación destacada), H6 (2 de 4 dueños no pueden medir lo que les trae su publicidad) y H7 (3 de 6
-usuarios avisaron a otros de una zona insegura en el último año). Quedaron invalidadas H1 (2 de 6
-usuarios cambiaron su ruta por seguridad en el último mes), H5 (1 de 4 dueños conoció su herramienta
-por publicidad masiva) y H10 (ningún negocio dio una señal concreta de compra al precio propuesto).
-H10 es la más riesgosa, porque sin precio no hay ingresos, y es la siguiente que se prueba. H8, H9 y
-H11 se prueban después, con la dependencia de gobierno, la versión de prueba y la cotización de los
-proveedores. La Tabla~\ref{tab:hipotesis} lista las hipótesis del canvas.
+Se hicieron diez entrevistas, seis con usuarios y cuatro con negocios, en lugar de diez por
+segmento, así que cada criterio de entrevista se aplicó como proporción de su segmento. Quedó
+validada H2: dos de cuatro dueños gastan hoy en publicidad (E01, E08) y un tercero pagó un paquete
+hace tres meses (E06), contra un criterio de 5 de 10. Quedaron invalidadas H1 (2 de 6 usuarios
+cambiaron su ruta por seguridad en el último mes, contra 6 de 10), H5 (1 de 4 dueños conoció su
+última herramienta por publicidad masiva, contra 4 de 10) y H11 (ningún dueño dio una señal
+concreta de compra al precio propuesto, contra 4 de 10). H3, H4, H6, H7 y H8 siguen pendientes,
+porque su prueba aún no se hizo: la comparación de rutas con usuarios, el piloto con negocios, las
+cuatro semanas de la landing page, la oferta de la prueba gratuita y la versión de prueba. H11 es
+la más riesgosa, porque sin precio no hay ingresos, y es la siguiente que se prueba. H9, H10 y H12
+se prueban después, con la dependencia de gobierno, el piloto en una alcaldía y la cotización de
+los proveedores. La Tabla~\ref{tab:hipotesis} lista las hipótesis del canvas.
 
 \begin{table}[H]
   \caption{Hipótesis del canvas, con la prueba que la pondrá a prueba y el criterio de éxito
