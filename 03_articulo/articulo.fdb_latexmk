@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex articulo"] 1795643071.52449 "articulo.aux" "articulo.bbl" "articulo" 1795643074.20097 0
+["bibtex articulo"] 1795651272.16648 "articulo.aux" "articulo.bbl" "articulo" 1795651274.97946 0
   "./referencias.bib" 1795630392 5057 e9d031c98fd56df09a7b954c0acea189 ""
   "C:/Users/HAB/AppData/Local/Programs/MiKTeX/bibtex/bst/ieeetran/IEEEtran.bst" 1440622569 57748 7c8250ecf02814ce6ddc0cdbb63df1dd ""
-  "articulo.aux" 1795643073 3682 97c145db2292e14e063875a5c9847179 "pdflatex"
+  "articulo.aux" 1795651273 3536 e95648ae47efe2ad3a6e00fd2ebba248 "pdflatex"
   (generated)
   "articulo.bbl"
   "articulo.blg"
   (rewritten before read)
-["pdflatex"] 1795643071.9027 "e:/Nube/OneDrive - Personal/OneDrive/Maestria UNAM clases/I - Inteligencia artificial/pcic-ia-ruta-segura/03_articulo/articulo.tex" "articulo.pdf" "articulo" 1795643074.20254 0
+["pdflatex"] 1795651272.63773 "e:/Nube/OneDrive - Personal/OneDrive/Maestria UNAM clases/I - Inteligencia artificial/pcic-ia-ruta-segura/03_articulo/articulo.tex" "articulo.pdf" "articulo" 1795651274.98098 0
   "C:/Users/HAB/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1795630954 125570 23bf50cae6530a945914397c920e84bf ""
   "C:/Users/HAB/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ectt1000.pk" 1789101085 20028 92d95a3968cf1442a8c05f442ca95156 ""
   "C:/Users/HAB/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1794366802 13406203 f1b6898c8edb462023b59a1e015b30fd ""
@@ -119,11 +119,11 @@
   "C:/Users/HAB/AppData/Local/Programs/MiKTeX/tex/latex/units/nicefrac.sty" 1469029150 4163 0462ee5ab265cf59dc15a41a3b883101 ""
   "C:/Users/HAB/AppData/Local/Programs/MiKTeX/tex/latex/url/url.sty" 1388490452 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "C:/Users/HAB/AppData/Local/Programs/MiKTeX/tex/latex/xcolor/xcolor.sty" 1729265222 55384 b454dec21c2d9f45ec0b793f0995b992 ""
-  "articulo.aux" 1795643073 3682 97c145db2292e14e063875a5c9847179 "pdflatex"
-  "articulo.bbl" 1795643071 4342 4d4253815785cc391f5876c3837f055a "bibtex articulo"
-  "articulo.out" 1795643073 675 41f5f53d3cb93ef6dd51156ff26f199e "pdflatex"
-  "articulo.tex" 1795643068 19466 6cce5bf56dc58fae3d11603810064490 ""
-  "e:/Nube/OneDrive - Personal/OneDrive/Maestria UNAM clases/I - Inteligencia artificial/pcic-ia-ruta-segura/03_articulo/articulo.tex" 1795643068 19466 6cce5bf56dc58fae3d11603810064490 ""
+  "articulo.aux" 1795651273 3536 e95648ae47efe2ad3a6e00fd2ebba248 "pdflatex"
+  "articulo.bbl" 1795651272 3480 5fdf4da6d6c69a5104ca95336992d7d8 "bibtex articulo"
+  "articulo.out" 1795651273 675 41f5f53d3cb93ef6dd51156ff26f199e "pdflatex"
+  "articulo.tex" 1795651271 18890 57b1ca9cc1acb9f85841136acad547d7 ""
+  "e:/Nube/OneDrive - Personal/OneDrive/Maestria UNAM clases/I - Inteligencia artificial/pcic-ia-ruta-segura/03_articulo/articulo.tex" 1795651271 18890 57b1ca9cc1acb9f85841136acad547d7 ""
   "neurips_2025.sty" 1795577856 13023 2817c1b954c70ec3156371423da6545c ""
   (generated)
   "articulo.aux"

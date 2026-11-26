@@ -71,23 +71,6 @@ G.~Boeing, ``{OSMnx}: New methods for acquiring, constructing, analyzing, and
   visualizing complex street networks,'' \emph{Computers, Environment and Urban
   Systems}, vol.~65, pp. 126--139, 2017.
 
-\bibitem{fgj2026victimas}
-{Fiscal{\'i}a General de Justicia de la Ciudad de M{\'e}xico}, ``V{\'i}ctimas
-  en carpetas de investigaci{\'o}n {FGJ},'' Portal de Datos Abiertos de la
-  Ciudad de M{\'e}xico,
-  \url{https://datos.cdmx.gob.mx/dataset/victimas-en-carpetas-de-investigacion-fgj},
-  2026, cC-BY-4.0. Accessed 2026-11-25.
-
-\bibitem{pedregosa2011scikit}
-\BIBentryALTinterwordspacing
-F.~Pedregosa, G.~Varoquaux, A.~Gramfort, V.~Michel, B.~Thirion, O.~Grisel,
-  M.~Blondel, P.~Prettenhofer, R.~Weiss, V.~Dubourg, J.~Vanderplas, A.~Passos,
-  D.~Cournapeau, M.~Brucher, M.~Perrot, and {\'E}.~Duchesnay, ``Scikit-learn:
-  Machine learning in {P}ython,'' \emph{Journal of Machine Learning Research},
-  vol.~12, no.~85, pp. 2825--2830, 2011. [Online]. Available:
-  \url{https://jmlr.org/papers/v12/pedregosa11a.html}
-\BIBentrySTDinterwordspacing
-
 \bibitem{hart1968formal}
 P.~E. Hart, N.~J. Nilsson, and B.~Raphael, ``A formal basis for the heuristic
   determination of minimum cost paths,'' \emph{IEEE Transactions on Systems
