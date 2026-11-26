@@ -8,11 +8,11 @@ pagan. La apertura, el cierre y el registro son comunes a los dos.
 
 | id | Guion | Hipótesis | Criterio de éxito |
 |---|---|---|---|
-| H1 | A | Las personas que se desplazan a pie o en transporte público en la CDMX cambian su ruta por seguridad aunque su planificador habitual les sugiera otra más corta | 6 de 10 entrevistados cambiaron su ruta por seguridad en el último mes |
+| H1 | A | Las personas que se desplazan a pie o en transporte público en la CDMX cambian su ruta por seguridad aunque su planificador habitual les sugiera otra más corta | Al menos la mitad de los usuarios entrevistados ha cambiado su ruta o su horario por seguridad |
 | H2 | B | Los negocios de comercio y servicios ubicados sobre las rutas peatonales de la CDMX buscan más visitas de personas que pasan a pie | 5 de 10 dueños gastan hoy dinero en publicidad local o en anuncios en internet |
-| H5 | B | Los dueños de negocios conocen nuevas herramientas de publicidad mediante publicidad masiva en redes sociales, radio o anuncios en vía pública | 4 de 10 dueños mencionan redes sociales, radio o anuncios en vía pública |
+| H5 | B | Los dueños de negocios conocen nuevas herramientas de publicidad mediante publicidad masiva en redes sociales, radio o anuncios en vía pública | Al menos 4 de 10 dueños usan o conocen publicidad en redes sociales, radio o anuncios en vía pública |
 | H7 | B | Los dueños de negocios aceptan una prueba gratuita de 2,000 impresiones con reporte de visitas antes de pagar | 3 de 10 dueños aceptan la prueba |
-| H11 | B | Los negocios pagarían 100 pesos por cada 1,000 impresiones como ubicación destacada | 4 de 10 dueños dan una señal concreta de compra a ese precio |
+| H11 | B | Los negocios pagarían 100 pesos por cada 1,000 impresiones como ubicación destacada | Al menos 4 de 10 dueños aceptan el precio o dicen con qué condición lo pagarían |
 
 ## 2. Perfil de la persona entrevistada
 

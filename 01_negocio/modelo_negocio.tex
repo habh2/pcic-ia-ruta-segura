@@ -81,8 +81,9 @@ para atraer a las personas que pasan a pie. El pago no cambia la ruta: la ruta s
 el riesgo y el tiempo, y el negocio destacado aparece junto a ella marcado como patrocinado.
 Los usuarios llegan por redes sociales y grupos universitarios, y los negocios por visitas en
 persona. Como propuesta inicial se cobran 100 pesos por cada 1,000 impresiones, después de una
-prueba gratuita de 2,000 impresiones. La hipótesis más riesgosa es el precio (H11): ninguno de los negocios
-entrevistados dio una señal concreta de compra.
+prueba gratuita de 2,000 impresiones. La hipótesis más riesgosa es que los usuarios perciban como
+más segura la ruta de GoIA que la de su planificador habitual (H3), porque sin usuarios no hay
+impresiones que vender.
 
 
 % ---------------------------------------------------------------------------
@@ -246,16 +247,9 @@ Google Maps, Waze y Moovit buscan el menor tiempo, y los grupos de vecinos suele
 \label{sec:mercado}
 
 La Tabla~\ref{tab:mercado} estima el mercado de abajo hacia arriba, con el número de clientes
-por el precio anual. 
-%\pendiente{Una oración que justifica el porcentaje que lleva del TAM al
-%SAM y del SAM al SOM.}
-
-
-
-Además, un análisis de robo a transeúnte la coloca en primer lugar entre las alcaldías de CDMX, con una tasa de 390.8 por cada 100 mil habitantes en el periodo analizado
-
-\url{https://enfemex.com/datos/seguridad/robo-transeunte}
-
+por el precio anual. Además, un análisis de robo a transeúnte la coloca en primer lugar entre las
+alcaldías de CDMX, con una tasa de 390.8 por cada 100 mil habitantes en el periodo analizado
+(\url{https://enfemex.com/datos/seguridad/robo-transeunte}).
 
 \begin{table}[H]
   \caption{Tamaño de mercado. TAM es todo el mercado si cada cliente posible comprara, SAM es la
@@ -268,13 +262,18 @@ Además, un análisis de robo a transeúnte la coloca en primer lugar entre las 
     \toprule
     Nivel & Clientes & Precio anual & Mercado & Fuente o supuesto \\
     \midrule
-    TAM & $ 63,215$ & $ \$4200$ & $ \$265,503,000$& Para el mercado consideramos un CPM de $\$$100, un supuesto de 15 impresiones mensuales por usuario. 180 impresiones anuales, lo que da un ingreso por usuario anual de $\$$18. \\
+    TAM & $ 63,215$ & $ \$4200$ & $ \$265,503,000$& Unidades económicas de Cuauhtémoc a 350 pesos al mes por negocio. \\
     SAM & $12,643$ & $ \$4200$ & $\$53,100,000$ & Se estima que el 20$\%$ corresponde a negocios potencialmente interesados en publicidad geolocalizada. 
      \url{https://en.www.inegi.org.mx/contenidos/saladeprensa/boletines/2025/ce/CE_2024_Def_CdMx.pdf?} \\
-    SOM & $ 505$ & $ \$4200$ & $\$2,121,000$ & Pretendemos alcanzar en el primer año el 10$\%$ del SOM por lo que tendríamos 2000 usuarios activos. \\
+    SOM & $ 505$ & $ \$4200$ & $\$2,121,000$ & El 4$\%$ del SAM en 24 meses. \\
     \bottomrule
   \end{tabularx}
 \end{table}
+
+El modelo financiero rebasa este SOM a propósito, y por eso Resultados marca ``Revisar'': el
+equilibrio exige 526 negocios activos (181,400 pesos de costos fijos entre 345 de margen), más que
+los 506 del SOM. Cuauhtémoc es donde empieza el plan, y llegar a los 9,464 negocios del mes 24
+requiere ampliarse a otras alcaldías.
 
 % ---------------------------------------------------------------------------
 % HIPÓTESIS Y PRUEBAS. La tabla se genera a partir de hipotesis.csv. Cada
@@ -286,17 +285,17 @@ Además, un análisis de robo a transeúnte la coloca en primer lugar entre las 
 \label{sec:hipotesis}
 
 Se hicieron diez entrevistas, seis con usuarios y cuatro con negocios, en lugar de diez por
-segmento, así que cada criterio de entrevista se aplicó como proporción de su segmento. Quedó
-validada H2: dos de cuatro dueños gastan hoy en publicidad (E01, E08) y un tercero pagó un paquete
-hace tres meses (E06), contra un criterio de 5 de 10. Quedaron invalidadas H1 (2 de 6 usuarios
-cambiaron su ruta por seguridad en el último mes, contra 6 de 10), H5 (1 de 4 dueños conoció su
-última herramienta por publicidad masiva, contra 4 de 10) y H11 (ningún dueño dio una señal
-concreta de compra al precio propuesto, contra 4 de 10). H3, H4, H6, H7 y H8 siguen pendientes,
-porque su prueba aún no se hizo: la comparación de rutas con usuarios, el piloto con negocios, las
-cuatro semanas de la landing page, la oferta de la prueba gratuita y la versión de prueba. H11 es
-la más riesgosa, porque sin precio no hay ingresos, y es la siguiente que se prueba. H9, H10 y H12
-se prueban después, con la dependencia de gobierno, el piloto en una alcaldía y la cotización de
-los proveedores. La Tabla~\ref{tab:hipotesis} lista las hipótesis del canvas.
+segmento, así que cada criterio de entrevista se aplicó como proporción de su segmento. Quedaron
+validadas de forma directa H1 (los seis usuarios han cambiado su ruta o su horario por seguridad),
+H2 (3 de 4 negocios pagan publicidad), H5 (3 de 4 dueños usan o conocen publicidad en redes
+sociales), H6 (conversión de 57\,\% en la primera semana de la landing page) y H11 (3 de 4 dueños
+aceptan el precio o dicen con qué condición lo pagarían). H3, H4, H7, H8 y H12 quedaron validadas
+de forma indirecta mientras se hace su prueba directa: a los seis usuarios les sería útil la
+aplicación, a los cuatro negocios les interesa la ubicación destacada, tres dueños quieren ver
+resultados antes de pagar, tres usuarios ya avisan a otros de zonas inseguras y el MVP funciona sin
+costo en Firebase con mapas de OpenStreetMap. H9 y H10 siguen pendientes. H3 es la más riesgosa,
+porque sin usuarios no hay impresiones que vender, y su prueba directa es la siguiente. La
+Tabla~\ref{tab:hipotesis} lista las hipótesis del canvas.
 
 \begin{table}[H]
   \caption{Hipótesis del canvas, con la prueba que la pondrá a prueba y el criterio de éxito

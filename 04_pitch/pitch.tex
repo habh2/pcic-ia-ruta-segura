@@ -266,7 +266,7 @@
 \end{frame}
 
 % 8. Business model: how money is made.
-% Price per impression: canvas. Monthly price, CAC and LTV: Supuestos!B6, B11 and
+% Monthly price, CAC and LTV: Supuestos!B6, B11 and
 % Resultados!B14 to B16.
 \begin{frame}{Free for people on foot. Businesses on the way pay.}
   \begin{tikzpicture}[font=\fontsize{10}{12}\selectfont,
@@ -281,7 +281,7 @@
     \draw[route, line width=2.5pt, line cap=round] (p.east) -- (g.west)
       node[midway, above=1mm, rotulo] {free};
     \draw[fastgray, line width=1pt, <-, >=stealth] (g.east) -- (n.west)
-      node[midway, above=1mm, rotulo] {100 MXN per\\1,000 impressions};
+      node[midway, above=1mm, rotulo] {monthly fee};
   \end{tikzpicture}
   \vskip3mm
   \begin{columns}[T, onlytextwidth]
@@ -322,9 +322,10 @@
         \end{axis}
       \end{tikzpicture}
     \column{0.38\textwidth}\raggedright
-      \cifra{2.26 M}\par\vskip1.5mm\etiqueta{MXN of capital required}\par\vskip4mm
+      \cifra{2.26 M}\par\vskip1.5mm\etiqueta{MXN of capital required}\par\vskip2mm
       {\fontsize{9.5}{12.5}\selectfont Positive monthly cash flow from month 16. Investment
-        recovered in month 23. NPV of $-$154k MXN, IRR of 36\% a year.\par}
+        recovered in month 23. NPV of $-$154k MXN, IRR of 36\% a year. Break-even needs 526
+        businesses (SOM: 506), so we grow beyond Cuauhtémoc.\par}
       \vskip3mm
       \nota{Assumptions: launch in month 3, 21 new businesses growing 25\% a month, 5\% churn,
         four people at 40,000 MXN, 45\% discount rate.}
@@ -332,7 +333,7 @@
 \end{frame}
 
 % 10. Team: names, photos and roles.
-% Group photo: img/foto.jpeg, whole and uncropped.
+% Group photo: img/foto-blur.jpeg (img/foto.jpeg with a slight blur), whole and uncropped.
 % Roles: work plan in 00_propuesta/propuesta.tex.
 \newsavebox{\fotoequipo}
 \newcommand{\integrante}[2]{%
@@ -342,7 +343,7 @@
   \begin{columns}[T, onlytextwidth]
     \column{0.58\textwidth}
       \sbox{\fotoequipo}{\includegraphics[width=\linewidth, height=54mm,
-        keepaspectratio]{foto.jpeg}}%
+        keepaspectratio]{foto-blur.jpeg}}%
       \begin{tikzpicture}
         \clip[rounded corners=1.5mm] (0,0) rectangle (\wd\fotoequipo, \ht\fotoequipo);
         \node[anchor=south west, inner sep=0] at (0,0) {\usebox{\fotoequipo}};

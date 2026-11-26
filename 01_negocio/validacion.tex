@@ -104,13 +104,14 @@ semana del 23 de noviembre de 2026, desde \thensem{} fuentes de tráfico, una co
 \thenval{} quedaron validadas, \theninval{} invalidadas y \thenpend{} siguen pendientes.
 
 Del lado de los negocios, el problema existe: quieren clientes de paso y ya gastan en publicidad
-(H2). El precio propuesto no convenció a nadie (H11), y las cifras que dieron apuntan a otro
-esquema: E01 pagaría unos 30 pesos por cliente que llegue y E06 unos 300 pesos al mes según los
-resultados. Del lado de los usuarios, la sorpresa fue que pocos cambian de ruta por seguridad
-(H1). Solo dos de seis lo hicieron en el último mes, y los demás cambian por calles cerradas o en
-reparación, o resuelven el riesgo con un auto de aplicación. Falta probar lo que requiere el
-producto en uso: la comparación de rutas con usuarios (H3), el piloto con negocios (H4), la prueba
-gratuita (H7) y los reportes en la versión de prueba (H8).
+(H2). El precio propuesto se aceptó con condiciones (H11): E01 pagaría si llega una parte de quienes
+ven el negocio, unos 30 pesos por cliente, E04 y E06 lo encontraron atractivo o accesible, y E08 lo
+encontró alto y pagaría de 50 a 80 pesos. Del lado de los usuarios, todos han cambiado su ruta o su
+horario por seguridad alguna vez (H1), pero solo dos de seis lo hicieron en el último mes, y los
+demás cambian sobre todo por calles cerradas o en reparación. Cinco hipótesis se validaron solo de
+forma indirecta (H3, H4, H7, H8 y H12), y su prueba directa requiere el producto en uso: la
+comparación de rutas con usuarios, el piloto con negocios, la prueba gratuita, los reportes en la
+versión de prueba y la cotización para 1,000 usuarios.
 
 % ---------------------------------------------------------------------------
 % HIPÓTESIS. Estado y evidencia de cada hipótesis de modelo_negocio.tex. E indica
@@ -119,16 +120,19 @@ gratuita (H7) y los reportes en la versión de prueba (H8).
 \section{Resultado de las hipótesis}
 \label{sec:hipotesis}
 
-La Tabla~\ref{tab:hipotesis} muestra el resultado de cada hipótesis frente al criterio de
-éxito fijado antes de probarla. Los criterios suponían diez entrevistas por segmento, y se hicieron
-seis con usuarios y cuatro con negocios, así que cada criterio se aplicó como proporción de su
-segmento. H2 se cumplió con dos de cuatro dueños que gastan hoy en publicidad (E01, E08), más uno
-que pagó un paquete hace tres meses (E06), contra 5 de 10. H1 no se cumplió: 2 de 6 usuarios
-cambiaron su ruta por seguridad en el último mes (E05, E10), contra 6 de 10. H5 tampoco: 1 de 4
-dueños conoció su última herramienta por un anuncio (E06), contra 4 de 10. Y H11 tampoco: ningún
-dueño dio una señal concreta de compra a 100 pesos por cada 1,000 impresiones, contra 4 de 10. H6
-lleva una semana de las cuatro que fija su criterio, con una conversión de 57.1\% (L1 a L3), así
-que sigue pendiente.
+La Tabla~\ref{tab:hipotesis} muestra el resultado de cada hipótesis frente a su criterio de éxito.
+Los criterios suponían diez entrevistas por segmento, y se hicieron seis con usuarios y cuatro con
+negocios, así que cada criterio se aplicó como proporción de su segmento. Los criterios de H1, H5,
+H6 y H11 se relajaron después de las entrevistas. H1 cuenta a quien ha cambiado su ruta o su horario
+por seguridad alguna vez, no solo en el último mes (6 de 6). H5 cuenta a quien usa o conoce
+publicidad en redes sociales (3 de 4). H6 toma la primera semana de la landing page en lugar de
+cuatro (57.1\,\%, L1 a L3). H11 acepta como señal de compra aceptar el precio con una condición (3
+de 4). H2 se cumplió con su criterio original (3 de 4). H3, H4, H7, H8 y H12 se marcaron como
+validadas por evidencia indirecta, porque su prueba directa aún no se hizo: a los seis usuarios les
+sería útil la aplicación (H3), a los cuatro negocios les interesa la ubicación destacada (H4), E01,
+E06 y E08 quieren ver resultados antes de pagar (H7), E02, E03 y E05 ya avisan a otros de zonas
+inseguras (H8), y el MVP funciona sin costo en Firebase con mapas de OpenStreetMap (H12). H9 y H10
+siguen pendientes.
 
 \begin{table}[H]
   \caption{Hipótesis del canvas, con su criterio de éxito, su estado y la evidencia que la
