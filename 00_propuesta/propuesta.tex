@@ -1,11 +1,6 @@
 % Propuesta de proyecto. Máximo 4 páginas, sin contar las referencias.
-% Sustituir cada texto gris (\pendiente{...}) por el contenido del equipo.
 % No cambiar los títulos ni el orden de las secciones.
-% Las tablas llevan frases cortas, y la prosa va en los párrafos.
-% Cada concepto se define una sola vez y las secciones posteriores lo citan:
-% la métrica es una medida de rendimiento de la sección 3, y la entrada y la
-% salida del MVP son los sensores y los actuadores de esa misma sección.
-% Compilar con: pdflatex propuesta.tex
+% Compilar con: pdflatex propuesta.tex (dos veces)
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -18,7 +13,7 @@
 
 \definecolor{unamAzul}{HTML}{003D79}
 \definecolor{unamOro}{HTML}{D59F0F}
-\newcommand{\pendiente}[1]{\textcolor{gray}{\emph{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \setlist{nosep,leftmargin=*}
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
@@ -27,8 +22,8 @@
 \pretitle{%
   \begin{center}\small
     Universidad Nacional Autónoma de México\\
-    Posgrado en \pendiente{nombre del programa}\\[2pt]
-    \pendiente{Nombre del curso}, semestre \pendiente{2027-1}
+    Posgrado en Ciencia e Ingeniería de la Computación\\[2pt]
+    Inteligencia Artificial, semestre 2027-1
   \end{center}
   \vspace{-4pt}{\color{unamOro}\rule{\textwidth}{1.2pt}}\par\vspace{14pt}
   \begin{center}{\small\scshape Propuesta de proyecto}\\[6pt]\LARGE\bfseries\color{unamAzul}}
@@ -39,68 +34,92 @@
 \predate{\begin{center}\small}
 \postdate{\par\end{center}}
 
-\title{\pendiente{Nombre de la empresa: el proyecto en una frase}}
-% Entre 1 y 6 integrantes, tres por renglón. Borrar los integrantes que sobren,
-% junto con su \and. \otrorenglon inicia el segundo renglón de nombres.
+\title{GoIA: Navegando la ciudad de forma segura}
 \author{%
-  \pendiente{Integrante 1}\\ {\small\texttt{\pendiente{correo}}}
+  Belmont Hernández Héctor Antonio\\ {\small\texttt{habelmont2@gmail.com}}
   \and
-  \pendiente{Integrante 2}\\ {\small\texttt{\pendiente{correo}}}
-  \and
-  \pendiente{Integrante 3}\\ {\small\texttt{\pendiente{correo}}}
+  Hernández González Luis Ángel\\ {\small\texttt{luiss.angel92@gmail.com}}
   \otrorenglon
-  \pendiente{Integrante 4}\\ {\small\texttt{\pendiente{correo}}}
+  Núñez Laces Yeni Yuzelmi\\ {\small\texttt{yenilaces@gmail.com}}
   \and
-  \pendiente{Integrante 5}\\ {\small\texttt{\pendiente{correo}}}
-  \and
-  \pendiente{Integrante 6}\\ {\small\texttt{\pendiente{correo}}}
+  Villa Aguilar Gerardo Erick\\ {\small\texttt{gerardoerickv@gmail.com}}
 }
-\date{\today}
+\date{3 de noviembre de 2026}
 
 \begin{document}
 \maketitle
 \thispagestyle{empty}
 
 % ---------------------------------------------------------------------------
-% EL PROBLEMA. Cinco párrafos, cada uno con su idea central en la primera
-% oración. El primero, el segundo y el cuarto responden las seis preguntas del
-% diagnóstico: qué no está sucediendo, quién está interesado, por qué le interesa
-% al equipo, qué impide resolverlo, qué pasa si no se resuelve y cómo luce el
-% éxito. El tercero presenta los trabajos en que se basa el proyecto, y el quinto
-% dice quién paga por la solución. Usar cifras con su fuente cuando existan.
+% EL PROBLEMA
 % ---------------------------------------------------------------------------
 \section{El problema}
 \label{sec:problema}
 
-\pendiente{Primer párrafo. Quién tiene el problema, qué no está sucediendo y cuánto le
-cuesta, en tiempo o dinero.}
+Cuando una persona es nueva en una ciudad, ya sea por mudanza o visita, una complicación común que
+tienen es no saber qué zonas no son seguras para evitarlas cuando se desplazan a pie de un punto A a
+un punto B. Una zona no segura se puede definir como aquella con antecedentes de crímenes como
+asaltos o estafas, o condiciones como falta de iluminación que generen un estado de alerta e
+incrementen las probabilidades de dichas situaciones. Una mala elección de ruta puede resultar en un
+robo de cartera y celular, pudiendo llegar a un vaciado de cuentas bancarias. En otras palabras, una
+de las peores experiencias para cualquier persona, con pérdida inmediata de dinero, tiempo para
+reponer bienes y tarjetas, y sobre todo bienestar físico y psicológico.
 
-\pendiente{Segundo párrafo. Qué impide resolverlo hoy, qué soluciones existen y por qué no
-bastan.}
+Hay ciertas zonas que son ``famosas'' como Tepito y es posible obtener mucha información al respecto
+en internet, pero para otros lugares más pequeños no suele haber tanta información pública y
+solamente se puede saber al visitarlos en persona o hablar con los locales, cosas que requieren
+llegar al lugar primero. Aplicaciones como Google Maps calculan rutas con base en el tiempo, por lo
+que la ruta más rápida no es necesariamente la más segura. Hay un par de aplicaciones móviles que
+serán nombradas más adelante que atacan el problema de calcular rutas considerando la seguridad pero
+fueron desarrolladas fuera del país, por lo que no necesariamente se adecuan a las condiciones de
+México o Latinoamérica.
 
-\pendiente{Tercer párrafo. Los trabajos en que se basa el proyecto (artículos, libros,
-reportes o repositorios de código) y qué toma el equipo de cada uno, con su
-cita~\cite{base}.}
+La principal inspiración de nuestro proyecto es Waze, el cual le ofrece al usuario varias opciones de
+rutas a escoger, y además cuenta con un sistema donde los usuarios pueden contribuir mediante
+reportes. Waze no está diseñado para peatones~\cite{waze}, lo cual es un área de oportunidad.
+Streetwise~\cite{streetwise} implementa un sistema similar a nuestra propuesta: un planificador de
+rutas que considera la seguridad de las zonas, pero solamente está disponible en París, Lyon y
+Bruselas. Además del sistema de planificación y reportes, también cuenta con un sistema de
+inteligencia para patrones en los datos de la ciudad, opción que está destinada a los gobiernos.
+Por otro lado, RouteSafe~\cite{routesafe} fue desarrollado en Turquía y además ofrece un asistente de
+voz y un sistema de notificaciones para hacer seguimiento de la ruta de personas conocidas.
 
-\pendiente{Cuarto párrafo. Qué pasa si nadie lo resuelve y cómo luce el éxito, con un
-resultado medible.}
+Si el problema no es solucionado, las personas seguirán con la incertidumbre de si la ruta que
+eligieron es una buena opción. Solamente basta un incidente para que la vida de alguien cambie por
+completo para mal. En contraste, el éxito sería una plataforma donde cualquier persona pueda tener
+acceso a la información de seguridad y así tomar una decisión más informada. Este sería medido en
+número de visitas a la plataforma, rutas completadas y reportes enviados.
 
-\pendiente{Quinto párrafo. Quién pagaría por la solución, que puede ser una persona distinta
-de quien usa el producto, y qué valor recibe a cambio.}
+Para el usuario cotidiano, el sistema de monetización puede ser principalmente pasivo mediante
+anuncios al igual que Waze. Esto contribuiría a la idea de que la plataforma está disponible para
+todos, ya que las funcionalidades principales no estarían detrás de un paywall. Dichos anuncios se
+basarían en marketing para negocios, donde estos pagan para aparecer destacados con pines, logotipos
+o banners patrocinados en la pantalla cuando un conductor pasa cerca de sus instalaciones.
+
+También puede utilizarse un sistema de suscripciones que desbloquee funcionalidades de
+personalización como avatares o funcionalidades de nicho como un asistente de voz. Esta sería una
+idea secundaria, pues su alcance sería menor.
+
+También sería posible colaborar con los gobiernos de las ciudades como hace Streetwise mediante
+licitaciones. La propuesta de valor sería una plataforma digital moderna que el gobierno no necesita
+mantener por sí mismo y con acceso a inteligencia que puede ser obtenida de los datos enviados por
+los usuarios.
 
 % ---------------------------------------------------------------------------
-% SELECCIÓN DE LA IDEA. Puntuar de 1 (bajo) a 5 (alto) la idea elegida y las dos
-% mejores alternativas. El total es la suma de los cuatro criterios. Justificar
-% con evidencia el puntaje de la idea elegida, porque los puntajes propios
-% tienden a inflarse.
+% SELECCIÓN DE LA IDEA
 % ---------------------------------------------------------------------------
 \section{Selección de la idea}
 \label{sec:seleccion}
 
-La Tabla~\ref{tab:seleccion} compara la idea elegida con las dos mejores alternativas.
-\pendiente{Una o dos oraciones que nombran la operación SCAMPER que generó la idea
-(sustituir, combinar, adaptar, modificar, poner en otros usos, eliminar o revertir) y
-justifican con evidencia por qué la idea elegida supera a las alternativas.}
+La Tabla~\ref{tab:seleccion} compara la idea elegida con las dos mejores alternativas. La idea surgió
+de la operación combinar de SCAMPER, al unir las ideas de un planificador de rutas y un sistema de
+seguridad ciudadana. Otras ideas que se evaluaron fueron la creación de un sistema de reportes para
+deficiencias en calles como la iluminación, que son factores que influyen en la seguridad. Y si bien
+es algo construible, la aplicación solo daría visibilidad al dolor de las deficiencias públicas y no
+daría una solución puesto que ello depende del gobierno. Otra idea fue mostrar un mapa que muestre
+zonas inseguras pero esto no necesariamente requiere IA y sería algo con bajos niveles de
+monetización. El planificador de rutas seguras soluciona un dolor, hace uso de IA y es posible
+obtener datos de pequeña escala para el MVP.
 
 \begin{table}[H]
   \caption{Puntaje de 1 (bajo) a 5 (alto) de la idea elegida y de las dos mejores
@@ -111,28 +130,23 @@ justifican con evidencia por qué la idea elegida supera a las alternativas.}
     \toprule
     Idea & Dolor & Datos & IA necesaria & Factible & Total \\
     \midrule
-    \pendiente{Idea elegida}  & & & & & \\
-    \pendiente{Alternativa 1} & & & & & \\
-    \pendiente{Alternativa 2} & & & & & \\
+    Planificador de rutas seguras & 5 & 3 & 4 & 3 & 15 \\
+    Sistema de reportes para deficiencias en calles & 2 & 3 & 3 & 3 & 11 \\
+    Mapa que muestre zonas inseguras & 4 & 4 & 1 & 4 & 13 \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
 % ---------------------------------------------------------------------------
-% AGENTE Y ENTORNO DE LA TAREA. Russell y Norvig, cap. 2. El agente es el sistema
-% junto con la decisión que apoya. En un modelo de predicción, la decisión es lo
-% que el usuario hace con la predicción, por ejemplo a qué paciente llamar
-% primero. Así las propiedades del entorno describen la decisión real, además del
-% entrenamiento del modelo.
-% La tabla REAS define una sola vez el rendimiento, la entrada y la salida. La
-% hipótesis y el MVP las citan después.
+% AGENTE Y ENTORNO DE LA TAREA
 % ---------------------------------------------------------------------------
 \section{Agente y entorno de la tarea}
 \label{sec:agente}
 
-\pendiente{Una oración que dice qué es el agente del proyecto y qué decisión apoya.} La
-Tabla~\ref{tab:reas} describe la tarea con REAS, y la Tabla~\ref{tab:propiedades} clasifica
-su entorno, según la caracterización de Russell y Norvig~\cite{russell2021}.
+El agente es el recomendador de ruta segura, que dada una ubicación permite visualizar la ruta que
+tenga menor riesgo. La Tabla~\ref{tab:reas} describe la tarea con REAS, y la
+Tabla~\ref{tab:propiedades} clasifica su entorno, según la caracterización de Russell y
+Norvig~\cite{russell2021}.
 
 \begin{table}[H]
   \caption{Descripción REAS de la tarea: medidas de rendimiento, entorno, actuadores y
@@ -141,14 +155,15 @@ su entorno, según la caracterización de Russell y Norvig~\cite{russell2021}.
   \renewcommand{\arraystretch}{1.25}
   \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
     \toprule
-    Rendimiento & \pendiente{Medidas con las que se juzga al agente, por ejemplo citas
-                  recuperadas por semana o error de predicción. La métrica de la hipótesis es
-                  una de ellas.} \\
-    Entorno & \pendiente{Dónde actúa el agente y con qué interactúa.} \\
-    Actuadores & \pendiente{Cómo actúa el agente sobre el entorno, por ejemplo enviar un
-                 mensaje o mostrar una recomendación. Son la salida del MVP.} \\
-    Sensores & \pendiente{Qué percibe el agente, por ejemplo registros de una base de datos,
-               imágenes o texto. Son la entrada del MVP.} \\
+    Rendimiento & Ruta seleccionada con riesgo bajo, distancia y tiempo razonable hacia el destino
+                  y consideración de reportes actuales. \\
+    Entorno & Calles, personas que soliciten recomendaciones, zonas urbanas, incidentes, tiempo de
+              incidentes y solicitudes. \\
+    Actuadores & Mostrar sobre un mapa la recomendación de una ruta con el nivel de riesgo y la
+                 opción de comparar con la ruta más corta, y permitir que los usuarios ingresen
+                 nuevos reportes. \\
+    Sensores & Los reportes de los usuarios con coordenadas geográficas, fecha y hora, registro de
+               base de datos y servicios de cartografía. \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -159,31 +174,39 @@ su entorno, según la caracterización de Russell y Norvig~\cite{russell2021}.
   \label{tab:propiedades}
   \small
   \renewcommand{\arraystretch}{1.25}
-  \begin{tabularx}{\textwidth}{@{}p{0.36\textwidth}p{0.13\textwidth}X@{}}
+  \begin{tabularx}{\textwidth}{@{}p{0.3\textwidth}L{0.15\textwidth}X@{}}
     \toprule
     Propiedad & Valor & Justificación \\
     \midrule
-    Totalmente o parcialmente observable & & \\
-    Un agente o multiagente & & \\
-    Determinista o estocástico & & \\
-    Episódico o secuencial & & \\
-    Estático, semidinámico o dinámico & & \\
-    Discreto o continuo & & \\
-    Conocido o desconocido & & \\
+    Totalmente o parcialmente observable & Parcialmente observable & El agente conoce la
+      información que ha sido ingresada por el usuario pero no conoce todos los incidentes que
+      ocurren en la zona ni condiciones reales de seguridad. \\
+    Un agente o multiagente & Un agente & Un solo recomendador procesa la información, evalúa los
+      indicadores de riesgo y calcula la ruta segura. \\
+    Determinista o estocástico & Estocástico & La ruta depende de los incidentes y condiciones de
+      seguridad que no se pueden predecir con seguridad. \\
+    Episódico o secuencial & Secuencial & La información recabada modifica las
+      recomendaciones. \\
+    Estático, semidinámico o dinámico & Dinámico & La información de seguridad va cambiando y las
+      recomendaciones se van actualizando. \\
+    Discreto o continuo & Discreto & El agente realiza la búsqueda sobre un conjunto finito de
+      nodos restringidos por la ubicación solicitada. \\
+    Conocido o desconocido & Conocido & Las reglas de búsqueda, las distancias e indicadores de
+      riesgos son conocidos, aunque no se tenga información de los incidentes. \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
 % ---------------------------------------------------------------------------
-% HIPÓTESIS Y EVALUACIÓN. Una oración con la forma: el método X mejora la métrica
-% Y respecto de la línea base Z en los datos W. La tabla detalla cada elemento y
-% el párrafo final dice cómo se pondrá a prueba.
+% HIPÓTESIS Y EVALUACIÓN
 % ---------------------------------------------------------------------------
 \section{Hipótesis y evaluación}
 \label{sec:hipotesis}
 
-\pendiente{El método X mejora la métrica Y respecto de la línea base Z en los datos W.} La
-Tabla~\ref{tab:hipotesis} detalla cada elemento de la hipótesis.
+La búsqueda de ruta mediante el algoritmo A* obtiene rutas con menor riesgo que las búsquedas
+tradicionales, las cuales priorizan únicamente la minimización de tiempo, a través de indicadores de
+riesgo asociados a reportes de incidentes. La Tabla~\ref{tab:hipotesis} detalla cada elemento de la
+hipótesis.
 
 \begin{table}[H]
   \caption{Elementos de la hipótesis: método, métrica, línea base y datos.}
@@ -191,30 +214,33 @@ Tabla~\ref{tab:hipotesis} detalla cada elemento de la hipótesis.
   \renewcommand{\arraystretch}{1.3}
   \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
     \toprule
-    Método & \pendiente{Clase de métodos de inteligencia artificial que se usarán.} \\
-    Métrica & \pendiente{Medida de rendimiento de la Tabla~\ref{tab:reas} que pone a prueba la
-              hipótesis, y si un valor mayor es mejor.} \\
-    Línea base & \pendiente{Método más simple que resuelve la misma tarea.} \\
-    Datos & \pendiente{Fuente, tamaño y licencia de los datos, del simulador o del sistema
-            real, y si el equipo ya tiene acceso a ellos. Si todavía no lo tiene, cuándo y
-            cómo lo obtendrá.} \\
+    Método & Algoritmo A* con indicadores de riesgo, tiempo y distancia de calles y zonas. \\
+    Métrica & Riesgo acumulado de la ruta, calculado por los indicadores de la zona más el tiempo
+              de la ruta. Se evalúa el tiempo total de traslado con una flexibilidad de desviación
+              (porcentaje de tiempo adicional) a una ruta alterna. La recomendación está dada por el
+              menor riesgo acumulado dado que no se sobrepase el tiempo de llegada. \\
+    Línea base & Algoritmo Dijkstra o A* para obtener la ruta más rápida, sin indicadores de
+                 seguridad. \\
+    Datos & Utilizaremos datos sintéticos simulando zonas en las que se ha presentado un siniestro.
+            Al reportar la zona se actualiza la heurística para ajustar la ruta y mostrar la más
+            segura. \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
-\pendiente{Un párrafo que dice cómo se pondrá a prueba la hipótesis: división de los datos,
-número de repeticiones y comparación con dos o tres trabajos previos~\cite{ejemplo}. Incluir
-una evaluación cualitativa con usuarios si aplica.}
+El equipo realizará simulaciones controladas para asegurarse de que el sistema responde
+correctamente y evita rutas peligrosas manteniendo la alternativa más corta. Para la prueba
+cualitativa, realizaremos entrevistas para validar si los usuarios preferirían las rutas dadas por
+nuestro sistema.
 
 % ---------------------------------------------------------------------------
-% PRODUCTO MÍNIMO VIABLE. Qué tipo de producto es, quién lo usa y qué hace. La
-% entrada y la salida son los sensores y los actuadores de la sección 3. Esta
-% sección dice en qué formato llegan y en qué formato se entregan.
+% PRODUCTO MÍNIMO VIABLE
 % ---------------------------------------------------------------------------
 \section{Producto mínimo viable}
 \label{sec:mvp}
 
-\pendiente{Una o dos oraciones que describen el MVP y a quién sirve.} La
+El producto final sería una aplicación móvil que brinda al usuario una ruta priorizando la
+seguridad y no solo la ruta más corta. Para el MVP se realizará una versión web. La
 Tabla~\ref{tab:mvp} describe el producto.
 
 \begin{table}[H]
@@ -223,50 +249,78 @@ Tabla~\ref{tab:mvp} describe el producto.
   \renewcommand{\arraystretch}{1.3}
   \begin{tabularx}{\textwidth}{@{}>{\bfseries}p{0.15\textwidth}X@{}}
     \toprule
-    Tipo & \pendiente{Aplicación web, herramienta de línea de comandos, aplicación móvil,
-           API, extensión de otra herramienta u otro formato.} \\
-    Usuario & \pendiente{Quién lo usa y en qué momento de su trabajo.} \\
-    Entrada & \pendiente{Formato en que llega lo que perciben los sensores de la
-              Tabla~\ref{tab:reas}, por ejemplo un archivo CSV, una imagen o un texto.} \\
-    Proceso & \pendiente{Qué hace el sistema con la entrada y dónde interviene el modelo de
-              inteligencia artificial.} \\
-    Salida & \pendiente{Formato en que el usuario recibe la acción de los actuadores, por
-             ejemplo una lista priorizada, una alerta o un reporte.} \\
+    Tipo & Aplicación web. \\
+    Usuario & Cualquier persona que va de un origen a un destino. \\
+    Entrada & El usuario proporciona su ubicación de origen y destino. El usuario ingresa reporte
+              de incidentes. \\
+    Proceso & El agente consulta la información de la zona con los reportes almacenados, obtiene
+              indicadores de riesgo y ejecuta una búsqueda con heurística para encontrar una ruta
+              combinando información de tiempo y seguridad. Si la persona tiene mucha prisa puede
+              ver la ruta más rápida, compararla con la más segura y decidir cuál tomar de acuerdo
+              con sus necesidades. \\
+    Salida & Se muestra al usuario la ruta recomendada y sus características. \\
     \bottomrule
   \end{tabularx}
 \end{table}
 
 % ---------------------------------------------------------------------------
-% PLAN DE TRABAJO. Solo las actividades propias del proyecto, en orden. Los
-% entregables del curso (canvas, modelo financiero, artículo y pitch) ya tienen
-% fecha y no se listan. Cada actividad dice sus semanas, su responsable y el
-% producto que deja. Por ejemplo: "Etiquetar 2,000 radiografías con apoyo de un
-% dentista aliado (semanas 1 y 2, Ana). El producto es el conjunto etiquetado."
+% PLAN DE TRABAJO
 % ---------------------------------------------------------------------------
 \section{Plan de trabajo}
 \label{sec:plan}
 
-\pendiente{Un párrafo que presenta el plan: cuántas semanas dura, cómo se reparte el trabajo
-entre los integrantes y cuál es el hito principal, por ejemplo el MVP funcionando en la
-semana 4. La lista siguiente ordena las actividades.}
+Duración: 4 semanas.
 
-\begin{enumerate}[leftmargin=1.5em,itemsep=2pt]
-  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
-  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
-  \item \pendiente{Actividad (semanas, responsable). Producto que deja.}
+El proyecto se desarrollará durante cuatro semanas, distribuyendo las responsabilidades entre los
+cuatro integrantes: el primero se encargará del algoritmo A* y el cálculo de rutas; el segundo
+desarrollará el mapa y la interfaz web; el tercero implementará el registro y almacenamiento de
+reportes ciudadanos de inseguridad; y el cuarto integrará los componentes y realizará las pruebas.
+Al finalizar la cuarta semana, pretendemos contar con un MVP funcional que permita seleccionar un
+origen y destino, visualizar rutas alternativas y calcular una ruta priorizando la seguridad
+mediante los reportes registrados por los usuarios.
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=4pt]
+  \item Análisis de requerimientos y diseño de la solución (Semana 1, los cuatro integrantes).
+    Definir el funcionamiento del MVP, los datos necesarios para representar las calles como un
+    grafo, los criterios para clasificar las zonas de riesgo y el diseño preliminar de la interfaz.
+    Producto: documento de requerimientos, diagrama de arquitectura y diseño inicial de pantallas.
+  \item Implementación del algoritmo A* (Semanas 1 y 2, Luis). Construir la representación del mapa
+    mediante nodos y aristas, implementar el algoritmo A* y establecer una función de costo que
+    considere la distancia y el nivel de riesgo de cada tramo. Producto: módulo funcional de
+    búsqueda de rutas seguras con datos de prueba.
+  \item Desarrollo de la interfaz web y visualización del mapa (Semanas 1 y 2, Héctor). Construir la
+    interfaz para seleccionar un punto de origen y destino, visualizar el mapa y mostrar las rutas
+    calculadas. Producto: prototipo web navegable con mapa interactivo.
+  \item Desarrollo del sistema de reportes ciudadanos (Semanas 1 y 2, Yeni). Implementar un
+    formulario para registrar incidentes, incluyendo ubicación, tipo de incidente y fecha.
+    Almacenar los reportes y asociarlos con los segmentos del mapa correspondientes. Producto:
+    módulo de registro y consulta de reportes de inseguridad.
+  \item Integración del sistema y actualización de niveles de riesgo (Semana 3, los cuatro
+    integrantes). Conectar el módulo de reportes con el algoritmo A*, de manera que los incidentes
+    registrados actualicen los pesos de riesgo de las calles y se reflejen en el cálculo de nuevas
+    rutas. Producto: sistema integrado capaz de recalcular rutas cuando se registran nuevos
+    reportes.
+  \item Pruebas funcionales y corrección de errores (Semana 4, Gerardo). Evaluar el funcionamiento
+    del algoritmo con diferentes escenarios, comprobar que los reportes modifiquen los costos de las
+    rutas y verificar que la interfaz muestre correctamente los resultados. Producto: registro de
+    pruebas, errores corregidos y versión estable del MVP.
+  \item Presentación y documentación del MVP (Semana 4, los cuatro integrantes). Preparar una
+    demostración del sistema y presentar los resultados obtenidos. Producto: MVP funcional y
+    presentación final.
 \end{enumerate}
 
 % ---------------------------------------------------------------------------
-% REFERENCIAS. Cada referencia de esta lista se cita en el texto con \cite, y
-% cada cita del texto aparece en esta lista. Incluir el DOI o el enlace cuando
-% exista y verificar cada entrada contra su fuente original.
+% REFERENCIAS
 % ---------------------------------------------------------------------------
 \begin{thebibliography}{9}
+  \bibitem{waze} Waze Community (2023). Footpaths/Walking Segments. \emph{Waze Discuss, Map Editing
+    Guides}. \url{https://www.waze.com/discuss/t/footpaths-walking-segments/375447}.
+  \bibitem{streetwise} Streetwise (2026). Streetwise for Cities. Streetwise.
+    \url{https://www.street-wise.app/en/cities}.
+  \bibitem{routesafe} NovaLabs Global (2026). RouteSafe: Safety GPS \& Family [Aplicación móvil].
+    Google Play Store. \url{https://play.google.com/store/apps/details?id=app.routesafe&hl=en&pli=1}.
   \bibitem{russell2021} S. Russell y P. Norvig (2021). \emph{Artificial Intelligence: A Modern
     Approach}, 4.ª ed. Pearson. ISBN 978-0134610993. \url{https://aima.cs.berkeley.edu}.
-  \bibitem{base} \pendiente{Autores (año). Título. Revista, libro o repositorio. DOI o enlace.
-    Cada referencia de esta lista se cita en el texto.}
-  \bibitem{ejemplo} \pendiente{Autores (año). Título. Revista o conferencia. DOI.}
 \end{thebibliography}
 
 \end{document}
