@@ -34,7 +34,7 @@
 \maketitle
 
 \begin{abstract}
- Walking route planners minimize travel time, yet pedestrians in unfamiliar areas often lack information about the safety of the streets they traverse, and a slightly longer route may substantially reduce their exposure to crime. However, current navigation systems do not explicitly account for local crime patterns or citizen-reported incidents, making it unclear how much risk can be reduced without imposing excessive detours. 
+ Walking route planners minimize travel time, yet pedestrians in unfamiliar areas often lack information about the safety of the streets they traverse, and a slightly longer route may substantially reduce their exposure to crime. However, current mainstream navigation systems in Mexico do not explicitly account for local crime patterns or citizen-reported incidents, making it unclear how much risk can be reduced without imposing excessive detours.
  In this work, we estimate the risk of every street in the alcaldía Cuauhtémoc from 5,235 pedestrian robberies reported to the Fiscalía General de Justicia de la Ciudad de México (FGJ) in 2021--2024, and we search for the least risky route whose walking time stays within a budget of 10\% or 20\% over the fastest route, using A* with a cost that keeps the search optimal. On 1,000 random trips evaluated against the 718 robberies reported in January--September 2026, the route under a 10\% budget passed 9.0 incidents on average, compared with 15.3 for the fastest route (41\% fewer), and took 5.4\% longer. Doubling the budget raised the reduction only to 49\%. In a controlled scenario with synthetic user reports, routes cut the reports they passed in a low-risk street by 68\%, and on random trips the reports, fake ones included, changed neither walking time nor exposure to real incidents. These results suggest that a small
   time budget already captures most of the available reduction in exposure.
 \end{abstract}
@@ -55,7 +55,8 @@ literature~\cite{galbrun2016urban,theron2024safest}, but none covers Mexico City
 evaluations rarely test routes against incidents that happen after the risk was estimated. The
 question we address is concrete: for a walk of 1 to 4 km in Cuauhtémoc, how many future
 robberies does a risk-aware route pass compared with the fastest route, for a bounded increase
-in walking time?
+in walking time? We hypothesize that, with a budget of 10\% extra walking time, the risk-aware
+route passes fewer of the robberies reported in 2026 than the fastest route.
 
 In this work, we model the walking network of Cuauhtémoc from OpenStreetMap, estimate the risk of
 each street with a kernel density estimate of past reported robberies, and run A* with a cost that
@@ -101,7 +102,7 @@ along its geometry and a walking time $t(e)=\ell(e)/v$, where $v$ is a constant 
 
 \textbf{Data.} The incidents are the two categories of pedestrian robberies, with and without
 violence, from Hoyo de Crimen~\cite{hoyodecrimen}, which distributes under CC~BY~4.0 a cleaned and
-updated version of the victims dataset of the Fiscalía General de Justicia de la Ciudad de México (FGJ). We kept
+updated version of the victims dataset of the Fiscalía General de Justicia de la Ciudad de México (FGJ)~\cite{fgj2026victimas}. We kept
 the 10,710 incidents from January 2019 to September 2026 inside the alcaldía, merging rows that
 describe several victims of one incident. The split is by time: 2021--2024 (5,235 incidents) to
 fit the risk model, 2025 (1,132) to choose its bandwidth, and January--September 2026 (718) to
@@ -114,7 +115,8 @@ $\hat f(x) = \frac{1}{N\,2\pi h^2}\sum_{i=1}^{N} \exp\!\big(-\lVert x-x_i\rVert^
 For each edge we average $\hat f$ over points every 10~m along it, obtaining $d(e)$, and divide by
 the length-weighted mean over the network, so that the base risk $r_b(e)=1$ for an average street.
 We tried $h\in\{25,50,75,100,150,200,300,400\}$~m and kept the one with the highest mean
-log-likelihood of the 2025 incidents, $h=50$~m, about one city block.
+log-likelihood of the 2025 incidents, $h=50$~m, about one city block. The estimate was computed
+with scikit-learn~\cite{pedregosa2011scikit}.
 
 \textbf{User reports.} A report at $y_j$ adds a bump of the same width whose peak equals $\rho$,
 the 90th percentile of $r_b$ over all edges ($\rho=2.59$). With $\bar k_j(e)$ the average of
